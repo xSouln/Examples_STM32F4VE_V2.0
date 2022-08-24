@@ -14,14 +14,6 @@
 //==============================================================================
 typedef enum
 {
-	xTxStatusFree,
-	xTxStatusIsTransmits,
-	xTxStatusError
-	
-} xTxTransmitterStatus;
-//------------------------------------------------------------------------------
-typedef enum
-{
 	xTxStateDisable,
 	xTxStateEnable,
 	
@@ -66,6 +58,14 @@ typedef xResult (*xTxRequestListener)(void* tx, xTxRequestSelector selector, uin
 typedef int (*xTxActionGetValue)(void* tx, xTxValueSelector selector);
 typedef xResult (*xTxActionSetValue)(void* tx, xTxValueSelector selector, uint32_t value);
 //==============================================================================
+typedef enum
+{
+	xTxStatusFree = 1U,
+	xTxStatusIsTransmits,
+	xTxStatusError
+	
+} xTxTransmitterStatus;
+//------------------------------------------------------------------------------
 typedef union
 {
   struct

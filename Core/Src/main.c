@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "dma.h"
+#include "i2c.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -27,6 +28,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Control.h"
+#include "Adapters/TransactionTransferAdapter.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,6 +65,8 @@ uint16_t time_1000ms;
 uint16_t time_5000ms;
 uint32_t time_ms;
 //------------------------------------------------------------------------------
+xTxTransferT TransferLayer;
+//------------------------------------------------------------------------------
 struct
 {
 	uint32_t SelectNewTemplate : 1;
@@ -84,7 +88,7 @@ WS2812_PixelT Color =
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+const char* string_out = "111111111111111111111111\r111111111111111111111111\r111111111111111111111111\r111111111111111111111111\r111111111111111111111111\r111111111111111111111111\r111111111111111111111111\r";
 /* USER CODE END 0 */
 
 /**
@@ -125,8 +129,12 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM5_Init();
   MX_TIM14_Init();
+  MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
 	ControlInit("main");
+	
+	TransactionAdapterInit(&TransferLayer, &SerialPortUART.Tx);
+	xTxTransferInit(&TransferLayer, 1, 20, 1.0);
 	
 	RGBCups_DrawingStart(RGBCup1, (RGBCupDrawManagerBaseT*)&DrawManager1);
 	//RGBCups_DrawManagerEx1Init(RGBCup1, &DrawManager1);
@@ -144,6 +152,8 @@ int main(void)
 			
 			SerialPort_Handler(&SerialPortUART);
 			SerialPort_Handler(&SerialPortUSB);
+			
+			xTxTransferHandler(&TransferLayer);
 		}
 		
 		if (!time_1000ms)
@@ -155,8 +165,10 @@ int main(void)
 			//LED_2_GPIO_Port->ODR ^= LED_2_Pin;
 			RGBCups_SetColor(RGBCup1, Color);
 			
-			xTxTransmitString(&SerialPortUART.Tx, "qwerty\r");
+			//xTxTransmitString(&SerialPortUART.Tx, "qwerty\r");
 			xTxTransmitString(&SerialPortUSB.Tx, "qwerty\r");
+			
+			xTxTransferTransmit(&TransferLayer, (uint8_t*)string_out, strlen(string_out));
 		}
 		
 		if (!time_10ms)

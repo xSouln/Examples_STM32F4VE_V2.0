@@ -8,6 +8,7 @@
 //==============================================================================
 #include "Camera_Config.h"
 #include "Common/xTypes.h"
+#include "Common/xTxTransfer.h"
 //==============================================================================
 typedef enum
 {
@@ -43,21 +44,21 @@ typedef enum
 	
 } CameraAdapterValueSelector;
 //------------------------------------------------------------------------------
-typedef void (*CameraAdapterActionHandler)(void* camera);
+typedef void (*CameraAdapterHandlerT)(void* camera);
 
-typedef xResult (*CameraAdapterRequestListener)(void* camera, CameraAdapterRequestSelector selector, uint32_t args, uint32_t count);
+typedef xResult (*CameraAdapterRequestListenerT)(void* camera, CameraAdapterRequestSelector selector, uint32_t args, uint32_t count);
 
-typedef int (*CameraAdapterActionGetValue)(void* camera, CameraAdapterValueSelector selector);
-typedef xResult (*CameraAdapterActionSetValue)(void* camera, CameraAdapterValueSelector selector, uint32_t value);
+typedef int (*CameraAdapterActionGetValueT)(void* camera, CameraAdapterValueSelector selector);
+typedef xResult (*CameraAdapterActionSetValueT)(void* camera, CameraAdapterValueSelector selector, uint32_t value);
 //------------------------------------------------------------------------------
 typedef struct
 {
-	CameraAdapterActionHandler Handler;
+	CameraAdapterHandlerT Handler;
 	
-	CameraAdapterRequestListener RequestListener;
+	CameraAdapterRequestListenerT RequestListener;
 	
-	CameraAdapterActionGetValue GetValue;
-	CameraAdapterActionSetValue SetValue;
+	CameraAdapterActionGetValueT GetValue;
+	CameraAdapterActionSetValueT SetValue;
 	
 } CameraAdapterInterfaceT;
 //==============================================================================
@@ -67,11 +68,11 @@ typedef enum
 	
 } CameraEventSelector;
 //------------------------------------------------------------------------------
-typedef void (*CameraEventListener)(void* camera, CameraEventSelector event, uint32_t args, uint32_t count);
+typedef void (*CameraEventListenerT)(void* camera, CameraEventSelector event, uint32_t args, uint32_t count);
 //------------------------------------------------------------------------------
 typedef struct
 {
-	CameraEventListener EventListener;
+	CameraEventListenerT EventListener;
 	
 } CameraInterfaceT;
 //------------------------------------------------------------------------------
@@ -85,6 +86,12 @@ typedef struct
 	
 	CameraAdapterInterfaceT AdapterInterface;
 	CameraInterfaceT* Interface;
+	
+	xTxTransferT TransferLayer;
+	
+	CameraBufferT* SnapshotBuffer;
+	uint32_t SnapshotBufferSize;
+	uint32_t SnapshotSize;
 	
 } CameraT;
 //==============================================================================

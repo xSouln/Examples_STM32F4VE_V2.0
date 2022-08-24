@@ -9,7 +9,7 @@
 #include "OV2640_AdapterTypes.h"
 #include "Camera/Controls/Camera.h"
 //==============================================================================
-xResult OV2640_AdapterInit(CameraT* camera, OV2640_AdapterT* parent, CameraAdapterInterfaceT* interface);
+xResult OV2640_AdapterInit(CameraT* camera, OV2640_AdapterT* adapter);
 //==============================================================================
 #ifdef __cplusplus
 }

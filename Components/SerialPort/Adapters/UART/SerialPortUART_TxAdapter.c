@@ -10,6 +10,9 @@ static void Handler(xTxT *tx)
 	{
 		adapter->Usart->Control1.TxEmptyInterruptEnable = true;
 	}
+	
+	tx->Status.Transmitter = (adapter->Usart->Control1.TxEmptyInterruptEnable > 0)
+														? xTxStatusIsTransmits : xTxStatusFree;
 }
 //------------------------------------------------------------------------------
 static void EventListener(xTxT *tx, xTxEventSelector event, uint32_t args, uint32_t count)
@@ -44,8 +47,19 @@ static xResult RequestListener(xTxT* tx, xTxRequestSelector selector, uint32_t a
 	
 	switch ((uint32_t)selector)
 	{
-		case xTxRequestTransmitData : return xCircleBufferAdd(&adapter->TxCircleBuffer, (uint8_t*)args, count);
-		case xTxRequestEnableTransmitter: break;
+		case xTxRequestTransmitData :
+			if (xCircleBufferGetFreeSize(&adapter->TxCircleBuffer) < count)
+			{
+				return xResultError;
+			}
+			xCircleBufferAdd(&adapter->TxCircleBuffer, (uint8_t*)args, count);
+			adapter->Usart->Control1.TxEmptyInterruptEnable = true;
+			tx->Status.Transmitter = xTxStatusIsTransmits;
+			return xResultAccept;
+		
+		case xTxRequestEnableTransmitter :
+			adapter->Usart->Control1.TxEmptyInterruptEnable = true;
+			break;
 			
 			
 		default : return xResultRequestIsNotFound;
@@ -63,7 +77,13 @@ static int GetValue(xTxT* tx, xTxValueSelector selector)
 		case xTxValueTransmitterStatus :
 			return adapter->Usart->Control1.TxEmptyInterruptEnable ? xTxStatusIsTransmits : xTxStatusFree;
 		
-		default : return -1;
+		case xTxValueBufferSize :
+			return (adapter->TxCircleBuffer.SizeMask + 1);
+		
+		case xTxValueFreeBufferSize :
+			return xCircleBufferGetFreeSize(&adapter->TxCircleBuffer);
+		
+		default : return 0;
 	}
 }
 //------------------------------------------------------------------------------

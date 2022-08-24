@@ -8,7 +8,7 @@
 //==============================================================================
 #include "OV2640_AdapterConfig.h"
 #include "OV2640/OV2640_Driver.h"
-#include "Common/xTransferLayer.h"
+#include "Common/xTxTransfer.h"
 //==============================================================================
 #define OV2640_SNAPSHOT_BUFFER_TYPE uint32_t
 //==============================================================================
@@ -31,10 +31,15 @@ typedef struct
 	OV2640_DriverT Driver;
 	
 	OV2640_AdapterHandleT Handle;
-	xTransferLayerT TransferLayer;
 	
-	OV2640_SNAPSHOT_BUFFER_TYPE SnapshotBuffer[0x3ffff / sizeof(OV2640_SNAPSHOT_BUFFER_TYPE)];
-	uint32_t SnapshotBufferSize;
+	I2C_HandleTypeDef* HandleI2C;
+	void* HandleDCMI;
+	
+	GPIO_TypeDef* HardwareResetPort;
+	uint16_t HardwareResetPin;
+	
+	GPIO_TypeDef* PowerDownPort;
+	uint16_t PowerDownPin;
 	
 } OV2640_AdapterT;
 //==============================================================================

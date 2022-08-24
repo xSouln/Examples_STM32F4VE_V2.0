@@ -29,11 +29,7 @@ uint8_t xCircleBufferGet(xCircleBufferT* buffer)
 //------------------------------------------------------------------------------
 uint32_t xCircleBufferGetFreeSize(xCircleBufferT* buffer)
 {
-	/*
-	uint32_t data_size = (adapter->TxCircleBuffer.TotalIndex - adapter->TxCircleBuffer.HandlerIndex)
-								& adapter->TxCircleBuffer.SizeMask;
-	*/
-	return 0;
+	return (buffer->SizeMask + 1) - ((buffer->TotalIndex - buffer->HandlerIndex) & buffer->SizeMask);
 }
 //------------------------------------------------------------------------------
 xResult xCircleBufferInit(xCircleBufferT* circle_buffer,
