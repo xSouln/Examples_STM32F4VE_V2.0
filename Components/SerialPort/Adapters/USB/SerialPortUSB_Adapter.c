@@ -22,6 +22,8 @@ static int8_t Init()
 //------------------------------------------------------------------------------
 static int8_t DeInit()
 {
+	SerialPortUSB_AdapterT* adapter = selected_serial_port->Adapter;
+	
   selected_serial_port = 0;
 	
   return 0;
@@ -88,8 +90,6 @@ SerialPortAdapterResult SerialPortUSB_AdapterInit(SerialPortT* serial_port,
 		{
 			Error_Handler();
 		}
-		
-		//USBD_LL_Reset(&hUsbDeviceFS);
 		
 		if (USBD_CDC_RegisterInterface(&hUsbDeviceFS, &adapter->USBD_CDC_Itf) != USBD_OK)
 		{

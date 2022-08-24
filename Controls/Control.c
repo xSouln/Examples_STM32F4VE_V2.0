@@ -10,6 +10,7 @@ ActionResults ControlInit(void* parent)
 	
 	SerialPortUART_ComponentInit(&Control);
 	SerialPortUSB_ComponentInit(&Control);
+	RGBCups_ComponentInit(&Control);
 	//TCPServerWIZspi_ComponentInit(&Control);
 	//RGBCups_ComponentInit(&Control);
 	

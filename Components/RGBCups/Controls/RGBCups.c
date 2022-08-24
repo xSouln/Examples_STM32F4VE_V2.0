@@ -2,6 +2,7 @@
 #include "RGBCups.h"
 #include "RGBCups/Adapters/RGBCup_Adapter.h"
 //==============================================================================
+RGBCupT RGBCups[RGBCupsCount];
 //==============================================================================
 RGBCupsResult RGBCups_Init(void* parent, RGBCupInterfaceT* interface)
 {

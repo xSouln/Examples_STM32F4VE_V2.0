@@ -10,13 +10,13 @@
 //==============================================================================
 typedef struct
 {
-	volatile DMA_Channel_TypeDef* DMA;
-	volatile STM32_TIM_REG_T* Timer;
-	
-	uint8_t* DrawMemory;
-	uint32_t DrawMemorySize;
+	volatile void* DMA;
+	volatile void* Timer;
 	
 	uint8_t PWM_Channel;
+	
+	WS2812_BufT* DrawMemory;
+	uint32_t DrawMemorySize;
 	
 } RGBCupAdapterT;
 //==============================================================================

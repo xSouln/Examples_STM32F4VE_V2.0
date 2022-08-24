@@ -1,21 +1,20 @@
 //==============================================================================
-#ifndef SERIAL_PORT_COMPONENTS_H
-#define SERIAL_PORT_COMPONENTS_H
+#ifndef _CAMERA_CONFIG_H
+#define _CAMERA_CONFIG_H
 //------------------------------------------------------------------------------
 #ifdef __cplusplus
  extern "C" {
 #endif 
 //==============================================================================
-#include "SerialPort/Controls/SerialPort.h"
-//==============================================================================
-extern SerialPortT SerialPortUART;
-extern SerialPortT SerialPortUSB;
+#include "Camera_Info.h"
 
-int SerialPortUART_ComponentInit(void* parent);
-int SerialPortUSB_ComponentInit(void* parent);
+#include "OV2640/OV2640_Driver.h"
+#include "main.h"
+//==============================================================================
+
 //==============================================================================
 #ifdef __cplusplus
 }
 #endif
 //------------------------------------------------------------------------------
-#endif /* SERIAL_PORT_UART_COMPONENT_H */
+#endif /* _CAMERA_CONFIG_H */

@@ -1,32 +1,36 @@
 //==============================================================================
-#include "RGBCups_Components.h"
+#include "RGBCups_Component.h"
 //==============================================================================
-uint8_t data_buffer_cups_12[RGB_CUPS_SYNC_START_DATA_COUNT
+WS2812_BufT data_buffer_cups_12[(RGB_CUPS_SYNC_START_DATA_COUNT
 														+ RGB_CUPS_DATA_BUFFER_SIZE_CUP1
 														+ RGB_CUPS_DATA_BUFFER_SIZE_CUP2
-														+ RGB_CUPS_SYNC_END_DATA_COUNT];
+														+ RGB_CUPS_SYNC_END_DATA_COUNT)];
 //------------------------------------------------------------------------------
-uint8_t data_buffer_cups_34[RGB_CUPS_SYNC_START_DATA_COUNT
+WS2812_BufT data_buffer_cups_34[(RGB_CUPS_SYNC_START_DATA_COUNT
 														+ RGB_CUPS_DATA_BUFFER_SIZE_CUP3
 														+ RGB_CUPS_DATA_BUFFER_SIZE_CUP4
-														+ RGB_CUPS_SYNC_END_DATA_COUNT];
+														+ RGB_CUPS_SYNC_END_DATA_COUNT)];
 //==============================================================================
 static RGBCupAdapterT AdapterCup12 =
 {
-	.DMA = DMA1_Channel2,
-	.DrawMemory = data_buffer_cups_12,
-	.DrawMemorySize = sizeof(data_buffer_cups_12),
+	.DMA = DMA2_Stream5,
+	
+	.Timer = TIM1,
 	.PWM_Channel = 2,
-	.Timer = (STM32_TIM_REG_T*)TIM2
+	
+	.DrawMemory = data_buffer_cups_12,
+	.DrawMemorySize = sizeof(data_buffer_cups_12) / sizeof(data_buffer_cups_12[0]),
 };
 //------------------------------------------------------------------------------
 static RGBCupAdapterT AdapterCup34 =
 {
-	.DMA = DMA1_Channel2,
+	.DMA = DMA2_Stream5,
+	
+	.Timer = TIM1,
+	.PWM_Channel = 3,
+	
 	.DrawMemory = data_buffer_cups_34,
-	.DrawMemorySize = sizeof(data_buffer_cups_34),
-	.PWM_Channel = 1,
-	.Timer = (STM32_TIM_REG_T*)TIM2,
+	.DrawMemorySize = sizeof(data_buffer_cups_34) / sizeof(data_buffer_cups_12[0])
 };
 //==============================================================================
 static void EventListener(void* cup, RGBCupEventSelector event, uint32_t args, uint32_t count)
@@ -80,13 +84,7 @@ int RGBCups_ComponentInit(void* parent)
 	WS2812_FillPixels(&RGBCups[RGBCupNumber2].Driver, Pixel, 0, 8);
 	WS2812_FillPixels(&RGBCups[RGBCupNumber3].Driver, Pixel, 0, 8);
 	WS2812_FillPixels(&RGBCups[RGBCupNumber4].Driver, Pixel, 0, 8);
-	//----------------------------------------------------------------------------
-	/*
-	xRxRequestManagerInit(&RGBCups.RequestManager,
-												&RGBCups,
-												&RGBCups,
-												(xRxRequestT*)RGBCups_RxRequests);
-	*/
+	
   return 0;
 }
 //==============================================================================

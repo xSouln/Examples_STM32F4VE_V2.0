@@ -1,5 +1,5 @@
 //==============================================================================
-#include "TCPServer_Components.h"
+#include "TCPServer_Component.h"
 //==============================================================================
 #define RX_BUF_SIZE 0x100
 #define RX_RECEIVER_BUF_SIZE 0x200

@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../USB_DEVICE/App;../USB_DEVICE/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\Documents;..\Libs;..\Libs\WIZ;..\Libs\WIZ\W5500;..\Libs\xLibMicrocontrollers;..\Components;..\Communications;..\Controls</IncludePath>
+              <IncludePath>../Core/Inc;../USB_DEVICE/App;../USB_DEVICE/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Documents;../Libs;../Libs/WIZ;../Libs/WIZ/W5500;../Libs/xLibMicrocontrollers;../Components;../Communications;../Controls</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -418,6 +418,62 @@
               <FileName>spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Core/Src/tim.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>usart.c</FileName>
@@ -757,6 +813,31 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Libs/WS2812</GroupName>
+          <Files>
+            <File>
+              <FileName>WS2812.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libs\WS2812\WS2812.c</FilePath>
+            </File>
+            <File>
+              <FileName>WS2812.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\WS2812\WS2812.h</FilePath>
+            </File>
+            <File>
+              <FileName>WS2812_Config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\WS2812\WS2812_Config.h</FilePath>
+            </File>
+            <File>
+              <FileName>WS2812_Info.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\WS2812\WS2812_Info.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Controls</GroupName>
           <Files>
             <File>
@@ -815,11 +896,6 @@
           <GroupName>Components/SerialPort</GroupName>
           <Files>
             <File>
-              <FileName>SerialPort_Components.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Components\SerialPort\SerialPort_Components.h</FilePath>
-            </File>
-            <File>
               <FileName>SerialPort_Config.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Components\SerialPort\SerialPort_Config.h</FilePath>
@@ -853,6 +929,11 @@
               <FileName>SerialPort.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Components\SerialPort\Controls\SerialPort.h</FilePath>
+            </File>
+            <File>
+              <FileName>SerialPort_Component.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\SerialPort\SerialPort_Component.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -985,11 +1066,6 @@
           <GroupName>Components/TCPServer</GroupName>
           <Files>
             <File>
-              <FileName>TCPServer_Components.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Components\TCPServer\TCPServer_Components.h</FilePath>
-            </File>
-            <File>
               <FileName>TCPServer_Config.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Components\TCPServer\TCPServer_Config.h</FilePath>
@@ -1018,6 +1094,11 @@
               <FileName>TCPServer.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Components\TCPServer\Controls\TCPServer.h</FilePath>
+            </File>
+            <File>
+              <FileName>TCPServer_Component.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\TCPServer\TCPServer_Component.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1093,6 +1174,256 @@
               <FileName>TCPServerWIZspi_TxAdapter.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Components\TCPServer\Adapters\WIZspi\TCPServerWIZspi_TxAdapter.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Components/RGBCups</GroupName>
+          <Files>
+            <File>
+              <FileName>RGBCups_Component.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\RGBCups\RGBCups_Component.c</FilePath>
+            </File>
+            <File>
+              <FileName>RGBCups_Config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\RGBCups\RGBCups_Config.h</FilePath>
+            </File>
+            <File>
+              <FileName>RGBCups_Info.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\RGBCups\RGBCups_Info.h</FilePath>
+            </File>
+            <File>
+              <FileName>RGBCups_Types.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\RGBCups\RGBCups_Types.h</FilePath>
+            </File>
+            <File>
+              <FileName>RGBCups.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\RGBCups\Controls\RGBCups.c</FilePath>
+            </File>
+            <File>
+              <FileName>RGBCups.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\RGBCups\Controls\RGBCups.h</FilePath>
+            </File>
+            <File>
+              <FileName>RGBCups_Logics.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\RGBCups\Logic\RGBCups_Logics.c</FilePath>
+            </File>
+            <File>
+              <FileName>RGBCups_Logics.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\RGBCups\Logic\RGBCups_Logics.h</FilePath>
+            </File>
+            <File>
+              <FileName>RGBCups_DrawManager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\RGBCups\Logic\RGBCups_DrawManager.c</FilePath>
+            </File>
+            <File>
+              <FileName>RGBCups_DrawManager.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\RGBCups\Logic\RGBCups_DrawManager.h</FilePath>
+            </File>
+            <File>
+              <FileName>RGBCups_Component.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\RGBCups\RGBCups_Component.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Components/RGBCups/Adapters</GroupName>
+          <Files>
+            <File>
+              <FileName>RGBCup_Adapter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\RGBCups\Adapters\RGBCup_Adapter.c</FilePath>
+            </File>
+            <File>
+              <FileName>RGBCup_Adapter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\RGBCups\Adapters\RGBCup_Adapter.h</FilePath>
+            </File>
+            <File>
+              <FileName>RGBCup_AdapterConfig.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\RGBCups\Adapters\RGBCup_AdapterConfig.h</FilePath>
+            </File>
+            <File>
+              <FileName>RGBCup_AdapterInfo.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\RGBCups\Adapters\RGBCup_AdapterInfo.h</FilePath>
+            </File>
+            <File>
+              <FileName>RGBCup_AdapterTypes.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\RGBCups\Adapters\RGBCup_AdapterTypes.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Libs/OV2640</GroupName>
+          <Files>
+            <File>
+              <FileName>OV2640_BrightnessTables.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\OV2640\OV2640_BrightnessTables.h</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_ContrastTables.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\OV2640\OV2640_ContrastTables.h</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_Driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libs\OV2640\OV2640_Driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_Driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\OV2640\OV2640_Driver.h</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_InitializationTables.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\OV2640\OV2640_InitializationTables.h</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_JPEG_Tables.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\OV2640\OV2640_JPEG_Tables.h</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_LightModeTables.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\OV2640\OV2640_LightModeTables.h</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_PixelFormatsTables.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\OV2640\OV2640_PixelFormatsTables.h</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_Registers.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\OV2640\OV2640_Registers.h</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_ResolutionTables.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\OV2640\OV2640_ResolutionTables.h</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_SaturationTables.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\OV2640\OV2640_SaturationTables.h</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_SpecialEffectsTables.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\OV2640\OV2640_SpecialEffectsTables.h</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_xVGA_Tables.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\OV2640\OV2640_xVGA_Tables.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Components/Camera</GroupName>
+          <Files>
+            <File>
+              <FileName>Camera_Component.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\Camera\Camera_Component.h</FilePath>
+            </File>
+            <File>
+              <FileName>Camera_Config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\Camera\Camera_Config.h</FilePath>
+            </File>
+            <File>
+              <FileName>Camera_Info.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\Camera\Camera_Info.h</FilePath>
+            </File>
+            <File>
+              <FileName>Camera_Types.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\Camera\Camera_Types.h</FilePath>
+            </File>
+            <File>
+              <FileName>Camera.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\Camera\Controls\Camera.c</FilePath>
+            </File>
+            <File>
+              <FileName>Camera.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\Camera\Controls\Camera.h</FilePath>
+            </File>
+            <File>
+              <FileName>CameraOV2640_Component.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\Camera\CameraOV2640_Component.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Components/Camera/Adapters</GroupName>
+          <Files>
+            <File>
+              <FileName>Camera_AdaptersConfig.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\Camera\Adapters\Camera_AdaptersConfig.h</FilePath>
+            </File>
+            <File>
+              <FileName>Camera_AdaptersInfo.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\Camera\Adapters\Camera_AdaptersInfo.h</FilePath>
+            </File>
+            <File>
+              <FileName>Camera_AdaptersTypes.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\Camera\Adapters\Camera_AdaptersTypes.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Components/Camera/Adapters/OV2640</GroupName>
+          <Files>
+            <File>
+              <FileName>OV2640_Adapter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\Camera\Adapters\OV2640\OV2640_Adapter.c</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_Adapter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\Camera\Adapters\OV2640\OV2640_Adapter.h</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_AdapterConfig.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\Camera\Adapters\OV2640\OV2640_AdapterConfig.h</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_AdapterInfo.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\Camera\Adapters\OV2640\OV2640_AdapterInfo.h</FilePath>
+            </File>
+            <File>
+              <FileName>OV2640_AdapterTypes.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Components\Camera\Adapters\OV2640\OV2640_AdapterTypes.h</FilePath>
             </File>
           </Files>
         </Group>

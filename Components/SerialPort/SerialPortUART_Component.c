@@ -1,5 +1,5 @@
 //==============================================================================
-#include "SerialPort_Components.h"
+#include "SerialPort_Component.h"
 //==============================================================================
 #define RX_CIRCLE_BUF_SIZE_MASK 0x1ff
 #define RX_OBJECT_BUF_SIZE 0x200

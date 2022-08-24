@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "WS2812.h"
 //==============================================================================
-uint16_t WS2812_PutColorToArray(uint8_t* buffer, uint16_t period, uint8_t color)
+uint16_t WS2812_PutColorToArray(WS2812_BufT* buffer, uint16_t period, uint8_t color)
 {
 	uint16_t offset = 0;
 	
@@ -11,11 +11,11 @@ uint16_t WS2812_PutColorToArray(uint8_t* buffer, uint16_t period, uint8_t color)
 	{
 		if (color & 0x80)
 		{
-			buffer[offset] = (uint8_t)((float)(period + 1) * 0.85 / 1.25);
+			buffer[offset] = (WS2812_BufT)((float)(period + 1) * 0.85 / 1.25);
 		}
 		else
 		{
-			buffer[offset] = (uint8_t)((float)(period + 1) * 0.4 / 1.25);
+			buffer[offset] = (WS2812_BufT)((float)(period + 1) * 0.4 / 1.25);
 		}
 		
 		color <<= 1;
@@ -25,15 +25,15 @@ uint16_t WS2812_PutColorToArray(uint8_t* buffer, uint16_t period, uint8_t color)
 	return offset;
 }
 //------------------------------------------------------------------------------
-uint16_t WS2812_PutPixelsToArray(uint8_t* buffer, uint16_t period, WS2812_PixelT* pixels, int pixels_count, WS2812_PixelAddMode mode)
+uint16_t WS2812_PutPixelsToArray(WS2812_BufT* buffer, uint16_t period, WS2812_PixelT* pixels, int pixels_count, WS2812_PixelAddMode mode)
 {
 	uint16_t size = 0;
 	
-	for (uint16_t i = 0; i < pixels_count; i += (uint8_t)mode)
+	for (uint16_t i = 0; i < pixels_count; i++)
 	{
-		size += WS2812_PutColorToArray(buffer + size, period, pixels[i].Green);
-		size += WS2812_PutColorToArray(buffer + size, period, pixels[i].Red);
-		size += WS2812_PutColorToArray(buffer + size, period, pixels[i].Blue);
+		size += WS2812_PutColorToArray(buffer + size, period, pixels[i & mode].Green);
+		size += WS2812_PutColorToArray(buffer + size, period, pixels[i & mode].Red);
+		size += WS2812_PutColorToArray(buffer + size, period, pixels[i & mode].Blue);
 	}
 	
 	return size;
@@ -92,11 +92,12 @@ WS2812_TransmitterStatus WS2812_GetTransmitterStatus(WS2812_T* driver)
 	return WS2812_TransmitterUndefined;
 }
 //------------------------------------------------------------------------------
-WS2812_Result WS2812_DrawingStart(WS2812_T* driver, WS2812_DrawingManagerT* drawing_manager)
+WS2812_Result WS2812_DrawingStart(WS2812_T* driver, WS2812_DrawManagerBaseT* manager, WS2812_DrawManagerInterfaceT* interface)
 {
-	if (driver && driver->Status.DriverInit && drawing_manager)
+	if (driver && driver->Status.DriverInit && manager && interface)
 	{
-		memcpy((uint8_t*)&driver->DrawingManager, (uint8_t*)drawing_manager, sizeof(WS2812_DrawingManagerT));
+		driver->DrawManager = manager;
+		driver->DrawManagerInterface = interface;
 		
 		driver->Status.DrawingIsEnable = true;
 	}
@@ -114,9 +115,9 @@ void WS2812_DrawingStop(WS2812_T* driver)
 //------------------------------------------------------------------------------
 void WS2812_Draw(WS2812_T* driver)
 {
-	if (driver->Status.DrawingIsEnable)
+	if (driver->Status.DrawingIsEnable && driver->DrawManagerInterface)
 	{
-		driver->DrawingManager.Handler(driver);
+		driver->DrawManagerInterface->Handler(driver);
 	}
 }
 //------------------------------------------------------------------------------
@@ -134,7 +135,7 @@ WS2812_Result WS2812_Init(WS2812_T* driver,
 													void* parent,
 													WS2812_AdapterT* adapter,
 													WS2812_InterfaceT* interface,
-													uint8_t* buffer,
+													WS2812_BufT* buffer,
 													uint16_t buffer_size)
 {
 	if (driver)

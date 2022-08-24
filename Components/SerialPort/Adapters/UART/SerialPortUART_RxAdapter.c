@@ -110,7 +110,7 @@ int SerialPortUART_RxAdapterInit(SerialPortT* serial_port, SerialPortUART_Adapte
 		
 		if (adapter->RxDMA)
 		{
-			adapter->RxDMA->CR &= DMA_SxCR_EN;
+			adapter->RxDMA->CR &= ~DMA_SxCR_EN;
 			
 			adapter->RxDMA->CR |= adapter->RxDMA_Channel << DMA_SxCR_CHSEL_Pos;
 			adapter->RxDMA->CR &= ~DMA_SxCR_DBM;

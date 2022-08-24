@@ -46,7 +46,7 @@ typedef struct
 	
 	void* Adapter;
 	
-	SerialPortAdapterInterfaceT AdapterInterface;
+	SerialPortAdapterInterfaceT* AdapterInterface;
 	SerialPortInterfaceT* Interface;
 
 	xRxT Rx;

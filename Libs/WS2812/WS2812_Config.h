@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 //==============================================================================
-#include "stm32f1xx_hal.h"
+#include "stm32f4xx_hal.h"
 #include "Common/xTypes.h"
 //==============================================================================
 typedef void WS2812_AdapterT; //default

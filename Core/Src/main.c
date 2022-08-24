@@ -19,8 +19,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "dma.h"
-#include "sdio.h"
 #include "spi.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -60,14 +60,26 @@ uint8_t time_5ms;
 uint8_t time_10ms;
 uint8_t time_100ms;
 uint16_t time_1000ms;
+uint16_t time_5000ms;
 uint32_t time_ms;
+//------------------------------------------------------------------------------
+struct
+{
+	uint32_t SelectNewTemplate : 1;
+	
+} Handle;
 //==============================================================================
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+WS2812_PixelT Color =
+{
+	.Green = 1,
+	.Red = 1,
+	.Blue = 1
+};
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -106,9 +118,20 @@ int main(void)
   MX_DMA_Init();
   MX_SPI1_Init();
   MX_USART1_UART_Init();
-  //MX_SDIO_MMC_Init();
+  MX_TIM4_Init();
+  MX_TIM1_Init();
+  MX_TIM2_Init();
+  MX_TIM8_Init();
+  MX_TIM3_Init();
+  MX_TIM5_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
 	ControlInit("main");
+	
+	RGBCups_DrawingStart(RGBCup1, (RGBCupDrawManagerBaseT*)&DrawManager1);
+	//RGBCups_DrawManagerEx1Init(RGBCup1, &DrawManager1);
+	
+	//HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_4);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -128,10 +151,40 @@ int main(void)
 			time_1000ms = 999;
 			
 			LED_1_GPIO_Port->ODR ^= LED_1_Pin;
-			LED_2_GPIO_Port->ODR ^= LED_2_Pin;
+			
+			//LED_2_GPIO_Port->ODR ^= LED_2_Pin;
+			RGBCups_SetColor(RGBCup1, Color);
 			
 			xTxTransmitString(&SerialPortUART.Tx, "qwerty\r");
-			//xTxTransmitString(&SerialPortUSB.Tx, "qwerty\r");
+			xTxTransmitString(&SerialPortUSB.Tx, "qwerty\r");
+		}
+		
+		if (!time_10ms)
+		{
+			time_10ms = 99;
+			
+			if (Handle.SelectNewTemplate && RGBCups[RGBCupNumber1].Status.DrawManager == RGBCupDrawManageStateCycleStart)
+			{
+				Handle.SelectNewTemplate = false;
+				
+				if (RGBCups[RGBCupNumber1].DrawManagerPattern == (RGBCupDrawManagerBaseT*)&DrawManager3)
+				{
+					RGBCups_DrawingStart(RGBCup1, (RGBCupDrawManagerBaseT*)&DrawManager1);
+				}
+				else
+				{
+					RGBCups_DrawingStart(RGBCup1, (RGBCupDrawManagerBaseT*)&DrawManager3);
+				}
+			}
+			
+			RGBCups_Draw(RGBCup1|RGBCup2);
+			RGBCups_UpdateLayout(RGBCup1|RGBCup2, 1000);
+		}
+		
+		if (!time_5000ms)
+		{
+			time_5000ms = 4999;
+			Handle.SelectNewTemplate = true;
 		}
     /* USER CODE END WHILE */
 

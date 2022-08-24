@@ -2,9 +2,7 @@
 #include <string.h>
 #include "RGBCups/Logic/RGBCups_Logics.h"
 #include "RGBCups/Controls/RGBCups.h"
-#include "RGBCups/Adapters/RGBCup_Adapter.h"
-//==============================================================================
-extern 
+#include "RGBCups/Adapters/RGBCup_Adapter.h" 
 //==============================================================================
 RGBCupsResult RGBCups_SetColor(RGBCupSelector cups, WS2812_PixelT pixel)
 {
@@ -34,6 +32,7 @@ RGBCupsResult RGBCups_UpdateLayout(RGBCupSelector cups, uint32_t time_out)
 	{
 		if (request & 0x03)
 		{
+			/*
 			while (WS2812_GetTransmitterStatus(&RGBCups[i].Driver) != WS2812_TransmitterStopped && time_out)
 			{
 				if (!time_out)
@@ -41,7 +40,11 @@ RGBCupsResult RGBCups_UpdateLayout(RGBCupSelector cups, uint32_t time_out)
 					return RGBCupsResultTimeOut;
 				}
 			}
-			WS2812_UpdateLayout(&RGBCups[i].Driver);
+			*/
+			if (WS2812_GetTransmitterStatus(&RGBCups[i].Driver) == WS2812_TransmitterStopped)
+			{
+				WS2812_UpdateLayout(&RGBCups[i].Driver);
+			}
 		}
 		
 		request >>= 2;
@@ -51,59 +54,38 @@ RGBCupsResult RGBCups_UpdateLayout(RGBCupSelector cups, uint32_t time_out)
 	return RGBCupsResultAccept;
 }
 //==============================================================================
-static void RGBCups_DrawingManagerHandler(WS2812_T* driver)
-{
-	RGBCupDrawingRuleT* rule = driver->DrawingManager.Rule;
-	
-	if (rule->StepNumber >= rule->Steps)
-	{
-		rule->StepNumber = rule->Steps;
-		rule->Diraction = -1;
-	}
-	else if (rule->StepNumber < 0)
-	{
-		rule->StepNumber = 0;
-		rule->Diraction = 1;
-	}
-	
-	WS2812_PixelT pixel =
-	{
-		.Green = (uint8_t)(rule->GreenIncrement * rule->StepNumber),
-		.Red = (uint8_t)(rule->RedIncrement * rule->StepNumber),
-		.Blue = (uint8_t)(rule->BlueIncrement * rule->StepNumber)
-	};
-	
-	rule->StepNumber += rule->Diraction;
-	
-	WS2812_FillPixels(driver, pixel, 0, ((RGBCupT*)driver->Parent)->PixelsCount);
-}
-//------------------------------------------------------------------------------
-RGBCupsResult RGBCups_DrawingStart(RGBCupSelector cups, RGBCupDrawingRuleT* drawing_rule)
+RGBCupsResult RGBCups_DrawingStart(RGBCupSelector cups, RGBCupDrawManagerBaseT* pattern)
 {
 	uint8_t request = cups;
 	uint8_t i = 0;
 	
-	WS2812_DrawingManagerT drawing_manager =
+	if (pattern)
 	{
-		.Handler = (WS2812_ActionHandler)RGBCups_DrawingManagerHandler,
-		.Rule = &drawing_rule,
-	};
-	
-	while (request && i < RGBCupsCount)
-	{
-		if (request & 0x01)
+		while (request && i < RGBCupsCount)
 		{
-			memcpy((uint8_t*)&RGBCups[i].DrawingRule, (uint8_t*)drawing_rule, sizeof(RGBCupDrawingRuleT));
+			if ((request & 0x01))
+			{
+				RGBCupsResult result = RGBCups_DrawManagerEx1Init(&RGBCups[i], (RGBCupDrawManagerEx1T*)pattern);
+				if (result == RGBCupsResultAccept) { goto start; }
+				
+				result = RGBCups_DrawManagerEx2Init(&RGBCups[i], (RGBCupDrawManagerEx2T*)pattern);
+				
+				start:;
+				if (result == RGBCupsResultAccept)
+				{
+					RGBCups[i].DrawManagerPattern = pattern;
+					WS2812_DrawingStart(&RGBCups[i].Driver, (WS2812_DrawManagerBaseT*)RGBCups[i].DrawManager, &RGBCups[i].DrawManagerInterface);
+				}
+			}
 			
-			drawing_manager.Rule = &RGBCups[i].DrawingRule;
-			WS2812_DrawingStart(&RGBCups[i].Driver, &drawing_manager);
+			request >>= 1;
+			i++;
 		}
 		
-		request >>= 1;
-		i++;
+		return RGBCupsResultAccept;
 	}
 	
-	return RGBCupsResultAccept;
+	return RGBCupsResultError;
 }
 //------------------------------------------------------------------------------
 RGBCupsResult RGBCups_DrawingStop(RGBCupSelector cups)

@@ -49,6 +49,8 @@ typedef enum
 #define WS2812_Result int8_t
 #endif
 //==============================================================================
+#define WS2812_BufT uint16_t
+//==============================================================================
 typedef enum
 {
 	WS2812_TransmitterStopped,
@@ -92,7 +94,7 @@ typedef enum
 typedef enum
 {
 	WS2812_PixelAddModeFill,
-	WS2812_PixelAddModePut,
+	WS2812_PixelAddModePut = 0xffffffff,
 	
 } WS2812_PixelAddMode;
 //------------------------------------------------------------------------------
@@ -152,12 +154,19 @@ typedef union
 //------------------------------------------------------------------------------
 typedef struct
 {
-	void* Rule;
 	WS2812_ActionHandler Handler;
 	
-	void* Next;
+} WS2812_DrawManagerInterfaceT;
+//------------------------------------------------------------------------------
+#define WS2812_DRAW_MANAGER_BASE\
+	char* Description;\
+	void* Parent
+
+typedef struct
+{
+	WS2812_DRAW_MANAGER_BASE;
 	
-} WS2812_DrawingManagerT;
+} WS2812_DrawManagerBaseT;
 //------------------------------------------------------------------------------
 typedef struct
 {
@@ -167,12 +176,13 @@ typedef struct
 	WS2812_StatusT Status;
 	WS2812_HandleT Handle;
 	
-	WS2812_DrawingManagerT DrawingManager;
+	WS2812_DrawManagerBaseT* DrawManager;
+	WS2812_DrawManagerInterfaceT* DrawManagerInterface;
 	
 	WS2812_AdapterT* Adapter;
 	WS2812_InterfaceT* Interface;
 	
-	uint8_t* Buffer;
+	WS2812_BufT* Buffer;
 	uint16_t BufferSize;
 	
 } WS2812_T;
@@ -193,7 +203,7 @@ uint16_t WS2812_SetPixels(WS2812_T* driver, WS2812_PixelT* pixels, uint16_t star
 
 WS2812_Result WS2812_UpdateLayout(WS2812_T* driver);
 
-WS2812_Result WS2812_DrawingStart(WS2812_T* driver, WS2812_DrawingManagerT* drawing_manager);
+WS2812_Result WS2812_DrawingStart(WS2812_T* driver, WS2812_DrawManagerBaseT* manager, WS2812_DrawManagerInterfaceT* interface);
 void WS2812_DrawingStop(WS2812_T* driver);
 
 WS2812_TransmitterStatus WS2812_GetTransmitterStatus(WS2812_T* driver);
@@ -202,7 +212,7 @@ WS2812_Result WS2812_Init(WS2812_T* driver,
 													void* parent,
 													WS2812_AdapterT* adapter,
 													WS2812_InterfaceT* interface,
-													uint8_t* buffer,
+													WS2812_BufT* buffer,
 													uint16_t buffer_size);
 //==============================================================================
 #ifdef __cplusplus

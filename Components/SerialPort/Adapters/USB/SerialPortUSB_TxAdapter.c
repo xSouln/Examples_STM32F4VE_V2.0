@@ -74,8 +74,8 @@ static void Handler(xTxT *tx)
 	SerialPortUSB_AdapterT* adapter = tx->Adapter;
 	
 	if (adapter->TxCircleBuffer.HandlerIndex != adapter->TxCircleBuffer.TotalIndex
-		&& !adapter->Status.IsTransmit)
-		//&& adapter->Handle->TxState == 0)
+		&& !adapter->Status.IsTransmit
+		&& adapter->Handle)
 	{
 		uint16_t buffer_size = adapter->TxCircleBuffer.SizeMask + 1;
 		uint16_t data_size = (adapter->TxCircleBuffer.TotalIndex - adapter->TxCircleBuffer.HandlerIndex)
