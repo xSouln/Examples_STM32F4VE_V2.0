@@ -27,14 +27,15 @@ typedef enum
 typedef enum
 {
 	CameraAdapterEventUpdateState = 1U,
-	CameraAdapterEventEndLine,
-	CameraAdapterEventReceiverBufferIsFull
+	
+	CameraAdapterEventSnapshotComplite,
 	
 } CameraAdapterEventSelector;
 //------------------------------------------------------------------------------
 typedef enum
 {
 	CameraAdapterRequestDelay = 1U,
+	CameraAdapterRequestGetSnapshot
 	
 } CameraAdapterRequestSelector;
 //------------------------------------------------------------------------------
@@ -75,6 +76,64 @@ typedef struct
 	CameraEventListenerT EventListener;
 	
 } CameraInterfaceT;
+//------------------------------------------------------------------------------
+typedef enum
+{
+	CameraResolution_160x120,
+	CameraResolution_320x240,
+	CameraResolution_640x480,
+	CameraResolution_800x600,
+	CameraResolution_1024x768,
+	CameraResolution_1280x960,
+	
+} CameraResolutions;
+//------------------------------------------------------------------------------
+typedef enum
+{
+	CameraOutputFormat_JPEG,
+	CameraOutputFormat_YUV422,
+	CameraOutputFormat_RGB565,
+	CameraOutputFormat_RAW,
+	
+} CameraOutputFormats;
+//------------------------------------------------------------------------------
+typedef enum
+{
+	CameraSpecialEffect_Normal,
+	
+} CameraSpecialEffects;
+//------------------------------------------------------------------------------
+typedef enum
+{
+	CameraLightMode_Auto,
+	CameraLightMode_Sunny,
+	CameraLightMode_Cloudy,
+	CameraLightMode_Office,
+	CameraLightMode_Home,
+	
+} CameraLightModes;
+//------------------------------------------------------------------------------
+typedef int8_t CameraSaturations;
+typedef int8_t CameraContrasts;
+typedef int8_t CameraBrightnesses;
+typedef uint8_t CameraQuantizations;
+//------------------------------------------------------------------------------
+typedef struct
+{
+	CameraOutputFormats OutputFormat;
+	CameraResolutions Resolution;
+	
+	CameraContrasts Contrast;
+	CameraSaturations Saturation;
+	CameraBrightnesses Brightnes;
+	
+	CameraLightModes LightMode;
+	CameraSpecialEffects SpecialEffect;
+	CameraQuantizations Quantization;
+	
+	uint8_t AGC_Gain;
+	
+} CameraOptionsT;
 //------------------------------------------------------------------------------
 typedef struct
 {

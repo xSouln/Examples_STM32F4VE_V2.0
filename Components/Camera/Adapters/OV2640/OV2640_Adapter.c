@@ -65,12 +65,12 @@ OV2640_Result OV2640_ActionSetValue(OV2640_DriverT* driver, OV2640_ValueSelector
 	{
 		case OV2640_ValueHardwareResetState :
 			if (value == OV2640_StateEnable) { adapter->HardwareResetPort->ODR &= ~adapter->HardwareResetPin; }
-			else { adapter->HardwareResetPort->ODR |= adapter->HardwareResetPin;  }
+			else { adapter->HardwareResetPort->ODR |= adapter->HardwareResetPin; }
 			break;
 			
 		case OV2640_ValuePowerDownState :
 			if (value == OV2640_StateEnable) { adapter->PowerDownPort->ODR |= adapter->PowerDownPin; }
-			else { adapter->PowerDownPort->ODR &= ~adapter->PowerDownPin;  }
+			else { adapter->PowerDownPort->ODR &= ~adapter->PowerDownPin; }
 			break;
 		
 		default : return OV2640_ResultNotSupported;
@@ -95,13 +95,21 @@ static const OV2640_DriverOptionsT OV2640_Options =
 //==============================================================================
 void CameraHandler(CameraT* camera)
 {
-	
+	//if ()
+	{
+	}
 }
 //------------------------------------------------------------------------------
 xResult CameraRequestListener(CameraT* camera, CameraAdapterRequestSelector selector, uint32_t args, uint32_t count)
 {
 	switch ((uint8_t)selector)
 	{
+		case  CameraAdapterRequestGetSnapshot :
+			//if ()
+			{
+			}
+			break;
+		
 		default : return xResultNotSupported;
 	}
 	
