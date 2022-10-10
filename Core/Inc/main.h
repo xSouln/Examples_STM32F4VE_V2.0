@@ -32,6 +32,8 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Common/xTypes.h"
+#include "Registers/registers.h"
+#include "xAdapters.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

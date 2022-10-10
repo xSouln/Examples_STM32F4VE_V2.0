@@ -28,7 +28,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Control.h"
-#include "Adapters/TransactionTransferAdapter.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

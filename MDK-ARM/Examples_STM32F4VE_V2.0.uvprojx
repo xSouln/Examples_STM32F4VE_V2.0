@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../USB_DEVICE/App;../USB_DEVICE/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Documents;../Libs;../Libs/WIZ;../Libs/WIZ/W5500;../Libs/xLibMicrocontrollers;../Components;../Communications;../Controls</IncludePath>
+              <IncludePath>../Core/Inc;../USB_DEVICE/App;../USB_DEVICE/Target;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Documents;../Libs;../Libs/WIZ;../Libs/WIZ/W5500;../Components;../Communications;../Controls;..\Adapters</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -841,122 +841,22 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Libs/Common</GroupName>
-          <Files>
-            <File>
-              <FileName>xCircleBuffer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xCircleBuffer.c</FilePath>
-            </File>
-            <File>
-              <FileName>xCircleBuffer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xCircleBuffer.h</FilePath>
-            </File>
-            <File>
-              <FileName>xDataBuffer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xDataBuffer.c</FilePath>
-            </File>
-            <File>
-              <FileName>xDataBuffer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xDataBuffer.h</FilePath>
-            </File>
-            <File>
-              <FileName>xMemory.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xMemory.c</FilePath>
-            </File>
-            <File>
-              <FileName>xMemory.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xMemory.h</FilePath>
-            </File>
-            <File>
-              <FileName>xPort.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xPort.h</FilePath>
-            </File>
-            <File>
-              <FileName>xRx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xRx.c</FilePath>
-            </File>
-            <File>
-              <FileName>xRx.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xRx.h</FilePath>
-            </File>
-            <File>
-              <FileName>xRxReceiver.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xRxReceiver.c</FilePath>
-            </File>
-            <File>
-              <FileName>xRxReceiver.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xRxReceiver.h</FilePath>
-            </File>
-            <File>
-              <FileName>xRxRequest.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xRxRequest.c</FilePath>
-            </File>
-            <File>
-              <FileName>xRxRequest.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xRxRequest.h</FilePath>
-            </File>
-            <File>
-              <FileName>xRxTransaction.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xRxTransaction.c</FilePath>
-            </File>
-            <File>
-              <FileName>xRxTransaction.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xRxTransaction.h</FilePath>
-            </File>
-            <File>
-              <FileName>xTx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xTx.c</FilePath>
-            </File>
-            <File>
-              <FileName>xTx.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xTx.h</FilePath>
-            </File>
-            <File>
-              <FileName>xTypes.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xTypes.h</FilePath>
-            </File>
-            <File>
-              <FileName>xTxTransfer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xTxTransfer.c</FilePath>
-            </File>
-            <File>
-              <FileName>xTxTransfer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Common\xTxTransfer.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Libs/Adapters</GroupName>
           <Files>
             <File>
               <FileName>TransactionTransferAdapter.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Adapters\TransactionTransferAdapter.c</FilePath>
+              <FilePath>..\Adapters\TransactionTransferAdapter.c</FilePath>
             </File>
             <File>
               <FileName>TransactionTransferAdapter.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Libs\xLibMicrocontrollers\Adapters\TransactionTransferAdapter.h</FilePath>
+              <FilePath>..\Adapters\TransactionTransferAdapter.h</FilePath>
+            </File>
+            <File>
+              <FileName>xAdapters.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Adapters\xAdapters.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1607,6 +1507,136 @@
               <FileName>OV2640_AdapterTypes.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Components\Camera\Adapters\OV2640\OV2640_AdapterTypes.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Libs/Common</GroupName>
+          <Files>
+            <File>
+              <FileName>xCircleBuffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libs\Common\xCircleBuffer.c</FilePath>
+            </File>
+            <File>
+              <FileName>xCircleBuffer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Common\xCircleBuffer.h</FilePath>
+            </File>
+            <File>
+              <FileName>xDataBuffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libs\Common\xDataBuffer.c</FilePath>
+            </File>
+            <File>
+              <FileName>xDataBuffer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Common\xDataBuffer.h</FilePath>
+            </File>
+            <File>
+              <FileName>xMemory.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libs\Common\xMemory.c</FilePath>
+            </File>
+            <File>
+              <FileName>xMemory.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Common\xMemory.h</FilePath>
+            </File>
+            <File>
+              <FileName>xRx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libs\Common\xRx.c</FilePath>
+            </File>
+            <File>
+              <FileName>xRx.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Common\xRx.h</FilePath>
+            </File>
+            <File>
+              <FileName>xRxReceiver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libs\Common\xRxReceiver.c</FilePath>
+            </File>
+            <File>
+              <FileName>xRxReceiver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Common\xRxReceiver.h</FilePath>
+            </File>
+            <File>
+              <FileName>xRxRequest.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libs\Common\xRxRequest.c</FilePath>
+            </File>
+            <File>
+              <FileName>xRxRequest.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Common\xRxRequest.h</FilePath>
+            </File>
+            <File>
+              <FileName>xRxTransaction.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libs\Common\xRxTransaction.c</FilePath>
+            </File>
+            <File>
+              <FileName>xRxTransaction.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Common\xRxTransaction.h</FilePath>
+            </File>
+            <File>
+              <FileName>xTx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libs\Common\xTx.c</FilePath>
+            </File>
+            <File>
+              <FileName>xTx.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Common\xTx.h</FilePath>
+            </File>
+            <File>
+              <FileName>xTxTransfer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libs\Common\xTxTransfer.c</FilePath>
+            </File>
+            <File>
+              <FileName>xTxTransfer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Common\xTxTransfer.h</FilePath>
+            </File>
+            <File>
+              <FileName>xTypes.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Common\xTypes.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Libs/Registers</GroupName>
+          <Files>
+            <File>
+              <FileName>registers_stm32f4xx_i2c.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Registers\registers_stm32f4xx\registers_stm32f4xx_i2c.h</FilePath>
+            </File>
+            <File>
+              <FileName>registers_stm32f4xx_spi.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Registers\registers_stm32f4xx\registers_stm32f4xx_spi.h</FilePath>
+            </File>
+            <File>
+              <FileName>registers_stm32f4xx_timer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Registers\registers_stm32f4xx\registers_stm32f4xx_timer.h</FilePath>
+            </File>
+            <File>
+              <FileName>registers_stm32f4xx_uart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Registers\registers_stm32f4xx\registers_stm32f4xx_uart.h</FilePath>
+            </File>
+            <File>
+              <FileName>registers.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Libs\Registers\registers.h</FilePath>
             </File>
           </Files>
         </Group>
