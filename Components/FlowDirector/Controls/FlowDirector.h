@@ -1,22 +1,23 @@
 //==============================================================================
-#ifndef FLOW_DIRECTOR_CONTROL_H
-#define FLOW_DIRECTOR_CONTROL_H
+#ifndef _FLOW_DIRECTOR_H
+#define _FLOW_DIRECTOR_H
 //------------------------------------------------------------------------------
 #ifdef __cplusplus
- extern "C" {
-#endif 
+extern "C" {
+#endif
 //==============================================================================
-#define FLOW_DIRECTOR_DEVICE_KEY 0x43672362
+#include "FlowDirector_Types.h"
+#include "FlowDirector/Controls/FlowDirector_Motor.h"
+#include "FlowDirector/Controls/FlowDirector_Sensors.h"
 //==============================================================================
-#include "Adapters/FlowDirector_Config.h"
-#include "Adapters/FlowDirector_Adapter.h"
-#include "Communications/FlowDirector_Requests.h"
-#include "Communications/FlowDirector_Transactions.h"
-//==============================================================================
+xResult FlowDirectorInit(FlowDirectorT* device, void* parent, FlowDirectorTerminalT* terminal);
+void FlowDirectorHandler(FlowDirectorT* device);
+void FlowDirectorTimeSynchronization(FlowDirectorT* device);
 
+xResult FlowDirectorStop(FlowDirectorT* device);
 //==============================================================================
 #ifdef __cplusplus
 }
 #endif
 //------------------------------------------------------------------------------
-#endif /* FLOW_DIRECTOR_CONTROL_H */
+#endif

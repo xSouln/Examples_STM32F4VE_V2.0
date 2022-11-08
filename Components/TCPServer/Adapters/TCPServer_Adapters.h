@@ -7,7 +7,7 @@
 #endif 
 //==============================================================================
 #include "TCPServer_AdaptersTypes.h"
-#include "TCPServer/Adapters/WIZspi/TCPServerWIZspi_Adapter.h"
+#include "TCPServer/Adapters/WIZspi/TCPServer_WIZspiAdapter.h"
 //==============================================================================
 #ifdef __cplusplus
 }

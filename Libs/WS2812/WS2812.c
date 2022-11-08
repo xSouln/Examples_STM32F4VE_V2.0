@@ -25,7 +25,7 @@ uint16_t WS2812_PutColorToArray(WS2812_BufT* buffer, uint16_t period, uint8_t co
 	return offset;
 }
 //------------------------------------------------------------------------------
-uint16_t WS2812_PutPixelsToArray(WS2812_BufT* buffer, uint16_t period, WS2812_PixelT* pixels, int pixels_count, WS2812_PixelAddMode mode)
+uint16_t WS2812_PutPixelsToArray(WS2812_BufT* buffer, uint16_t period, WS2812_ColorT* pixels, int pixels_count, WS2812_PixelAddMode mode)
 {
 	uint16_t size = 0;
 	
@@ -39,7 +39,7 @@ uint16_t WS2812_PutPixelsToArray(WS2812_BufT* buffer, uint16_t period, WS2812_Pi
 	return size;
 }
 //------------------------------------------------------------------------------
-uint16_t WS2812_FillPixels(WS2812_T* driver, WS2812_PixelT pixel, uint16_t start_position, uint16_t pixels_count)
+uint16_t WS2812_FillPixels(WS2812_T* driver, WS2812_ColorT pixel, uint16_t start_position, uint16_t pixels_count)
 {
 	if (driver && driver->Status.DriverInit)
 	{
@@ -57,7 +57,7 @@ uint16_t WS2812_FillPixels(WS2812_T* driver, WS2812_PixelT pixel, uint16_t start
 	return 0;
 }
 //------------------------------------------------------------------------------
-uint16_t WS2812_SetPixels(WS2812_T* driver, WS2812_PixelT* pixels, uint16_t start_position, uint16_t pixels_count)
+uint16_t WS2812_SetPixels(WS2812_T* driver, WS2812_ColorT* color, uint16_t start_position, uint16_t pixels_count)
 {
 	if (driver && driver->Status.DriverInit)
 	{
@@ -67,7 +67,7 @@ uint16_t WS2812_SetPixels(WS2812_T* driver, WS2812_PixelT* pixels, uint16_t star
 		{
 			return WS2812_PutPixelsToArray(driver->Buffer + buffer_position,
 																			driver->Interface->GetValue(driver, WS2812_ValuePeriod),
-																			pixels,
+																			color,
 																			pixels_count,
 																			WS2812_PixelAddModePut);
 		}
@@ -76,59 +76,69 @@ uint16_t WS2812_SetPixels(WS2812_T* driver, WS2812_PixelT* pixels, uint16_t star
 	return 0;
 }
 //------------------------------------------------------------------------------
-uint16_t WS2812_SetPixel(WS2812_T* driver, WS2812_PixelT pixel, uint16_t position)
+uint16_t WS2812_SetPixel(WS2812_T* driver, WS2812_ColorT color, uint16_t position)
 {
-	return WS2812_SetPixels(driver, &pixel, position, 1);
+	return WS2812_SetPixels(driver, &color, position, 1);
 }
 //------------------------------------------------------------------------------
 WS2812_TransmitterStatus WS2812_GetTransmitterStatus(WS2812_T* driver)
 {
-	if (driver && driver->Status.DriverInit)
-	{
-		driver->Status.Transmitter = driver->Interface->GetValue(driver, WS2812_ValueTransmitterStatus);
-		return driver->Status.Transmitter;
-	}
-	
-	return WS2812_TransmitterUndefined;
-}
-//------------------------------------------------------------------------------
-WS2812_Result WS2812_DrawingStart(WS2812_T* driver, WS2812_DrawManagerBaseT* manager, WS2812_DrawManagerInterfaceT* interface)
-{
-	if (driver && driver->Status.DriverInit && manager && interface)
-	{
-		driver->DrawManager = manager;
-		driver->DrawManagerInterface = interface;
-		
-		driver->Status.DrawingIsEnable = true;
-	}
-	
-	return WS2812_ResultError;
-}
-//------------------------------------------------------------------------------
-void WS2812_DrawingStop(WS2812_T* driver)
-{
-	if (driver && driver->Status.DriverInit)
-	{
-		driver->Status.DrawingIsEnable = false;
-	}
-}
-//------------------------------------------------------------------------------
-void WS2812_Draw(WS2812_T* driver)
-{
-	if (driver->Status.DrawingIsEnable && driver->DrawManagerInterface)
-	{
-		driver->DrawManagerInterface->Handler(driver);
-	}
+	driver->Status.Transmitter = driver->Interface->GetValue(driver, WS2812_ValueTransmitterStatus);
+	return driver->Status.Transmitter;
 }
 //------------------------------------------------------------------------------
 WS2812_Result WS2812_UpdateLayout(WS2812_T* driver)
 {
-	if (driver && driver->Status.DriverInit)
+	xResult result = xResultBusy;
+
+	driver->Status.Transmitter = driver->Interface->GetValue(driver, WS2812_ValueTransmitterStatus);
+
+	if (driver->Status.Transmitter == WS2812_TransmitterStopped)
 	{
-		driver->Interface->RequestListener(driver, WS2812_RequestTransmitterEnable, 0, 0);
+		result = driver->Interface->RequestListener(driver, WS2812_RequestTransmitterEnable, 0, 0);
 	}
 	
-	return WS2812_ResultError;
+	return result;
+}
+//------------------------------------------------------------------------------
+void WS2812_TimeSynchronization(WS2812_T* driver)
+{
+	if (driver->DrawManager.Status.DrawingIsEnable && driver->DrawManager.UpdateTime)
+	{
+		driver->DrawManager.UpdateTime--;
+	}
+}
+//==============================================================================
+void WS2812_DrawManagerHandler(WS2812_T* driver)
+{
+	if (driver->DrawManager.Status.DrawingIsEnable)
+	{
+		//driver->DrawManager.UpdateTime = driver->DrawManager.Options.UpdateTime;
+		
+		driver->DrawManager.Handler(&driver->DrawManager);
+		driver->DrawManager.Status.IsUpdate = true;
+
+		WS2812_UpdateLayout(driver);
+	}
+}
+//------------------------------------------------------------------------------
+xResult WS2812_DrawingStart(WS2812_T* driver, void* template_request)
+{
+	xResult result = driver->DrawManager.RequestListener(&driver->DrawManager, WS2812_DrawManagerRequestDrawingStart, (uint32_t)template_request, 0);
+
+	driver->DrawManager.Status.DrawingIsEnable = result == xResultAccept;
+	return result;
+}
+//------------------------------------------------------------------------------
+void WS2812_DrawingStop(WS2812_T* driver)
+{
+	driver->DrawManager.Status.DrawingIsEnable = false;
+	driver->DrawManager.RequestListener(&driver->DrawManager, WS2812_DrawManagerRequestDrawingStop, 0, 0);
+}
+//------------------------------------------------------------------------------
+xResult WS2812_DrawManagerSetTemplate(WS2812_T* driver, void* value)
+{
+	return driver->DrawManager.RequestListener(&driver->DrawManager, WS2812_DrawManagerRequestSetTemplate, (uint32_t)value, 0);
 }
 //==============================================================================
 WS2812_Result WS2812_Init(WS2812_T* driver,
@@ -150,6 +160,8 @@ WS2812_Result WS2812_Init(WS2812_T* driver,
 		driver->BufferSize = buffer_size;
 		
 		driver->Status.DriverInit = true;
+
+		WS2812_DrawManagerBaseInit(&driver->DrawManager, driver);
 	}
 	
 	return WS2812_ResultError;

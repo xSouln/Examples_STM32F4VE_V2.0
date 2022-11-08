@@ -354,7 +354,7 @@ typedef struct
   
   volatile REG_TIM_CCMR1_T CaptureCompareMode1; //capture/compare mode register 1
   volatile REG_TIM_CCMR2_T CaptureCompareMode2; //capture/compare mode register 2
-  volatile REG_TIM_CCER_T CaptureCompare; //capture/compare enable register
+  volatile REG_TIM_CCER_T CaptureCompareOutput; //capture/compare enable register
   
   volatile uint32_t Counter; //CNT counter register
   volatile uint32_t Prescaler; //PSC prescaler

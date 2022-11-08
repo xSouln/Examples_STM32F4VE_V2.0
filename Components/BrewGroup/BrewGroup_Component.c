@@ -1,89 +1,124 @@
 //==============================================================================
-#include "RGBCups_Components.h"
+#include "BrewGroup_Component.h"
+#include "BrewGroup/Adapters/Sensors/BrewGroup_SensorsAdapter.h"
+#include "BrewGroup/Adapters/DCMotor/BrewGroup_DCMotorAdapter.h"
+#include "BrewGroup/Adapters/Thermostat/BrewGroup_ThermostatAdapter.h"
+#include "BrewGroup/Adapters/WaterPump/BrewGroup_WaterPumpAdapter.h"
+#include "BrewGroup/Adapters/FlowMeter/BrewGroup_FlowMeterAdapter.h"
 //==============================================================================
-WS2812_BufT data_buffer_cups_12[(RGB_CUPS_SYNC_START_DATA_COUNT
-														+ RGB_CUPS_DATA_BUFFER_SIZE_CUP1
-														+ RGB_CUPS_DATA_BUFFER_SIZE_CUP2
-														+ RGB_CUPS_SYNC_END_DATA_COUNT)];
+BrewGroupT BrewGroup;
+static uint32_t led_update_time;
+//==============================================================================
+inline void BrewGroupComponentHandler()
+{
+	BrewGroupHandler(&BrewGroup);
+	
+	if (!led_update_time)
+	{
+		led_update_time = 1000;
+		
+		LED_1_GPIO_Port->ODR ^= LED_1_Pin;
+	}
+}
 //------------------------------------------------------------------------------
-WS2812_BufT data_buffer_cups_34[(RGB_CUPS_SYNC_START_DATA_COUNT
-														+ RGB_CUPS_DATA_BUFFER_SIZE_CUP3
-														+ RGB_CUPS_DATA_BUFFER_SIZE_CUP4
-														+ RGB_CUPS_SYNC_END_DATA_COUNT)];
+inline void BrewGroupComponentTimeSynchronization()
+{
+	BrewGroupTimeSynchronization(&BrewGroup);
+	
+	if (led_update_time)
+	{
+		led_update_time--;
+	}
+}
 //==============================================================================
-static RGBCupAdapterT AdapterCup12 =
+static void BrewGroupEventListener(BrewGroupT* BrewGroup, BrewGroupEventSelector selector, uint32_t args, uint32_t count)
 {
-	.DMA = DMA2_Stream5,
-	
-	.Timer = TIM1,
-	.PWM_Channel = 2,
-	
-	.DrawMemory = data_buffer_cups_12,
-	.DrawMemorySize = sizeof(data_buffer_cups_12) / sizeof(data_buffer_cups_12[0]),
-};
-//------------------------------------------------------------------------------
-static RGBCupAdapterT AdapterCup34 =
-{
-	.DMA = DMA2_Stream5,
-	
-	.Timer = TIM1,
-	.PWM_Channel = 3,
-	
-	.DrawMemory = data_buffer_cups_34,
-	.DrawMemorySize = sizeof(data_buffer_cups_34) / sizeof(data_buffer_cups_12[0])
-};
-//==============================================================================
-static void EventListener(void* cup, RGBCupEventSelector event, uint32_t args, uint32_t count)
-{
-	switch ((uint8_t)event)
+	switch ((uint8_t)selector)
 	{
 		
 		default : return;
 	}
 }
-//==============================================================================
-const static RGBCupInterfaceT Interface =
+//------------------------------------------------------------------------------
+static xResult BrewGroupRequestListener(BrewGroupT* BrewGroup, BrewGroupRequestSelector selector, uint32_t args, uint32_t count)
 {
-	.EventListener = (RGBCupsEventListener)EventListener
+	switch ((uint8_t)selector)
+	{
+		case BrewGroupRequestDelay:
+			HAL_Delay(args);
+			break;
+		
+		default : return xResultRequestIsNotFound;
+	}
+	
+	return xResultAccept;
+}
+//------------------------------------------------------------------------------
+BrewGroupTerminalT BrewGroupTerminal =
+{
+	.EventListener = (BrewGroupEventListenerT)BrewGroupEventListener,
+	.RequestListener = (BrewGroupRequestListenerT)BrewGroupRequestListener,
+};
+//------------------------------------------------------------------------------
+BrewGroupDCMotorAdapterT BrewGroupDCMotorAdapter =
+{
+	.PWM_ForwardTimer = (REG_TIM_T*)BREW_GROUP_MOTOR_TIMER_PWM1,
+	.PWM_BackwardTimer = (REG_TIM_T*)BREW_GROUP_MOTOR_TIMER_PWM2,
+	
+	.PWM_ForwardChannel = BREW_GROUP_MOTOR_TIMER_PWM1_CHANNEL,
+	.PWM_BackwardChannel = BREW_GROUP_MOTOR_TIMER_PWM2_CHANNEL,
+};
+//------------------------------------------------------------------------------
+BrewGroupTermostatAdapterT BrewGroupTermostatAdapter =
+{
+	.Adc = &hadc2,
+	.AdcUpdateTime = 10,
+	
+	.HeaterPort = BREW_GROUP_WATER_HEATER_GPIO_Port,
+	.HeaterPin = BREW_GROUP_WATER_HEATER_Pin,
+	.HeaterOnStateLogicLevel = 1,
+};
+//------------------------------------------------------------------------------
+BrewGroupWaterPumpAdapterT BrewGroupWaterPumpAdapter =
+{
+	.ControlPort = BREW_GROUP_WATER_PUMP_GPIO_Port,
+	.ControlPin = BREW_GROUP_WATER_PUMP_Pin,
+	.ControlOnStateLogicLevel = 1
+};
+//------------------------------------------------------------------------------
+BrewGroupFlowMeterAdapterT BrewGroupFlowMeterAdapter =
+{
+	.Timer = &BREW_GROUP_FLOW_METER_HTIMER,
+	.UpdateTime = 10
+};
+//------------------------------------------------------------------------------
+BrewGroupSensorsAdapterT BrewGroupSensorsAdapter =
+{
+	.SensorOvercurrentPort = BREW_GROUP_MOTOR_OVERCURRENT_SENSOR_GPIO_Port,
+	.SensorOvercurrentPin = BREW_GROUP_MOTOR_OVERCURRENT_SENSOR_Pin,
 };
 //==============================================================================
-int RGBCups_ComponentInit(void* parent)
+xResult BrewGroupComponentInit(void* parent)
 {
-	RGBCups_Init(parent, (RGBCupInterfaceT*)&Interface);
+	BrewGroupInit(&BrewGroup, parent, &BrewGroupTerminal);
 	
-	uint16_t buffer_offset = RGB_CUPS_SYNC_START_DATA_COUNT;
-	RGBCups[RGBCupNumber1].DataBuffer = data_buffer_cups_12 + buffer_offset;
-	RGBCups[RGBCupNumber1].DataBufferSize = RGB_CUPS_DATA_BUFFER_SIZE_CUP1;
-	buffer_offset += RGB_CUPS_DATA_BUFFER_SIZE_CUP1;
+	BrewGroupTermostatAdapterInit(&BrewGroup.Termostat, &BrewGroupTermostatAdapter);
+	TermostatInit(&BrewGroup.Termostat, &BrewGroup);
 	
-	RGBCups[RGBCupNumber2].DataBuffer = data_buffer_cups_12 + buffer_offset;
-	RGBCups[RGBCupNumber2].DataBufferSize = RGB_CUPS_DATA_BUFFER_SIZE_CUP2;
+	BrewGroupWaterPumpAdapterInit(&BrewGroup.WaterPump, &BrewGroupWaterPumpAdapter);
+	WaterPumpInit(&BrewGroup.WaterPump, &BrewGroup);
 	
-	RGBCup_AdapterInit(&RGBCups[RGBCupNumber1], &AdapterCup12);
-	RGBCup_AdapterInit(&RGBCups[RGBCupNumber2], &AdapterCup12);
-	//----------------------------------------------------------------------------
-	buffer_offset = RGB_CUPS_SYNC_START_DATA_COUNT;
-	RGBCups[RGBCupNumber3].DataBuffer = data_buffer_cups_34 + buffer_offset;
-	RGBCups[RGBCupNumber3].DataBufferSize = RGB_CUPS_DATA_BUFFER_SIZE_CUP3;
-	buffer_offset += RGB_CUPS_DATA_BUFFER_SIZE_CUP3;
+	BrewGroupFlowMeterAdapterInit(&BrewGroup.FlowMeter, &BrewGroupFlowMeterAdapter);
+	FlowMeterInit(&BrewGroup.FlowMeter, &BrewGroup);
 	
-	RGBCups[RGBCupNumber4].DataBuffer = data_buffer_cups_34 + buffer_offset;
-	RGBCups[RGBCupNumber4].DataBufferSize = RGB_CUPS_DATA_BUFFER_SIZE_CUP4;
+	BrewGroupSensorsAdapterInit(&BrewGroup.Sensors, &BrewGroupSensorsAdapter);
+	BrewGroupSensorsInit(&BrewGroup);
 	
-	RGBCup_AdapterInit(&RGBCups[RGBCupNumber3], &AdapterCup34);
-	RGBCup_AdapterInit(&RGBCups[RGBCupNumber4], &AdapterCup34);
-	//----------------------------------------------------------------------------
-	WS2812_PixelT Pixel =
-	{
-		.Green = 0x01,
-		.Red = 0x01,
-		.Blue = 0x01
-	};
+	BrewGroupDCMotorAdapterInit(&BrewGroup.Motor, &BrewGroupDCMotorAdapter);
+	BrewGroupMotorInit(&BrewGroup);
 	
-	WS2812_FillPixels(&RGBCups[RGBCupNumber1].Driver, Pixel, 0, 8);
-	WS2812_FillPixels(&RGBCups[RGBCupNumber2].Driver, Pixel, 0, 8);
-	WS2812_FillPixels(&RGBCups[RGBCupNumber3].Driver, Pixel, 0, 8);
-	WS2812_FillPixels(&RGBCups[RGBCupNumber4].Driver, Pixel, 0, 8);
+	FlowMeterEnable(&BrewGroup.FlowMeter);
+	TermostatStartMeasurement(&BrewGroup.Termostat);
 	
   return 0;
 }

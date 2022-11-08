@@ -2,13 +2,13 @@
 #include "Common/xMemory.h"
 #include "SerialPort.h"
 //==============================================================================
-void SerialPort_Handler(SerialPortT* serial_port)
+void SerialPortHandler(SerialPortT* serial_port)
 {
 	xRxHandler(&serial_port->Rx);
   xTxHandler(&serial_port->Tx);
 }
 //------------------------------------------------------------------------------
-SerialPortResult SerialPort_Init(SerialPortT* serial_port, void* parent, SerialPortInterfaceT* interface)
+xResult SerialPortInit(SerialPortT* serial_port, void* parent, SerialPortInterfaceT* interface)
 {
 	if (serial_port && interface)
 	{
@@ -16,7 +16,12 @@ SerialPortResult SerialPort_Init(SerialPortT* serial_port, void* parent, SerialP
 		serial_port->Parent = parent;
 		
 		serial_port->Interface = interface;
+		
+		serial_port->Status.InitResult = xResultAccept;
+		
+		return xResultAccept;
 	}
-	return SerialPortResultError;
+	
+	return xResultError;
 }
 //==============================================================================

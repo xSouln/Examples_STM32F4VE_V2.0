@@ -6,8 +6,7 @@
  extern "C" {
 #endif 
 //==============================================================================
-#include <stdint.h>
-#include <stdbool.h>
+#include "Common/xTypes.h"
 #include "OV2640_Registers.h"
 #include "OV2640_InitializationTables.h"
 //==============================================================================
@@ -16,6 +15,7 @@
 #define OV2640_I2C_ACTION_READ		(OV2640_I2C_ADDRESS | 0x01)
 #define OV2640_ID									0x26
 //==============================================================================
+/*
 typedef enum
 {
 	OV2640_ResultAccept = 0U,
@@ -29,6 +29,7 @@ typedef enum
 	OV2640_ResultTimeOut
 	
 } OV2640_Result;
+*/
 //==============================================================================
 typedef enum
 {
@@ -161,10 +162,10 @@ typedef enum
 //------------------------------------------------------------------------------
 typedef void (*OV2640_HandlerT)(void* camera);
 
-typedef OV2640_Result (*OV2640_RequestListenerT)(void* camera, OV2640_RequestSelector selector, uint32_t args, uint32_t count);
+typedef xResult (*OV2640_RequestListenerT)(void* camera, OV2640_RequestSelector selector, uint32_t args, uint32_t count);
 
 typedef int (*OV2640_ActionGetValueT)(void* camera, OV2640_ValueSelector selector);
-typedef OV2640_Result (*OV2640_ActionSetValueT)(void* camera, OV2640_ValueSelector selector, uint32_t value);
+typedef xResult (*OV2640_ActionSetValueT)(void* camera, OV2640_ValueSelector selector, uint32_t value);
 //------------------------------------------------------------------------------
 typedef struct
 {
@@ -206,7 +207,7 @@ typedef struct
 	OV2640_SpecialEffects SpecialEffect;
 	OV2640_Quantizations Quantization;
 	
-	uint8_t AGC_Gain;
+	uint8_t Gain;
 	
 } OV2640_DriverOptionsT;
 //------------------------------------------------------------------------------
@@ -219,7 +220,7 @@ typedef union
 		uint32_t IsCapture : 1;
 		uint32_t Busy : 1;
 		
-		uint32_t InitError : 4;
+		uint32_t InitResult : 4;
 	};
 	uint32_t Value;
 	
@@ -248,36 +249,36 @@ typedef struct
 	
 } OV2640_DriverT;
 //==============================================================================
-OV2640_Result OV2640_DriverI2C_Write(OV2640_DriverT* driver, uint8_t reg, uint8_t data);
-OV2640_Result OV2640_DriverI2C_Read(OV2640_DriverT* driver, uint8_t reg, uint8_t* data);
-OV2640_Result OV2640_DriverReset(OV2640_DriverT* driver);
+xResult OV2640_DriverI2C_Write(OV2640_DriverT* driver, uint8_t reg, uint8_t data);
+xResult OV2640_DriverI2C_Read(OV2640_DriverT* driver, uint8_t reg, uint8_t* data);
+xResult OV2640_DriverReset(OV2640_DriverT* driver);
 
-OV2640_Result OV2640_SetPowerDownState(OV2640_DriverT* driver, OV2640_DriverState state);
-OV2640_Result OV2640_SetHardwareResetState(OV2640_DriverT* driver, OV2640_DriverState state);
-OV2640_Result OV2640_Delay(OV2640_DriverT* driver, uint32_t ms);
+xResult OV2640_SetPowerDownState(OV2640_DriverT* driver, OV2640_DriverState state);
+xResult OV2640_SetHardwareResetState(OV2640_DriverT* driver, OV2640_DriverState state);
+xResult OV2640_Delay(OV2640_DriverT* driver, uint32_t ms);
 
-OV2640_Result OV2640_DriverSetConfiguration(OV2640_DriverT* driver, uint8_t* data, uint16_t data_size);
+xResult OV2640_DriverSetConfiguration(OV2640_DriverT* driver, uint8_t* data, uint16_t data_size);
 
-OV2640_Result OV2640_DriverSetOutputFormat(OV2640_DriverT* driver, OV2640_OutputFormats output_format);
-OV2640_Result OV2640_DriverSetResolution(OV2640_DriverT* driver, OV2640_Resolutions resolution);
+xResult OV2640_DriverSetOutputFormat(OV2640_DriverT* driver, OV2640_OutputFormats output_format);
+xResult OV2640_DriverSetResolution(OV2640_DriverT* driver, OV2640_Resolutions resolution);
 
-OV2640_Result OV2640_DriverSetSaturation(OV2640_DriverT* driver, OV2640_Saturations saturation);
-OV2640_Result OV2640_DriverSetContrast(OV2640_DriverT* driver, OV2640_Contrasts contrast);
-OV2640_Result OV2640_DriverSetBrightness(OV2640_DriverT* driver, OV2640_Brightnesses brightness);
+xResult OV2640_DriverSetSaturation(OV2640_DriverT* driver, OV2640_Saturations saturation);
+xResult OV2640_DriverSetContrast(OV2640_DriverT* driver, OV2640_Contrasts contrast);
+xResult OV2640_DriverSetBrightness(OV2640_DriverT* driver, OV2640_Brightnesses brightness);
 
-OV2640_Result OV2640_DriverSetLightMode(OV2640_DriverT* driver, OV2640_LightModes light_mode);
-OV2640_Result OV2640_DriverSetSpecialEffect(OV2640_DriverT* driver, OV2640_SpecialEffects special_effect);
-OV2640_Result OV2640_DriverSetQuantization(OV2640_DriverT* driver, OV2640_Quantizations quantization);
+xResult OV2640_DriverSetLightMode(OV2640_DriverT* driver, OV2640_LightModes light_mode);
+xResult OV2640_DriverSetSpecialEffect(OV2640_DriverT* driver, OV2640_SpecialEffects special_effect);
+xResult OV2640_DriverSetQuantization(OV2640_DriverT* driver, OV2640_Quantizations quantization);
 
-OV2640_Result OV2640_DriverSetAGC_Gain(OV2640_DriverT* driver, uint8_t gain);
+xResult OV2640_DriverSetGain(OV2640_DriverT* driver, uint8_t gain);
 
-OV2640_Result OV2640_DriverSetOptions(OV2640_DriverT* driver, OV2640_DriverOptionsT* options);
+xResult OV2640_DriverSetOptions(OV2640_DriverT* driver, OV2640_DriverOptionsT* options);
 
-OV2640_Result OV2640_DriverInit(OV2640_DriverT* driver,
-																void* parent,
-																void* adapter,
-																OV2640_InterfaceT* interface,
-																OV2640_DriverOptionsT* options);
+xResult OV2640_DriverInit(OV2640_DriverT* driver,
+													void* parent,
+													void* adapter,
+													OV2640_InterfaceT* interface,
+													OV2640_DriverOptionsT* options);
 //==============================================================================
 #ifdef __cplusplus
 }

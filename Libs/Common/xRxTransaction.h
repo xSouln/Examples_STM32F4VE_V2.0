@@ -7,6 +7,7 @@
 #include "xRxRequest.h"
 #include "xRx.h"
 #include "xDataBuffer.h"
+#include "Adapters/xRxTransactionTransferAdapter.h"
 //==============================================================================
 typedef union
 {
@@ -42,20 +43,30 @@ typedef struct
 	PacketHeaderT Header; // format: [#][Description][:][DeviceKey]
 	PacketInfoT Info; // format: [RequestId][ActionKey][ContentSize]
 	//uint8_t Content[Info.ContentSize]
-	//uint8_t EndPacketSymbol default('\r')
+	//uint8_t end packet identificator - default('\r')
 	
 } PacketT; //array: [#][Description][:][DeviceKey][RequestId][ActionKey][ContentSize][uint8_t Content[ContentSize]][\r]
 //==============================================================================
 #define PACKET_HEADER_IDENTIFICATOR_MASK 0xFF0000FFU
+#define PACKET_HEADER_IDENTIFICATOR_START_KEY '#'
+#define PACKET_HEADER_IDENTIFICATOR_END_KEY ':'
 #define PACKET_HEADER_IDENTIFICATOR 0x2300003AU // format: "#{Description}:"
 //------------------------------------------------------------------------------
 #define PACKET_HEADER_DESCRIPTION_MASK 0x00FFFF00U // format: "#{Description}:"
 #define PACKET_HEADER_DESCRIPTION_REQUEST 0x5251U
 #define PACKET_HEADER_DESCRIPTION_RESPONSE 0x5253U
 #define PACKET_HEADER_DESCRIPTION_EVENT 0x4554U
+//------------------------------------------------------------------------------
+#define PACKET_END_IDENTIFICATOR "\r" // default
+//------------------------------------------------------------------------------
+#define TRANSACTION_REQUEST_IDENTIFICATOR (PACKET_HEADER_IDENTIFICATOR | PACKET_HEADER_DESCRIPTION_REQUEST << 8)
+#define TRANSACTION_RESPONSE_IDENTIFICATOR (PACKET_HEADER_IDENTIFICATOR | PACKET_HEADER_DESCRIPTION_RESPONSE << 8)
+#define TRANSACTION_EVENT_IDENTIFICATOR (PACKET_HEADER_IDENTIFICATOR | PACKET_HEADER_DESCRIPTION_EVENT << 8)
+
+#define TRANSACTION_END_IDENTIFICATOR "\r"
 //==============================================================================
 typedef void (*xRxTransactionAction)(xRxRequestManagerT* manager,
-																			xObject request,
+																			void* request,
 																			uint16_t request_size);
 //==============================================================================
 typedef struct
@@ -67,5 +78,8 @@ typedef struct
 } xRxTransactionT;
 //==============================================================================
 xRxTransactionT* xRxTransactionIdentify(xRxTransactionT* transaction, uint16_t key);
+
+xResult xRxTransactionTransmitEvent(xTxT* tx, uint32_t device_id, uint16_t transaction, void* data, uint16_t data_size);
+xResult xRxTransactionRequestReceiver(xRxRequestManagerT* manager, uint8_t* object, uint16_t size);
 //==============================================================================
 #endif /* X_RX_TRANSACTION_H */

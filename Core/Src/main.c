@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "adc.h"
 #include "dma.h"
 #include "i2c.h"
 #include "spi.h"
@@ -27,7 +28,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "Control.h"
+#include "Components.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,46 +49,19 @@
 
 /* USER CODE BEGIN PV */
 //==============================================================================
-#define MAIN_RESPONSE_BUFFER_SIZE 1024
-static uint8_t main_response_buffer_memory[MAIN_RESPONSE_BUFFER_SIZE];
 
-xDataBufferT MainResponseBuffer =
-{
-	.Data = main_response_buffer_memory,
-	.Size = MAIN_RESPONSE_BUFFER_SIZE
-};
-//------------------------------------------------------------------------------
-uint8_t time_5ms;
-uint8_t time_10ms;
-uint8_t time_100ms;
-uint16_t time_1000ms;
-uint16_t time_5000ms;
-uint32_t time_ms;
-//------------------------------------------------------------------------------
-xTxTransferT TransferLayer;
-//------------------------------------------------------------------------------
-struct
-{
-	uint32_t SelectNewTemplate : 1;
-	
-} Handle;
 //==============================================================================
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-WS2812_PixelT Color =
-{
-	.Green = 1,
-	.Red = 1,
-	.Blue = 1
-};
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-const char* string_out = "111111111111111111111111\r111111111111111111111111\r111111111111111111111111\r111111111111111111111111\r111111111111111111111111\r111111111111111111111111\r111111111111111111111111\r";
+
 /* USER CODE END 0 */
 
 /**
@@ -97,7 +71,7 @@ const char* string_out = "111111111111111111111111\r111111111111111111111111\r11
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	ComponentsPresystemInit(main);
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -129,77 +103,21 @@ int main(void)
   MX_TIM5_Init();
   MX_TIM14_Init();
   MX_I2C2_Init();
+  MX_ADC1_Init();
+  MX_TIM7_Init();
+  MX_ADC2_Init();
   /* USER CODE BEGIN 2 */
-	ControlInit("main");
-	
-	TransactionAdapterInit(&TransferLayer, &SerialPortUART.Tx);
-	xTxTransferInit(&TransferLayer, 1, 20, 1.0);
-	
-	RGBCups_DrawingStart(RGBCup1, (RGBCupDrawManagerBaseT*)&DrawManager1);
-	//RGBCups_DrawManagerEx1Init(RGBCup1, &DrawManager1);
-	
-	//HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_4);
+	ComponentsInit(main);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		if (!time_5ms)
-		{
-			time_5ms = 4;
-			
-			SerialPort_Handler(&SerialPortUART);
-			SerialPort_Handler(&SerialPortUSB);
-			
-			xTxTransferHandler(&TransferLayer);
-		}
-		
-		if (!time_1000ms)
-		{
-			time_1000ms = 999;
-			
-			LED_1_GPIO_Port->ODR ^= LED_1_Pin;
-			
-			//LED_2_GPIO_Port->ODR ^= LED_2_Pin;
-			RGBCups_SetColor(RGBCup1, Color);
-			
-			//xTxTransmitString(&SerialPortUART.Tx, "qwerty\r");
-			xTxTransmitString(&SerialPortUSB.Tx, "qwerty\r");
-			
-			xTxTransferTransmit(&TransferLayer, (uint8_t*)string_out, strlen(string_out));
-		}
-		
-		if (!time_10ms)
-		{
-			time_10ms = 99;
-			
-			if (Handle.SelectNewTemplate && RGBCups[RGBCupNumber1].Status.DrawManager == RGBCupDrawManageStateCycleStart)
-			{
-				Handle.SelectNewTemplate = false;
-				
-				if (RGBCups[RGBCupNumber1].DrawManagerPattern == (RGBCupDrawManagerBaseT*)&DrawManager3)
-				{
-					RGBCups_DrawingStart(RGBCup1, (RGBCupDrawManagerBaseT*)&DrawManager1);
-				}
-				else
-				{
-					RGBCups_DrawingStart(RGBCup1, (RGBCupDrawManagerBaseT*)&DrawManager3);
-				}
-			}
-			
-			RGBCups_Draw(RGBCup1|RGBCup2);
-			RGBCups_UpdateLayout(RGBCup1|RGBCup2, 1000);
-		}
-		
-		if (!time_5000ms)
-		{
-			time_5000ms = 4999;
-			Handle.SelectNewTemplate = true;
-		}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		ComponentsHandler();
   }
   /* USER CODE END 3 */
 }

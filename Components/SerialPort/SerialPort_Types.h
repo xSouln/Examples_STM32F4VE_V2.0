@@ -6,19 +6,12 @@
  extern "C" {
 #endif 
 //==============================================================================
-#include "main.h"
+#include "Components_Config.h"
 #include "Common/xTx.h"
 #include "Common/xRx.h"
 #include "SerialPort_Config.h"
 #include "SerialPort_Info.h"
 //==============================================================================
-typedef enum
-{
-	SerialPortResultAccept,
-	SerialPortResultError
-	
-} SerialPortResult;
-//------------------------------------------------------------------------------
 typedef enum
 {
 	SerialPortEventEndLine,
@@ -40,14 +33,30 @@ typedef struct
 	  
 } SerialPortInterfaceT;
 //------------------------------------------------------------------------------
+typedef union
+{
+	struct
+	{
+		xResult InitResult : 4;
+		xResult AdapterInitResult : 4;
+		xResult RxInitResult : 4;
+		xResult TxInitResult : 4;
+		
+		
+	};
+	uint32_t Value;
+	  
+} SerialPortStatusT;
+//------------------------------------------------------------------------------
 typedef struct
 {
 	OBJECT_HEADER;
 	
 	void* Adapter;
 	
-	SerialPortAdapterInterfaceT* AdapterInterface;
 	SerialPortInterfaceT* Interface;
+	
+	SerialPortStatusT Status;
 
 	xRxT Rx;
 	xTxT Tx;

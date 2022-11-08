@@ -7,16 +7,12 @@
 #endif
 //==============================================================================
 #include "main.h"
+#include "Common/xTypes.h"
 #include "Common/xTx.h"
 #include "Common/xRx.h"
 #include "Common/xRxReceiver.h"
 //==============================================================================
-typedef enum
-{
-	TCPServerAdapterResultAccept,
-	TCPServerAdapterResultError
-	
-} TCPServerAdapterResult;
+
 //==============================================================================
 #ifdef __cplusplus
 }

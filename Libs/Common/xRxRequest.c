@@ -2,29 +2,33 @@
 #include <string.h>
 #include "xRxRequest.h"
 //==============================================================================
-xRxRequestT* xRxRequestIdentify(xRxT* rx, xRxRequestManagerT* manager, uint8_t data[], uint16_t data_size)
+xRxRequestT* xRxRequestIdentify(xRxT* rx, void* device, xRxRequestT* requests, uint8_t data[], uint16_t data_size)
 {
+	xRxRequestManagerT manager;
   uint8_t i = 0;
-  while(manager->Requests[i].Header)
+	
+  while(requests[i].Header)
   {
-    if(data_size >= manager->Requests[i].HeaderLength)
+    if(data_size >= requests[i].HeaderLength)
     {
-      if(memcmp(data, manager->Requests[i].Header, manager->Requests[i].HeaderLength) == 0)
+      if(memcmp(data, requests[i].Header, requests[i].HeaderLength) == 0)
       {
-        data += manager->Requests[i].HeaderLength;
-        data_size -= manager->Requests[i].HeaderLength;
-        
-        if (manager->Requests[i].Action)
+        if (requests[i].Action)
         {
-					manager->FoundRequest = &manager->Requests[i];
-					manager->RxLine = rx;
+					manager.Device = device;
+					manager.Requests = requests;
+					manager.FoundRequest = &requests[i];
+					manager.RxLine = rx;
 					
-          manager->Requests[i].Action(manager, data, data_size);
+          xResult result = requests[i].Action(&manager,
+																							data + requests[i].HeaderLength,
+																							data_size - requests[i].HeaderLength);
 					
-					manager->FoundRequest = 0;
-					manager->RxLine = 0;
+					if (result == xResultAccept)
+					{
+						return &requests[i];
+					}
         }
-        return &manager->Requests[i];
       }
     }
     i++;
@@ -32,12 +36,10 @@ xRxRequestT* xRxRequestIdentify(xRxT* rx, xRxRequestManagerT* manager, uint8_t d
   return 0;
 }
 //==============================================================================
-xResult xRxRequestManagerInit(xRxRequestManagerT* manager, void* parent, void* device, xRxRequestT* requests)
+xResult xRxRequestManagerInit(xRxRequestManagerT* manager, void* device, xRxRequestT* requests)
 {
 	if (manager && device && requests)
 	{
-		manager->Description = "xRequestManagerT";
-		manager->Parent = parent;
 		manager->Device = device;
 		manager->Requests = requests;
 		

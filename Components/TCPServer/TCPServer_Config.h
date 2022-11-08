@@ -7,9 +7,10 @@
 #endif
 //==============================================================================
 #include <stdint.h>
+#include "Components_Config.h"
 //==============================================================================
-static const uint8_t TCP_SERVER_DEFAULT_IP[4] = { 192, 168, 100, 40 };
-static const uint8_t TCP_SERVER_DEFAULT_GETAWAY[4] = { 192, 168, 100, 1 };
+static const uint8_t TCP_SERVER_DEFAULT_IP[4] = { 192, 168, 0, 40 };
+static const uint8_t TCP_SERVER_DEFAULT_GETAWAY[4] = { 192, 168, 0, 1 };
 static const uint8_t TCP_SERVER_DEFAULT_NETMASK[4] = { 255, 255, 255, 0 };
 static const uint8_t TCP_SERVER_DEFAULT_MAC_ADDRESS[6] = { 0xdc, 0x31, 0x82, 0xc5, 0xfe, 0x11 };
 

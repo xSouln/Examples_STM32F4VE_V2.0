@@ -19,32 +19,19 @@ typedef enum
 {
   xResultAccept = 0U,
 	xResultError,
-	xResultParametersError,
-	xResultNotInit,
+	xResultInvalidParameter,
 	xResultBusy,
+	xResultTimeOut,
 	xResultNotSupported,
 	xResultValueIsNotFound,
 	xResultRequestIsNotFound,
-	xResultTimeOut
+	xResultLinkError,
+	xResulComponentInitializationError,
+	xResultOutOfRange
 	
 } xResult;
 //==============================================================================
 typedef void* xObject;
-//------------------------------------------------------------------------------
-typedef struct
-{
-	xObject obj;
-	uint16_t key;
-	
-} xContext;
-//------------------------------------------------------------------------------
-typedef struct
-{
-	xObject obj;
-	uint16_t size;
-	xObject next;
-	
-} xContent;
 //==============================================================================
 typedef void (*xActionHandler)(void* object);
 
@@ -53,7 +40,7 @@ typedef xResult (*xRequestReceiverT)(void* object, uint32_t selector, uint32_t v
 
 typedef int (*xActionGetValue)(void* object, uint32_t selector);
 typedef xResult (*xActionSetValue)(void* object, uint32_t selector, uint32_t value);
-//------------------------------------------------------------------------------
+//==============================================================================
 #define SIZE_STRING(str)(sizeof(str) - 1)
 #define SIZE_ARRAY(array)(sizeof(array) / sizeof(array[0]))
 //------------------------------------------------------------------------------

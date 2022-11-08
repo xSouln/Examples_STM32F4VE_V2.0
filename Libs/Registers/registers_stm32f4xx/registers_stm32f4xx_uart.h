@@ -67,8 +67,8 @@ typedef union
 	
     /* 0x00000010 */ uint32_t SmartcardNACK_Enable: 1; //USART_CR3_NACK	
     /* 0x00000020 */ uint32_t SmartcardEnable: 1; //USART_CR3_SCEN
-    /* 0x00000040 */ uint32_t DMA_EnableReceiver: 1; //USART_CR3_DMAR    
-    /* 0x00000080 */ uint32_t DMA_EnableTransmitter: 1; //USART_CR3_DMAT
+    /* 0x00000040 */ uint32_t RxDMA_Enable: 1; //USART_CR3_DMAR    
+    /* 0x00000080 */ uint32_t TxDMA_Enable: 1; //USART_CR3_DMAT
 	
     /* 0x00000100 */ uint32_t RTS_Enable: 1; //USART_CR3_RTSE    
     /* 0x00000200 */ uint32_t CTS_Enable: 1; //USART_CR3_CTSE    

@@ -10,6 +10,8 @@ extern "C" {
 #include <stdbool.h>
 #include "WS2812_Config.h"
 #include "WS2812_Info.h"
+#include "WS2812_Color.h"
+#include "WS2812_DrawManagerBase.h"
 //==============================================================================
 typedef enum
 {
@@ -98,15 +100,7 @@ typedef enum
 	
 } WS2812_PixelAddMode;
 //------------------------------------------------------------------------------
-typedef struct
-{
-	uint8_t Green;
-	uint8_t Red;
-	uint8_t Blue;
-	
-} WS2812_PixelT;
-//------------------------------------------------------------------------------
-#define WS2812_BITS_IN_PIXEL (sizeof(WS2812_PixelT) * 8)
+#define WS2812_BITS_IN_PIXEL (sizeof(WS2812_ColorT) * 8)
 //------------------------------------------------------------------------------
 typedef void (*WS2812_ActionHandler)(void* driver);
 
@@ -154,30 +148,13 @@ typedef union
 //------------------------------------------------------------------------------
 typedef struct
 {
-	WS2812_ActionHandler Handler;
-	
-} WS2812_DrawManagerInterfaceT;
-//------------------------------------------------------------------------------
-#define WS2812_DRAW_MANAGER_BASE\
-	char* Description;\
-	void* Parent
-
-typedef struct
-{
-	WS2812_DRAW_MANAGER_BASE;
-	
-} WS2812_DrawManagerBaseT;
-//------------------------------------------------------------------------------
-typedef struct
-{
 	char* Description;
 	void* Parent;
 	
 	WS2812_StatusT Status;
 	WS2812_HandleT Handle;
 	
-	WS2812_DrawManagerBaseT* DrawManager;
-	WS2812_DrawManagerInterfaceT* DrawManagerInterface;
+	WS2812_DrawManagerBaseT DrawManager;
 	
 	WS2812_AdapterT* Adapter;
 	WS2812_InterfaceT* Interface;
@@ -188,6 +165,7 @@ typedef struct
 } WS2812_T;
 //==============================================================================
 void WS2812_Handler(WS2812_T* driver);
+void WS2812_TimeSynchronization(WS2812_T* driver);
 
 void WS2812_DeclareEvent(WS2812_T* driver, WS2812_EventSelector selector, uint32_t args, uint32_t count);
 WS2812_Result WS2812_DeclareRequest(WS2812_T* driver, WS2812_RequestSelector selector, uint32_t args, uint32_t count);
@@ -197,14 +175,16 @@ int WS2812_GetValue(WS2812_T* driver, WS2812_ValueSelector selector);
 //------------------------------------------------------------------------------
 void WS2812_Draw(WS2812_T* driver);
 
-uint16_t WS2812_SetPixel(WS2812_T* driver, WS2812_PixelT pixel, uint16_t position);
-uint16_t WS2812_FillPixels(WS2812_T* driver, WS2812_PixelT pixel, uint16_t start_position, uint16_t pixels_count);
-uint16_t WS2812_SetPixels(WS2812_T* driver, WS2812_PixelT* pixels, uint16_t start_position, uint16_t pixels_count);
+uint16_t WS2812_SetPixel(WS2812_T* driver, WS2812_ColorT pixel, uint16_t position);
+uint16_t WS2812_FillPixels(WS2812_T* driver, WS2812_ColorT pixel, uint16_t start_position, uint16_t pixels_count);
+uint16_t WS2812_SetPixels(WS2812_T* driver, WS2812_ColorT* pixels, uint16_t start_position, uint16_t pixels_count);
 
 WS2812_Result WS2812_UpdateLayout(WS2812_T* driver);
 
-WS2812_Result WS2812_DrawingStart(WS2812_T* driver, WS2812_DrawManagerBaseT* manager, WS2812_DrawManagerInterfaceT* interface);
+void WS2812_DrawManagerHandler(WS2812_T* driver);
+xResult WS2812_DrawingStart(WS2812_T* driver, void* template_request);
 void WS2812_DrawingStop(WS2812_T* driver);
+xResult WS2812_DrawManagerSetTemplate(WS2812_T* driver, void* value);
 
 WS2812_TransmitterStatus WS2812_GetTransmitterStatus(WS2812_T* driver);
 //------------------------------------------------------------------------------

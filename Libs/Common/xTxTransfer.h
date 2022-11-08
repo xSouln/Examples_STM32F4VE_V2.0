@@ -1,8 +1,5 @@
 /*
- * X_TX_TRANSFER_H.h
  *
- * Created: 28.09.2021 13:42:04
- *  Author:
  */
 #ifndef X_TX_TRANSFER_H
 #define X_TX_TRANSFER_H
@@ -33,11 +30,12 @@ typedef enum
 //------------------------------------------------------------------------------
 typedef enum
 {
-	xTxTransferStatusFree,
+	xTxTransferStatusIdle,
 	xTxTransferStatusBeginning,
 	xTxTransferStatusTransmits,
 	xTxTransferStatusEnding,
-	xTxTransferStatusComplite
+	xTxTransferStatusComplite,
+	xTxTransferStatusError
 	
 } xTxTransferStatus;
 //------------------------------------------------------------------------------
@@ -74,6 +72,7 @@ typedef struct
 	
 	xTxTransferStatusT Status;
 	
+	xTxT* Tx;
 	void* Adapter;
 	xTxTransferInterfaceT* Interface;
 	
@@ -81,8 +80,8 @@ typedef struct
 	uint32_t DataSize;
 	uint32_t DataTransferred;
 	
-	uint32_t MinPacketSize;
-	uint32_t MaxPacketSize;
+	uint32_t MaxContentSize;
+	uint32_t MinContentSize;
 	
 	float BufferFilling;
 	
@@ -91,13 +90,12 @@ typedef struct
 } xTxTransferT;
 //------------------------------------------------------------------------------
 xResult xTxTransferInit(xTxTransferT* layer,
-												uint32_t min_packet_size,
-												uint32_t max_packet_size,
+												uint32_t min_content_size,
+												uint32_t max_content_size,
 												float buffer_filling);
 														
-xResult xTxTransferTransmit(xTxTransferT* layer,
-														void* data,
-														uint32_t data_size);
+xResult xTxTransferStart(xTxTransferT* layer, void* data, uint32_t data_size);
+xResult xTxTransferSetTxLine(xTxTransferT* layer, xTxT* tx);
 
 void xTxTransferAbort(xTxTransferT* layer);
 void xTxTransferHandler(xTxTransferT* layer);

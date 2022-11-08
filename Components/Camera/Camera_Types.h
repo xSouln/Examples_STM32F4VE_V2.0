@@ -9,71 +9,30 @@
 #include "Camera_Config.h"
 #include "Common/xTypes.h"
 #include "Common/xTxTransfer.h"
+#include "Common/xRxTransaction.h"
+#include "Controls/Camera_AdapterBase.h"
 //==============================================================================
 typedef enum
 {
-  CameraResultAccept = 0U,
-	CameraResultError,
-	CameraResultParametersError,
-	CameraResultNotInit,
-	CameraResultBusy,
-	CameraResultNotSupported,
-	CameraResultValueIsNotFound,
-	CameraResultRequestIsNotFound,
-	CameraResultTimeOut
-	
-} CameraResult;
-//==============================================================================
-typedef enum
-{
-	CameraAdapterEventUpdateState = 1U,
-	
-	CameraAdapterEventSnapshotComplite,
-	
-} CameraAdapterEventSelector;
-//------------------------------------------------------------------------------
-typedef enum
-{
-	CameraAdapterRequestDelay = 1U,
-	CameraAdapterRequestGetSnapshot
-	
-} CameraAdapterRequestSelector;
-//------------------------------------------------------------------------------
-typedef enum
-{
-	CameraAdapterValueTransmitterStatus = 1U,
-	
-} CameraAdapterValueSelector;
-//------------------------------------------------------------------------------
-typedef void (*CameraAdapterHandlerT)(void* camera);
-
-typedef xResult (*CameraAdapterRequestListenerT)(void* camera, CameraAdapterRequestSelector selector, uint32_t args, uint32_t count);
-
-typedef int (*CameraAdapterActionGetValueT)(void* camera, CameraAdapterValueSelector selector);
-typedef xResult (*CameraAdapterActionSetValueT)(void* camera, CameraAdapterValueSelector selector, uint32_t value);
-//------------------------------------------------------------------------------
-typedef struct
-{
-	CameraAdapterHandlerT Handler;
-	
-	CameraAdapterRequestListenerT RequestListener;
-	
-	CameraAdapterActionGetValueT GetValue;
-	CameraAdapterActionSetValueT SetValue;
-	
-} CameraAdapterInterfaceT;
-//==============================================================================
-typedef enum
-{
-	CameraUpdateState = 1U,
+	CameraEventIdle,
+	CameraEventSnapshotComplite,
 	
 } CameraEventSelector;
 //------------------------------------------------------------------------------
+typedef enum
+{
+	CameraRequestIdle,
+	CameraRequestDelay = 1U,
+	
+} CameraRequestSelector;
+//------------------------------------------------------------------------------
 typedef void (*CameraEventListenerT)(void* camera, CameraEventSelector event, uint32_t args, uint32_t count);
+typedef xResult (*CameraRequestListenerT)(void* camera, CameraRequestSelector selector, uint32_t args, uint32_t count);
 //------------------------------------------------------------------------------
 typedef struct
 {
 	CameraEventListenerT EventListener;
+	CameraRequestListenerT RequestListener;
 	
 } CameraInterfaceT;
 //------------------------------------------------------------------------------
@@ -86,7 +45,7 @@ typedef enum
 	CameraResolution_1024x768,
 	CameraResolution_1280x960,
 	
-} CameraResolutions;
+} CameraResolutionT;
 //------------------------------------------------------------------------------
 typedef enum
 {
@@ -95,13 +54,13 @@ typedef enum
 	CameraOutputFormat_RGB565,
 	CameraOutputFormat_RAW,
 	
-} CameraOutputFormats;
+} CameraOutputFormatT;
 //------------------------------------------------------------------------------
 typedef enum
 {
 	CameraSpecialEffect_Normal,
 	
-} CameraSpecialEffects;
+} CameraSpecialEffectT;
 //------------------------------------------------------------------------------
 typedef enum
 {
@@ -111,42 +70,79 @@ typedef enum
 	CameraLightMode_Office,
 	CameraLightMode_Home,
 	
-} CameraLightModes;
+} CameraLightModeT;
 //------------------------------------------------------------------------------
-typedef int8_t CameraSaturations;
-typedef int8_t CameraContrasts;
-typedef int8_t CameraBrightnesses;
-typedef uint8_t CameraQuantizations;
+typedef int8_t CameraSaturationT;
+typedef int8_t CameraContrastT;
+typedef int8_t CameraBrightnessT;
+typedef uint8_t CameraQuantizationT;
+typedef uint8_t CameraGainT;
 //------------------------------------------------------------------------------
 typedef struct
 {
-	CameraOutputFormats OutputFormat;
-	CameraResolutions Resolution;
+	CameraOutputFormatT OutputFormat;
+	CameraResolutionT Resolution;
 	
-	CameraContrasts Contrast;
-	CameraSaturations Saturation;
-	CameraBrightnesses Brightnes;
+	CameraContrastT Contrast;
+	CameraSaturationT Saturation;
+	CameraBrightnessT Brightness;
 	
-	CameraLightModes LightMode;
-	CameraSpecialEffects SpecialEffect;
-	CameraQuantizations Quantization;
+	CameraLightModeT LightMode;
+	CameraSpecialEffectT SpecialEffect;
+	CameraQuantizationT Quantization;
 	
-	uint8_t AGC_Gain;
+	CameraGainT Gain;
 	
 } CameraOptionsT;
 //------------------------------------------------------------------------------
+typedef enum
+{
+	CameraSnapshotIdle,
+	CameraSnapshotCapture,
+	CameraSnapshotComplite,
+	CameraSnapshotError,
+	
+} CameraSnapshotStatus;
+//------------------------------------------------------------------------------
+typedef enum
+{
+	CameraSnapshotResultNoError,
+	CameraSnapshotResultTimeOut,
+	CameraSnapshotResultOutOfRange
+	
+} CameraSnapshotResults;
+//------------------------------------------------------------------------------
+typedef union
+{
+	struct
+	{
+		uint32_t IsCapture : 1;
+		
+		uint32_t Snapshot : 2;
+		uint32_t SnapshotResult : 2;
+		
+		uint32_t InitResult : 4;
+		uint32_t DriverInitResult : 4;
+		uint32_t AdapterInitResult : 4;
+	};
+	uint32_t Value;
+	
+} CameraStatusT;
+//------------------------------------------------------------------------------
 typedef struct
 {
-	void* Description;
-	void* Parent;
+	OBJECT_HEADER;
 	
-	void* Adapter;
-	void* Driver;
-	
-	CameraAdapterInterfaceT AdapterInterface;
+	CameraAdapterBaseT Adapter;
 	CameraInterfaceT* Interface;
 	
+	CameraStatusT Status;
+	CameraOptionsT Options;
+	
+	xRxRequestT* Requests;
 	xTxTransferT TransferLayer;
+	
+	uint32_t TimeOut;
 	
 	CameraBufferT* SnapshotBuffer;
 	uint32_t SnapshotBufferSize;

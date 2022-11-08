@@ -8,22 +8,22 @@ void xTxTransferHandler(xTxTransferT* layer)
 		layer->Interface->Handler(layer);
 	}
 }
-//==============================================================================
-xResult xTxTransferTransmit(xTxTransferT* layer,
-														void* data,
-														uint32_t data_size)
+//------------------------------------------------------------------------------
+xResult xTxTransferStart(xTxTransferT* layer, void* data, uint32_t data_size)
 {
-	if (!layer)
+	if (!layer || !layer->Tx || !layer->Adapter)
 	{
-		return xResultError;
+		return xResultLinkError;
 	}
 	
 	if (!data || !data_size)
 	{
-		return xResultError;
+		return xResultLinkError;
 	}
 	
-	if (layer->Status.Transfer == xTxTransferStatusFree || layer->Status.Transfer == xTxTransferStatusComplite)
+	if (layer->Status.Transfer == xTxTransferStatusIdle
+		|| layer->Status.Transfer == xTxTransferStatusComplite
+		|| layer->Status.Transfer == xTxTransferStatusError)
 	{
 		layer->Data = (uint8_t*)data;
 		layer->DataSize = data_size;
@@ -36,23 +36,38 @@ xResult xTxTransferTransmit(xTxTransferT* layer,
 	
 	return xResultError;
 }
-//==============================================================================
+//------------------------------------------------------------------------------
+xResult xTxTransferSetTxLine(xTxTransferT* layer, xTxT* tx)
+{
+	if (layer && tx)
+	{
+		if (layer->Status.Transfer == xTxTransferStatusIdle
+		|| layer->Status.Transfer == xTxTransferStatusComplite)
+		{
+			layer->Tx = tx;
+			
+			return xResultAccept;
+		}
+	}
+	
+	return xResultLinkError;
+}
+//------------------------------------------------------------------------------
 void xTransferAbort(xTxTransferT* layer)
 {
 	
 }
 //==============================================================================
 xResult xTxTransferInit(xTxTransferT* layer,
-												uint32_t min_packet_size,
-												uint32_t max_packet_size,
+												uint32_t min_content_size,
+												uint32_t max_content_size,
 												float buffer_filling)
 {
-	if (layer && min_packet_size && buffer_filling)
+	if (layer && max_content_size && buffer_filling)
 	{
 		layer->Description = "xTxTransferT";
-		
-		layer->MinPacketSize = min_packet_size;
-		layer->MaxPacketSize = max_packet_size;
+		layer->MinContentSize = min_content_size;
+		layer->MaxContentSize = max_content_size;
 		layer->BufferFilling = buffer_filling;
 		
 		return xResultAccept;

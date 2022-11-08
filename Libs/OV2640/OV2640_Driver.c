@@ -2,20 +2,9 @@
 #include <string.h>
 #include "OV2640_Driver.h"
 #include "OV2640_InitializationTables.h"
+#include "Common/xMemory.h"
 //==============================================================================
-static OV2640_Result EnumerationOfLinks(uint32_t* list, int list_size)
-{
-	for (int i = 0; i < list_size; i++)
-	{
-		if (list[i] == 0)
-		{
-			return (OV2640_Result)OV2640_ResultError;
-		}
-	}
-	return (OV2640_Result)OV2640_ResultAccept;
-}
-//------------------------------------------------------------------------------
-OV2640_Result OV2640_DriverI2C_Write(OV2640_DriverT* driver, uint8_t reg, uint8_t data)
+xResult OV2640_DriverI2C_Write(OV2640_DriverT* driver, uint8_t reg, uint8_t data)
 {
 	if (driver && driver->Status.IsInit)
 	{
@@ -28,10 +17,10 @@ OV2640_Result OV2640_DriverI2C_Write(OV2640_DriverT* driver, uint8_t reg, uint8_
 		
 		return driver->Interface->RequestListener(driver, OV2640_RequestI2C_Write, (uint32_t)&request, 0);
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //------------------------------------------------------------------------------
-OV2640_Result OV2640_DriverI2C_Read(OV2640_DriverT* driver, uint8_t reg, uint8_t* data)
+xResult OV2640_DriverI2C_Read(OV2640_DriverT* driver, uint8_t reg, uint8_t* data)
 {
 	if (driver && driver->Status.IsInit)
 	{
@@ -44,40 +33,40 @@ OV2640_Result OV2640_DriverI2C_Read(OV2640_DriverT* driver, uint8_t reg, uint8_t
 		
 		return driver->Interface->RequestListener(driver, OV2640_RequestI2C_Read, (uint32_t)&request, 0);
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //------------------------------------------------------------------------------
-OV2640_Result OV2640_SetPowerDownState(OV2640_DriverT* driver, OV2640_DriverState state)
+xResult OV2640_SetPowerDownState(OV2640_DriverT* driver, OV2640_DriverState state)
 {
 	if (driver && driver->Status.IsInit)
 	{
 		return driver->Interface->SetValue(driver, OV2640_ValuePowerDownState, state);
 	}
 	
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //------------------------------------------------------------------------------
-OV2640_Result OV2640_SetHardwareResetState(OV2640_DriverT* driver, OV2640_DriverState state)
+xResult OV2640_SetHardwareResetState(OV2640_DriverT* driver, OV2640_DriverState state)
 {
 	if (driver && driver->Status.IsInit)
 	{
 		return driver->Interface->SetValue(driver, OV2640_ValueHardwareResetState, state);
 	}
 	
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //------------------------------------------------------------------------------
-OV2640_Result OV2640_Delay(OV2640_DriverT* driver, uint32_t ms)
+xResult OV2640_Delay(OV2640_DriverT* driver, uint32_t ms)
 {
 	if (driver && driver->Status.IsInit)
 	{
 		return driver->Interface->RequestListener(driver, OV2640_RequestDelay, ms, 0);
 	}
 	
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //==============================================================================
-OV2640_Result OV2640_DriverReset(OV2640_DriverT* driver)
+xResult OV2640_DriverReset(OV2640_DriverT* driver)
 {
 	if (driver && driver->Status.IsInit)
 	{
@@ -88,12 +77,12 @@ OV2640_Result OV2640_DriverReset(OV2640_DriverT* driver)
 		OV2640_Delay(driver, 5);
 		OV2640_SetHardwareResetState(driver, OV2640_StateDisable);
 		OV2640_Delay(driver, 100);
-		return (OV2640_Result)OV2640_ResultAccept;
+		return xResultAccept;
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //==============================================================================
-OV2640_Result OV2640_DriverPowerReset(OV2640_DriverT* driver)
+xResult OV2640_DriverPowerReset(OV2640_DriverT* driver)
 {
 	if (driver && driver->Status.IsInit)
 	{
@@ -101,12 +90,12 @@ OV2640_Result OV2640_DriverPowerReset(OV2640_DriverT* driver)
 		OV2640_Delay(driver, 100);
 		OV2640_SetPowerDownState(driver, OV2640_StateDisable);
 		OV2640_Delay(driver, 100);
-		return (OV2640_Result)OV2640_ResultAccept;
+		return xResultAccept;
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //==============================================================================
-OV2640_Result OV2640_DriverSetConfiguration(OV2640_DriverT* driver, uint8_t* data, uint16_t data_size)
+xResult OV2640_DriverSetConfiguration(OV2640_DriverT* driver, uint8_t* data, uint16_t data_size)
 {
 	uint8_t reg_data;
 	if (driver && data)
@@ -114,21 +103,21 @@ OV2640_Result OV2640_DriverSetConfiguration(OV2640_DriverT* driver, uint8_t* dat
 		uint16_t i = 0;
 		while (i < data_size)
 		{
-			OV2640_Result result_write = OV2640_DriverI2C_Write(driver, data[i], data[i + 1]);
+			xResult result_write = OV2640_DriverI2C_Write(driver, data[i], data[i + 1]);
 			i += 2;
 			
-			if (result_write != 0)
+			if (result_write != xResultAccept)
 			{
 				driver->Debug.NumberOfInitializationErrors++;
 			}
 			//driver->Control->Delay(driver, 5);
 		}
-		return (OV2640_Result)OV2640_ResultAccept;
+		return xResultAccept;
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //==============================================================================
-OV2640_Result OV2640_DriverSetOutputFormat(OV2640_DriverT* driver, OV2640_OutputFormats output_format)
+xResult OV2640_DriverSetOutputFormat(OV2640_DriverT* driver, OV2640_OutputFormats output_format)
 {
 	if (driver && driver->Status.IsInit)
 	{
@@ -143,12 +132,12 @@ OV2640_Result OV2640_DriverSetOutputFormat(OV2640_DriverT* driver, OV2640_Output
 		
 		driver->Options.OutputFormat = output_format;
 		
-		return (OV2640_Result)OV2640_ResultAccept;
+		return xResultAccept;
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //==============================================================================
-OV2640_Result OV2640_DriverSetResolution(OV2640_DriverT* driver, OV2640_Resolutions resolution)
+xResult OV2640_DriverSetResolution(OV2640_DriverT* driver, OV2640_Resolutions resolution)
 {
 	if (driver && driver->Status.IsInit)
 	{
@@ -190,15 +179,15 @@ OV2640_Result OV2640_DriverSetResolution(OV2640_DriverT* driver, OV2640_Resoluti
 																sizeof(OV2640_RESOLUTION_160x120));
 				break;
 				
-			default : return (OV2640_Result)OV2640_ResultError;
+			default : return xResultError;
 		}
 		
-		return (OV2640_Result)OV2640_ResultAccept;
+		return xResultAccept;
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //==============================================================================
-OV2640_Result OV2640_DriverSetContrast(OV2640_DriverT* driver, OV2640_Contrasts contrast)
+xResult OV2640_DriverSetContrast(OV2640_DriverT* driver, OV2640_Contrasts contrast)
 {
 	if (driver && driver->Status.IsInit)
 	{
@@ -224,14 +213,14 @@ OV2640_Result OV2640_DriverSetContrast(OV2640_DriverT* driver, OV2640_Contrasts 
 				OV2640_DriverSetConfiguration(driver, (uint8_t*)OV2640_CONTRAST_P2, sizeof(OV2640_CONTRAST_P2));
 				break;
 			
-			default : return (OV2640_Result)OV2640_ResultError;
+			default : return xResultError;
 		}
-		return (OV2640_Result)OV2640_ResultAccept;
+		return xResultAccept;
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //==============================================================================
-OV2640_Result OV2640_DriverSetBrightness(OV2640_DriverT* driver, OV2640_Brightnesses brightness)
+xResult OV2640_DriverSetBrightness(OV2640_DriverT* driver, OV2640_Brightnesses brightness)
 {
 	if (driver && driver->Status.IsInit)
 	{
@@ -257,14 +246,14 @@ OV2640_Result OV2640_DriverSetBrightness(OV2640_DriverT* driver, OV2640_Brightne
 				OV2640_DriverSetConfiguration(driver, (uint8_t*)OV2640_BRIGHTNESS_P2, sizeof(OV2640_BRIGHTNESS_P2));
 				break;
 			
-			default : return (OV2640_Result)OV2640_ResultError;
+			default : return xResultError;
 		}
-		return (OV2640_Result)OV2640_ResultAccept;
+		return xResultAccept;
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //==============================================================================
-OV2640_Result OV2640_DriverSetSaturation(OV2640_DriverT* driver, OV2640_Saturations saturation)
+xResult OV2640_DriverSetSaturation(OV2640_DriverT* driver, OV2640_Saturations saturation)
 {
 	if (driver && driver->Status.IsInit)
 	{
@@ -290,14 +279,14 @@ OV2640_Result OV2640_DriverSetSaturation(OV2640_DriverT* driver, OV2640_Saturati
 				OV2640_DriverSetConfiguration(driver, (uint8_t*)OV2640_SATURATION_P2, sizeof(OV2640_SATURATION_P2));
 				break;
 			
-			default : return (OV2640_Result)OV2640_ResultError;
+			default : return xResultError;
 		}
-		return (OV2640_Result)OV2640_ResultAccept;
+		return xResultAccept;
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //==============================================================================
-OV2640_Result OV2640_DriverSetLightMode(OV2640_DriverT* driver, OV2640_LightModes light_mode)
+xResult OV2640_DriverSetLightMode(OV2640_DriverT* driver, OV2640_LightModes light_mode)
 {
 	if (driver && driver->Status.IsInit)
 	{
@@ -323,15 +312,15 @@ OV2640_Result OV2640_DriverSetLightMode(OV2640_DriverT* driver, OV2640_LightMode
 				OV2640_DriverSetConfiguration(driver, (uint8_t*)OV2640_LIGHT_MODE_HOME, sizeof(OV2640_LIGHT_MODE_HOME));
 				break;
 			
-			default : return (OV2640_Result)OV2640_ResultError;
+			default : return xResultError;
 		}
 		
-		return (OV2640_Result)OV2640_ResultAccept;
+		return xResultAccept;
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //==============================================================================
-OV2640_Result OV2640_DriverSetSpecialEffect(OV2640_DriverT* driver, OV2640_SpecialEffects special_effect)
+xResult OV2640_DriverSetSpecialEffect(OV2640_DriverT* driver, OV2640_SpecialEffects special_effect)
 {
 	if (driver && driver->Status.IsInit)
 	{
@@ -369,35 +358,35 @@ OV2640_Result OV2640_DriverSetSpecialEffect(OV2640_DriverT* driver, OV2640_Speci
 				OV2640_DriverSetConfiguration(driver, (uint8_t*)OV2640_SPECIAL_EFFECTS_ANTIQUE, sizeof(OV2640_SPECIAL_EFFECTS_ANTIQUE));
 				break;
 			
-			default : return (OV2640_Result)OV2640_ResultError;
+			default : return xResultError;
 		}
 		
-		return (OV2640_Result)OV2640_ResultAccept;
+		return xResultAccept;
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //==============================================================================
-OV2640_Result OV2640_DriverSetQuantization(OV2640_DriverT* driver, OV2640_Quantizations quantization)
+xResult OV2640_DriverSetQuantization(OV2640_DriverT* driver, OV2640_Quantizations quantization)
 {
 	if (driver && driver->Status.IsInit)
 	{
 		return OV2640_DriverI2C_Write(driver, OV2640_DSP_Qs, quantization & OV2640_Quantization_Mask);
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //==============================================================================
-OV2640_Result OV2640_DriverSetAGC_Gain(OV2640_DriverT* driver, uint8_t gain)
+xResult OV2640_DriverSetGain(OV2640_DriverT* driver, uint8_t gain)
 {
 	if (driver && driver->Status.IsInit)
 	{
 		OV2640_DriverI2C_Write(driver, OV2640_DSP_RA_DLMT, 0x01);
 		OV2640_DriverI2C_Write(driver, OV2640_SENSOR_GAIN, gain);
-		return (OV2640_Result)OV2640_ResultAccept;
+		return xResultAccept;
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //==============================================================================
-OV2640_Result OV2640_DriverSetOptions(OV2640_DriverT* driver, OV2640_DriverOptionsT* options)
+xResult OV2640_DriverSetOptions(OV2640_DriverT* driver, OV2640_DriverOptionsT* options)
 {
 	if (driver && driver->Status.IsInit && options)
 	{
@@ -411,75 +400,78 @@ OV2640_Result OV2640_DriverSetOptions(OV2640_DriverT* driver, OV2640_DriverOptio
 		OV2640_DriverSetOutputFormat(driver, options->OutputFormat);
 		OV2640_DriverSetResolution(driver, options->Resolution);
 		
-		OV2640_DriverSetAGC_Gain(driver, options->AGC_Gain);
+		OV2640_DriverSetGain(driver, options->Gain);
 		OV2640_DriverSetLightMode(driver, options->LightMode);
+		OV2640_DriverSetSpecialEffect(driver, options->SpecialEffect);
 		
-		if (options->SpecialEffect != OV2640_SpecialEffect_Normal)
-		{
-			OV2640_DriverSetSpecialEffect(driver, options->SpecialEffect);
-		}
-		else
-		{
-			OV2640_DriverSetContrast(driver, options->Contrast);
-			OV2640_DriverSetBrightness(driver, options->Brightness);
-			OV2640_DriverSetSaturation(driver, options->Saturation);
-		}
+		OV2640_DriverSetContrast(driver, options->Contrast);
+		OV2640_DriverSetBrightness(driver, options->Brightness);
+		OV2640_DriverSetSaturation(driver, options->Saturation);
 		
 		OV2640_DriverSetQuantization(driver, options->Quantization);
 		
-		return (OV2640_Result)OV2640_ResultAccept;
+		return xResultAccept;
 	}
-	return (OV2640_Result)OV2640_ResultError;
+	return xResultError;
 }
 //==============================================================================
-OV2640_Result OV2640_DriverInit(OV2640_DriverT* driver,
+xResult OV2640_DriverInit(OV2640_DriverT* driver,
 																void* parent,
 																void* adapter,
 																OV2640_InterfaceT* interface,
 																OV2640_DriverOptionsT* options)
 {
-	OV2640_Result result = (OV2640_Result)OV2640_ResultError;
-	
-	if (driver && adapter && interface)
+	if (!driver)
 	{
-		driver->Description = "OV2640_T";
-		driver->Parent = parent;
-		
-		if (options)
-		{
-			memcpy((uint8_t*)&driver->Options, (uint8_t*)options, sizeof(OV2640_DriverOptionsT));
-		}
-		
-		result = EnumerationOfLinks((uint32_t*)interface, sizeof(OV2640_InterfaceT) / sizeof(uint32_t));
-		if (result != OV2640_ResultAccept)
-		{
-			goto end;
-		}
-		
-		driver->Interface = interface;
-		driver->Status.IsInit = true;
-		
-		OV2640_DriverReset(driver);
-		
-		memset(&driver->Debug, 0, sizeof(driver->Debug));
-		
-		/* Prepare the sensor to read the Camera ID */
-		OV2640_DriverI2C_Write(driver, OV2640_DSP_RA_DLMT, 0x01);
-		OV2640_DriverI2C_Read(driver, OV2640_SENSOR_PIDH, &driver->ID);
-		
-		OV2640_Delay(driver, 100);
-		
-		if (driver->ID != OV2640_ID)
-		{
-			result = OV2640_ResultError;
-			goto end;
-		}
-		
-		driver->Status.DeviceIsPresent = true;
-		
-		result = OV2640_DriverSetOptions(driver, &driver->Options);
+		return xResultLinkError;
 	}
+	
+	if (!adapter || !interface)
+	{
+		driver->Status.InitResult = xResultLinkError;
+		goto end;
+	}
+	
+	if (xMemoryCheckLincs(interface, sizeof(OV2640_InterfaceT)) != 0)
+	{
+		driver->Status.InitResult = xResultLinkError;
+		goto end;
+	}
+	
+	driver->Description = "OV2640_T";
+	driver->Parent = parent;
+	driver->Adapter = adapter;
+	
+	if (options)
+	{
+		memcpy((uint8_t*)&driver->Options, (uint8_t*)options, sizeof(OV2640_DriverOptionsT));
+	}
+	
+	driver->Interface = interface;
+	
+	driver->Status.IsInit = true;
+	
+	OV2640_DriverReset(driver);
+	
+	memset(&driver->Debug, 0, sizeof(driver->Debug));
+	
+	/* Prepare the sensor to read the Camera ID */
+	OV2640_DriverI2C_Write(driver, OV2640_DSP_RA_DLMT, 0x01);
+	OV2640_DriverI2C_Read(driver, OV2640_SENSOR_PIDH, &driver->ID);
+	
+	OV2640_Delay(driver, 100);
+	
+	if (driver->ID != OV2640_ID)
+	{
+		driver->Status.InitResult = xResulComponentInitializationError;
+		goto end;
+	}
+	
+	driver->Status.DeviceIsPresent = true;
+	
+	driver->Status.InitResult = OV2640_DriverSetOptions(driver, &driver->Options);
+		
 	end:;
-	return result;
+	return driver->Status.InitResult;
 }
 //==============================================================================

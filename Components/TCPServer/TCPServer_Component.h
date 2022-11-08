@@ -6,11 +6,12 @@
  extern "C" {
 #endif 
 //==============================================================================
+#include "Components_Config.h"
 #include "TCPServer/Controls/TCPServer.h"
 //==============================================================================
 extern TCPServerT TCPServerWIZspi;
 
-int TCPServerWIZspi_ComponentInit(void* parent);
+xResult TCPServerWIZspiComponentInit(void* parent);
 //==============================================================================
 #ifdef __cplusplus
 }

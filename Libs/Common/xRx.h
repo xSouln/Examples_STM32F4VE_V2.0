@@ -94,6 +94,9 @@ extern xResult xRxDeclareRequest(xRxT* rx, xRxRequestSelector selector, uint32_t
 extern xResult xRxSetValue(xRxT* rx, xRxValueSelector selector, uint32_t value);
 extern int xRxGetValue(xRxT* rx, xRxValueSelector selector);
 
+extern xResult xRxPutInResponseBuffer(xRxT* rx, void* data, uint32_t size);
+extern xResult xRxClearResponseBuffer(xRxT* rx);
+
 xResult xRxInit(xRxT* rx,
 									void* parent,
 									xTxAdapterT* adapter,

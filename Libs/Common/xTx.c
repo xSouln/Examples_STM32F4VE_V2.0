@@ -31,6 +31,11 @@ inline int xTxTransmitData(xTxT* tx, void* data, uint32_t data_size)
 {
 	return tx->Interface->RequestListener(tx, xTxRequestTransmitData, (uint32_t)data, data_size);
 }
+//------------------------------------------------------------------------------
+inline int xTxTransmitWord(xTxT* tx, uint32_t data)
+{
+	return tx->Interface->RequestListener(tx, xTxRequestTransmitData, (uint32_t)&data, sizeof(data));
+}
 //==============================================================================
 inline int xTxTransmitByte(xTxT *tx, uint8_t byte)
 {

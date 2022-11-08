@@ -12,7 +12,14 @@ typedef union
   struct
   {
     /* 0x00000001 */ uint32_t SpiEnable: 1; //SPI_CR1_SPE: Serial Peripheral Enable
-    /* 0x00000002 */ uint32_t Free: 7; //Free
+    /* 0x00000002 */ uint32_t Bit1: 1; //Free
+		/* 0x00000004 */ uint32_t Bit2: 1; //Free
+		/* 0x00000008 */ uint32_t Bit3: 1; //Free
+		
+		/* 0x00000001 */ uint32_t Bit4: 1; //Free
+    /* 0x00000002 */ uint32_t Bit5: 1; //Free
+		/* 0x00000004 */ uint32_t Bit6: 1; //Free
+		/* 0x00000008 */ uint32_t Bit7: 1; //Free
     
     /* 0x00000100 */ uint32_t SUSP_ReceiveMode: 1; //SPI_CR1_MASRX: Master automatic SUSP in Receive mode
     /* 0x00000200 */ uint32_t MasterTransferStart: 1; //SPI_CR1_CSTART: Master transfer start
@@ -48,9 +55,7 @@ typedef union
 	
     /* 0x00000020 */ uint32_t FIFO_ThresholdLevel: 4; //FTHVL [3:0]: FIFO threshold level
 	
-    /* 0x00000200 */ uint32_t BehaviorOfTransmitter : 2; //Free
-    
-    /* 0x00000200 */ uint32_t Free_0 : 4; //Free
+    /* 0x00000200 */ uint32_t BehaviorOfTransmitter : 2;
   };
   uint32_t Value;
   
@@ -64,9 +69,7 @@ typedef union
 	
     /* 0x00000010 */ uint32_t ID_MasterIdleness: 4; //Master Inter-Data Idleness
 	
-    /* 0x00000200 */ uint32_t BehaviorOfTransmitter : 2; //Free
-    
-    /* 0x00000200 */ uint32_t Free_0 : 4; //Free
+    /* 0x00000200 */ uint32_t BehaviorOfTransmitter : 2; 
   };
   uint32_t Value;
   
@@ -127,22 +130,56 @@ typedef union
 {
   struct
   {
-    /*0x00000001*/ uint32_t Free0_2: 3; // Free	
+    /*0x00000001*/ uint32_t Bit0: 1; // Free	
+		/*0x00000002*/ uint32_t Bit1: 1; // Free	
+		/*0x00000004*/ uint32_t Bit2: 1; // Free	
     /*0x00000008*/ uint32_t EndOfTransfer: 1; //SPI_IFCR_EOTC: End Of Transfer flag clear
     
-    /*0x00000010*/ uint32_t TransferFilledClear: 1; //SPI_IFCR_TXTFC: Transmission Transfer Filled flag clear
-    /*0x00000020*/ uint32_t UnderrunClear: 1; //SPI_IFCR_UDRC: Underrun flag clear
-    /*0x00000040*/ uint32_t OverrunClear : 1; //SPI_IFCR_OVRC: Overrun flag clear	
-    /*0x00000080*/ uint32_t CrcErrorClear : 1; //SPI_IFCR_CRCEC: CRC Error flag clear
+    /*0x00000010*/ uint32_t TransferFilled: 1; //SPI_IFCR_TXTFC: Transmission Transfer Filled flag clear
+    /*0x00000020*/ uint32_t Underrun: 1; //SPI_IFCR_UDRC: Underrun flag clear
+    /*0x00000040*/ uint32_t Overrun : 1; //SPI_IFCR_OVRC: Overrun flag clear	
+    /*0x00000080*/ uint32_t CrcError : 1; //SPI_IFCR_CRCEC: CRC Error flag clear
     
-    /*0x00000100*/ uint32_t FrameErrorClear : 1; //SPI_IFCR_TIFREC: TI frame format error flag clear
-    /*0x00000200*/ uint32_t ModeFaultClear : 1; //SPI_IFCR_MODFC: Mode Fault flag clear
-    /*0x00000400*/ uint32_t TSERFC_Clear: 1; //SPI_IFCR_TSERFC: TSERFC flag clear	
-    /*0x00000800*/ uint32_t SUSPend_Clear : 1; //SPI_IFCR_SUSPC: SUSPend flag clear
+    /*0x00000100*/ uint32_t FrameError : 1; //SPI_IFCR_TIFREC: TI frame format error flag clear
+    /*0x00000200*/ uint32_t ModeFault : 1; //SPI_IFCR_MODFC: Mode Fault flag clear
+    /*0x00000400*/ uint32_t TSERFC: 1; //SPI_IFCR_TSERFC: TSERFC flag clear	
+    /*0x00000800*/ uint32_t Suspend : 1; //SPI_IFCR_SUSPC: Suspend flag clear
   };
   uint32_t Value;
   
 } REG_SPI_IFCR_T;
+//==============================================================================
+typedef union
+{
+  struct
+  {
+    volatile uint32_t Byte : 8;
+  };
+	
+	struct
+  {
+    volatile uint32_t HalfWord : 16;
+  };
+	
+  uint32_t Word;
+  
+} REG_SPI_TXDR_T;
+//==============================================================================
+typedef union
+{
+  struct
+  {
+    volatile uint32_t Byte : 8;
+  };
+	
+	struct
+  {
+    volatile uint32_t HalfWord : 16;
+  };
+	
+  uint32_t Word;
+  
+} REG_SPI_RXDR_T;
 //==============================================================================
 typedef union
 {
@@ -210,32 +247,32 @@ typedef union
 //==============================================================================
 typedef struct
 {
-  volatile REG_SPI_CR1_T CR1; //SPI control register 1
-  volatile REG_SPI_CR2_T CR2; //SPI control register 2
+  volatile REG_SPI_CR1_T Control1; //SPI/I2S Control register 1 
+  volatile REG_SPI_CR2_T Control2; //PI Control register 2
   
-  volatile uint32_t CFG1; //SPI Status register
-  volatile uint32_t CFG2; //SPI Status register
+  volatile REG_SPI_CFG1_T Config1; //SPI Configuration register 1
+  volatile REG_SPI_CFG2_T Config2; //SPI Configuration register 2
   
-  volatile REG_SPI_IER_T IER; //SPI data register
-  volatile REG_SPI_SR_T SR; //SPI data register
-  volatile REG_SPI_IFCR_T IFCR; //SPI data register
+  volatile REG_SPI_IER_T Interapt; //SPI/I2S Interrupt Enable register
+  volatile REG_SPI_SR_T Status; //SPI/I2S Status register
+  volatile REG_SPI_IFCR_T Clear; //SPI/I2S Interrupt/Status flags clear register
   
-  volatile uint32_t RESERVED0; //Reserved
+  volatile uint32_t RESERVED0; //Reserved, 0x1C 
   
-  volatile uint32_t TXDR; //SPI data register
+  volatile REG_SPI_TXDR_T TxData; //SPI/I2S Transmit data register
   
   volatile uint32_t RESERVED1[3]; //Reserved, 0x24-0x2C
   
-  volatile uint32_t RXDR; //SPI data register
+  volatile REG_SPI_RXDR_T RxData; //SPI/I2S Receive data register
   
   volatile uint32_t RESERVED2[3]; //Reserved, 0x34-0x3C
   
-  volatile uint32_t CRCPOLY; //SPI data register
-  volatile uint32_t TXCRC; //SPI data register
-  volatile uint32_t RXCRC; //SPI data register
-  volatile uint32_t UDRDR; //SPI data register
-  volatile uint32_t I2SCFGR; //SPI data register
+  volatile uint32_t CRC_Polynomial; //SPI CRC Polynomial register
+  volatile REG_SPI_TXCRCR_T TxCRC; //SPI Transmitter CRC register
+  volatile REG_SPI_RXCRCR_T RxCRC; //SPI Receiver CRC register
+  volatile uint32_t UnderrunData; //SPI Underrun data register
+  volatile REG_SPI_I2SCFGR_T I2S_Configuration; //I2S Configuration register
   
-} REG_SPI_REG_T;
+} REG_SPI_T;
 //==============================================================================
 #endif /* REGISTERS_STM32H7XX_SPI_H_ */

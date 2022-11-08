@@ -13,7 +13,7 @@ void xRxReceiverReceive(xRxReceiverT* receiver, uint8_t *data, uint32_t data_siz
       receiver->Interface->EventListener(receiver,
 																				xRxReceiverEventBufferIsFull,
 																				(uint32_t)receiver->Buffer,
-																				receiver->BufferSize);
+																				receiver->BytesReceived);
 			receiver->BytesReceived = 0;
     }    
     else if(data[i] == '\r')
@@ -21,7 +21,7 @@ void xRxReceiverReceive(xRxReceiverT* receiver, uint8_t *data, uint32_t data_siz
 			receiver->Interface->EventListener(receiver,
 																				xRxReceiverEventEndLine,
 																				(uint32_t)receiver->Buffer,
-																				receiver->BufferSize - 1);
+																				receiver->BytesReceived - 1);
     }
   }
 }

@@ -1,18 +1,20 @@
 //==============================================================================
-#ifndef CAROUSEL_COMPONENT_H
-#define CAROUSEL_COMPONENT_H
+#ifndef _CAROUSEL_COMPONENT_H
+#define _CAROUSEL_COMPONENT_H
 //------------------------------------------------------------------------------
 #ifdef __cplusplus
  extern "C" {
 #endif 
 //==============================================================================
-#include "Controls/Carousel_Control.h"
+#include "Carousel/Controls/Carousel.h"
 //==============================================================================
+extern CarouselT Carousel;
 
+xResult CarouselComponentInit(void* parent);
 //==============================================================================
 #ifdef __cplusplus
 }
 #endif
 //------------------------------------------------------------------------------
-#endif /* CAROUSEL_COMPONENT_H */
+#endif
 

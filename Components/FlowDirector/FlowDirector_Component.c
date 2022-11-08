@@ -1,39 +1,32 @@
 //==============================================================================
-#include "RGBCups_Components.h"
+#include "FlowDirector_Component.h"
+#include "FlowDirector/Adapters/Servo/FlowDirector_ServoAdapter.h"
+#include "FlowDirector/Adapters/Sensors/FlowDirector_SensorsAdapter.h"
 //==============================================================================
-WS2812_BufT data_buffer_cups_12[(RGB_CUPS_SYNC_START_DATA_COUNT
-														+ RGB_CUPS_DATA_BUFFER_SIZE_CUP1
-														+ RGB_CUPS_DATA_BUFFER_SIZE_CUP2
-														+ RGB_CUPS_SYNC_END_DATA_COUNT)];
-//------------------------------------------------------------------------------
-WS2812_BufT data_buffer_cups_34[(RGB_CUPS_SYNC_START_DATA_COUNT
-														+ RGB_CUPS_DATA_BUFFER_SIZE_CUP3
-														+ RGB_CUPS_DATA_BUFFER_SIZE_CUP4
-														+ RGB_CUPS_SYNC_END_DATA_COUNT)];
-//==============================================================================
-static RGBCupAdapterT AdapterCup12 =
+FlowDirectorT FlowDirector;
+
+FlowDirectorRequestSetPositionT FlowDirectorRequestSetPosition =
 {
-	.DMA = DMA2_Stream5,
-	
-	.Timer = TIM1,
-	.PWM_Channel = 2,
-	
-	.DrawMemory = data_buffer_cups_12,
-	.DrawMemorySize = sizeof(data_buffer_cups_12) / sizeof(data_buffer_cups_12[0]),
-};
-//------------------------------------------------------------------------------
-static RGBCupAdapterT AdapterCup34 =
-{
-	.DMA = DMA2_Stream5,
-	
-	.Timer = TIM1,
-	.PWM_Channel = 3,
-	
-	.DrawMemory = data_buffer_cups_34,
-	.DrawMemorySize = sizeof(data_buffer_cups_34) / sizeof(data_buffer_cups_12[0])
+	.Speed = 100.0
 };
 //==============================================================================
-static void EventListener(void* cup, RGBCupEventSelector event, uint32_t args, uint32_t count)
+inline void FlowDirectorComponentHandler()
+{
+	FlowDirectorHandler(&FlowDirector);
+	
+	if (FlowDirector.Motor.Status.Motion == FlowDirectorMotionStateStopped
+	&& (FlowDirectorRequestSetPosition.Angle != FlowDirector.Motor.TotalAngle))
+	{
+		FlowDirectorMotorSetPosition(&FlowDirector, &FlowDirectorRequestSetPosition);
+	}
+}
+//------------------------------------------------------------------------------
+inline void FlowDirectorComponentTimeSynchronization()
+{
+	FlowDirectorTimeSynchronization(&FlowDirector);
+}
+//==============================================================================
+static void FlowDirectorEventListener(FlowDirectorT* FlowDirector, FlowDirectorEventSelector event, uint32_t args, uint32_t count)
 {
 	switch ((uint8_t)event)
 	{
@@ -41,49 +34,49 @@ static void EventListener(void* cup, RGBCupEventSelector event, uint32_t args, u
 		default : return;
 	}
 }
-//==============================================================================
-const static RGBCupInterfaceT Interface =
+//------------------------------------------------------------------------------
+static xResult FlowDirectorRequestListener(FlowDirectorT* FlowDirector, FlowDirectorRequestSelector event, uint32_t args, uint32_t count)
 {
-	.EventListener = (RGBCupsEventListener)EventListener
+	switch ((uint8_t)event)
+	{
+		case FlowDirectorRequestDelay:
+			HAL_Delay(args);
+			break;
+		
+		default : return xResultRequestIsNotFound;
+	}
+	
+	return xResultAccept;
+}
+//------------------------------------------------------------------------------
+FlowDirectorTerminalT FlowDirectorTerminal =
+{
+	.EventListener = (FlowDirectorEventListenerT)FlowDirectorEventListener,
+	.RequestListener = (FlowDirectorRequestListenerT)FlowDirectorEventListener,
+};
+//------------------------------------------------------------------------------
+FlowDirectorServoAdapterT FlowDirectorServoAdapter =
+{
+	.PWM_Timer = (REG_TIM_T*)FLOW_DIR_MOTOR_TIMER_PWM1,
+	.PWM_Channel = FLOW_DIR_MOTOR_TIMER_PWM1_CHANNEL,
+};
+//------------------------------------------------------------------------------
+FlowDirectorSensorsAdapterT FlowDirectorSensorsAdapter =
+{
+	.OvercurrentSensorPort = BREW_GROUP_MOTOR_OVERCURRENT_SENSOR_GPIO_Port,
+	.OvercurrentSensorPin = BREW_GROUP_MOTOR_OVERCURRENT_SENSOR_Pin,
+	.OvercurrentSensorOnStateLogicLevel = 0,
 };
 //==============================================================================
-int RGBCups_ComponentInit(void* parent)
+xResult FlowDirectorComponentInit(void* parent)
 {
-	RGBCups_Init(parent, (RGBCupInterfaceT*)&Interface);
+	FlowDirectorInit(&FlowDirector, parent, &FlowDirectorTerminal);
 	
-	uint16_t buffer_offset = RGB_CUPS_SYNC_START_DATA_COUNT;
-	RGBCups[RGBCupNumber1].DataBuffer = data_buffer_cups_12 + buffer_offset;
-	RGBCups[RGBCupNumber1].DataBufferSize = RGB_CUPS_DATA_BUFFER_SIZE_CUP1;
-	buffer_offset += RGB_CUPS_DATA_BUFFER_SIZE_CUP1;
+	FlowDirectorSensorsAdapterInit(&FlowDirector.Sensors, &FlowDirectorSensorsAdapter);
+	FlowDirectorSensorsInit(&FlowDirector);
 	
-	RGBCups[RGBCupNumber2].DataBuffer = data_buffer_cups_12 + buffer_offset;
-	RGBCups[RGBCupNumber2].DataBufferSize = RGB_CUPS_DATA_BUFFER_SIZE_CUP2;
-	
-	RGBCup_AdapterInit(&RGBCups[RGBCupNumber1], &AdapterCup12);
-	RGBCup_AdapterInit(&RGBCups[RGBCupNumber2], &AdapterCup12);
-	//----------------------------------------------------------------------------
-	buffer_offset = RGB_CUPS_SYNC_START_DATA_COUNT;
-	RGBCups[RGBCupNumber3].DataBuffer = data_buffer_cups_34 + buffer_offset;
-	RGBCups[RGBCupNumber3].DataBufferSize = RGB_CUPS_DATA_BUFFER_SIZE_CUP3;
-	buffer_offset += RGB_CUPS_DATA_BUFFER_SIZE_CUP3;
-	
-	RGBCups[RGBCupNumber4].DataBuffer = data_buffer_cups_34 + buffer_offset;
-	RGBCups[RGBCupNumber4].DataBufferSize = RGB_CUPS_DATA_BUFFER_SIZE_CUP4;
-	
-	RGBCup_AdapterInit(&RGBCups[RGBCupNumber3], &AdapterCup34);
-	RGBCup_AdapterInit(&RGBCups[RGBCupNumber4], &AdapterCup34);
-	//----------------------------------------------------------------------------
-	WS2812_PixelT Pixel =
-	{
-		.Green = 0x01,
-		.Red = 0x01,
-		.Blue = 0x01
-	};
-	
-	WS2812_FillPixels(&RGBCups[RGBCupNumber1].Driver, Pixel, 0, 8);
-	WS2812_FillPixels(&RGBCups[RGBCupNumber2].Driver, Pixel, 0, 8);
-	WS2812_FillPixels(&RGBCups[RGBCupNumber3].Driver, Pixel, 0, 8);
-	WS2812_FillPixels(&RGBCups[RGBCupNumber4].Driver, Pixel, 0, 8);
+	FlowDirectorServoAdapterInit(&FlowDirector.Motor, &FlowDirectorServoAdapter);
+	FlowDirectorMotorInit(&FlowDirector);
 	
   return 0;
 }

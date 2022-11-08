@@ -60,7 +60,7 @@ typedef xResult (*xTxActionSetValue)(void* tx, xTxValueSelector selector, uint32
 //==============================================================================
 typedef enum
 {
-	xTxStatusFree = 1U,
+	xTxStatusIdle,
 	xTxStatusIsTransmits,
 	xTxStatusError
 	
@@ -128,6 +128,7 @@ extern int xTxGetValue(xTxT* tx, xTxValueSelector selector);
 
 extern int xTxTransmitData(xTxT* tx, void* data, uint32_t data_size);
 extern int xTxTransmitByte(xTxT* tx, uint8_t byte);
+extern int xTxTransmitWord(xTxT* tx, uint32_t data);
 extern int xTxTransmitString(xTxT* tx, char* str);
 
 xResult xTxInit(xTxT* tx,

@@ -9,9 +9,9 @@
 #include "TCPServer/TCPServer_Types.h"
 #include "TCPServer/Adapters/TCPServer_Adapters.h"
 //==============================================================================
-void TCPServer_Handler(TCPServerT* server);
+void TCPServerHandler(TCPServerT* server);
 
-TCPServerResult TCPServer_Init(TCPServerT* server, void* parent, TCPServerInterfaceT* interface);
+xResult TCPServerInit(TCPServerT* server, void* parent, TCPServerInterfaceT* interface);
 //==============================================================================
 #ifdef __cplusplus
 }

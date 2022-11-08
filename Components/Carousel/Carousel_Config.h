@@ -1,28 +1,32 @@
 //==============================================================================
-#ifndef RGB_CUPS_CONFIG_H
-#define RGB_CUPS_CONFIG_H
+#ifndef _CAROUSEL_CONFIG_H
+#define _CAROUSEL_CONFIG_H
 //------------------------------------------------------------------------------
 #ifdef __cplusplus
- extern "C" {
-#endif 
+extern "C" {
+#endif
 //==============================================================================
-#include "WS2812/WS2812.h"
+#include "Carousel_Info.h"
 //==============================================================================
-#define RGB_CUPS_PIXELS_COUNT_CUP1 8
-#define RGB_CUPS_PIXELS_COUNT_CUP2 8
-#define RGB_CUPS_PIXELS_COUNT_CUP3 8
-#define RGB_CUPS_PIXELS_COUNT_CUP4 8
+#define CAROUSEL_DEFAULT_POSITION_CALIBRATION_VALUE 2028.0
+#define CAROUSEL_DEFAULT_POSITION_OFFSET 9.0
 
-#define RGB_CUPS_SYNC_START_DATA_COUNT 50
-#define RGB_CUPS_SYNC_END_DATA_COUNT 1
+#define CAROUSEL_DEFAULT_MOVE_STAR_POWER 2.0
+#define CAROUSEL_DEFAULT_MOVE_STOP_POWER 2.0
+#define CAROUSEL_DEFAULT_MOVE_ACCELERATION 150.0
+#define CAROUSEL_DEFAULT_MOVE_DECCELERATION 100.0
+#define CAROUSEL_DEFAULT_MOVE_POWER 80
 
-#define RGB_CUPS_DATA_BUFFER_SIZE_CUP1 (RGB_CUPS_PIXELS_COUNT_CUP1 * WS2812_BITS_IN_PIXEL)
-#define RGB_CUPS_DATA_BUFFER_SIZE_CUP2 (RGB_CUPS_PIXELS_COUNT_CUP2 * WS2812_BITS_IN_PIXEL)
-#define RGB_CUPS_DATA_BUFFER_SIZE_CUP3 (RGB_CUPS_PIXELS_COUNT_CUP2 * WS2812_BITS_IN_PIXEL)
-#define RGB_CUPS_DATA_BUFFER_SIZE_CUP4 (RGB_CUPS_PIXELS_COUNT_CUP2 * WS2812_BITS_IN_PIXEL)
+#define CAROUSEL_DEFAULT_POSITION_OFFSET 9.0
+
+#define CAROUSEL_PODS_COUNT 20
+
+#define CAROUSEL_POD_POSITION_ANGLE_STEP (360.0 / CAROUSEL_PODS_COUNT)
+#define CAROUSEL_POD_POSITION_ANGLE_STEP_DEVIATION 0.10
+#define CAROUSEL_POD_POSITION_ANGLE_STEP_DEVIATION_ERROR (CAROUSEL_POD_POSITION_ANGLE_STEP_DEVIATION)
 //==============================================================================
 #ifdef __cplusplus
 }
 #endif
 //------------------------------------------------------------------------------
-#endif /* RGB_CUPS_CONFIG_H */
+#endif

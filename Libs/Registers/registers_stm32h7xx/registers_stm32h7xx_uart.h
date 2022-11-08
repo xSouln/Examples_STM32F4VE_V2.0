@@ -93,8 +93,8 @@ typedef union
 
     /* 0x00000010 */ uint32_t SmartcardNACK_Enable: 1; //USART_CR3_NACK /*!< SmartCard NACK enable */
     /* 0x00000020 */ uint32_t SmartcardEnable: 1; //USART_CR3_SCEN /*!< SmartCard mode enable */
-    /* 0x00000040 */ uint32_t DMA_EnableReceiver: 1; //USART_CR3_DMAR /*!< DMA Enable Receiver */
-    /* 0x00000080 */ uint32_t DMA_EnableTransmitter: 1; //USART_CR3_DMAT /*!< DMA Enable Transmitter */
+    /* 0x00000040 */ uint32_t RxDMA_Enable: 1; //USART_CR3_DMAR /*!< DMA Enable Receiver */
+    /* 0x00000080 */ uint32_t TxDMA_EnableT: 1; //USART_CR3_DMAT /*!< DMA Enable Transmitter */
 
     /* 0x00000100 */ uint32_t RTS_Enable: 1; //USART_CR3_RTSE /*!< RTS Enable */
     /* 0x00000200 */ uint32_t CTS_Enable: 1; //USART_CR3_CTSE /*!< CTS Enable */
@@ -280,21 +280,21 @@ typedef union
 //==============================================================================
 typedef struct
 {
-  volatile REG_UART_CR1_T CR1;/*!< USART Control register 1,                 Address offset: 0x00 */
-  volatile REG_UART_CR2_T CR2;/*!< USART Control register 2,                 Address offset: 0x04 */
-  volatile REG_UART_CR3_T CR3;/*!< USART Control register 3,                 Address offset: 0x08 */
-  volatile REG_UART_BRR_T BRR;/*!< USART Baud rate register,                 Address offset: 0x0C */
+  volatile REG_UART_CR1_T Control1;/*!< USART Control register 1,                 Address offset: 0x00 */
+  volatile REG_UART_CR2_T Control2;/*!< USART Control register 2,                 Address offset: 0x04 */
+  volatile REG_UART_CR3_T Control3;/*!< USART Control register 3,                 Address offset: 0x08 */
+  volatile REG_UART_BRR_T BaudRate;/*!< USART Baud rate register,                 Address offset: 0x0C */
 
-  volatile REG_UART_GTPR_T GTPR;/*!< USART Guard time and prescaler register,  Address offset: 0x10 */
-  volatile REG_UART_RTOR_T RTOR;/*!< USART Receiver Time Out register,         Address offset: 0x14 */
-  volatile REG_UART_RQR_T RQR;/*!< USART Request register,                   Address offset: 0x18 */
-  volatile REG_UART_ISR_T ISR;/*!< USART Interrupt and status register,      Address offset: 0x1C */
+  volatile REG_UART_GTPR_T GuardTimeAndPrescaler;/*!< USART Guard time and prescaler register,  Address offset: 0x10 */
+  volatile REG_UART_RTOR_T ReceiverTimeOut;/*!< USART Receiver Time Out register,         Address offset: 0x14 */
+  volatile REG_UART_RQR_T Request;/*!< USART Request register,                   Address offset: 0x18 */
+  volatile REG_UART_ISR_T InterruptAndStatus;/*!< USART Interrupt and status register,      Address offset: 0x1C */
 
-  volatile REG_UART_ICR_T ICR;/*!< USART Interrupt flag Clear register,      Address offset: 0x20 */
-  volatile REG_UART_RDR_T RDR;/*!< USART Receive Data register,              Address offset: 0x24 */
-  volatile REG_UART_TDR_T TDR;/*!< USART Transmit Data register,             Address offset: 0x28 */
-  volatile REG_UART_PRESC_T PRESC;/*!< USART clock Prescaler register,           Address offset: 0x2C */
+  volatile REG_UART_ICR_T InterruptClear;/*!< USART Interrupt flag Clear register,      Address offset: 0x20 */
+  volatile uint32_t RxData;/*!< USART Receive Data register,              Address offset: 0x24 */
+  volatile uint32_t TxData;/*!< USART Transmit Data register,             Address offset: 0x28 */
+  volatile REG_UART_PRESC_T ClockPrescaler;/*!< USART clock Prescaler register,           Address offset: 0x2C */
   
-} REG_UART_REG_T; //USART_TypeDef
+} REG_UART_T; //USART_TypeDef
 //==============================================================================
 #endif /* REGISTERS_STM32H7XX_UART_H_ */

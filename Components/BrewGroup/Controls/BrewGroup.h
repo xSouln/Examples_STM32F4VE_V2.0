@@ -1,22 +1,30 @@
 //==============================================================================
-#ifndef BREW_GROUP_CONTROL_H
-#define BREW_GROUP_CONTROL_H
+#ifndef _BREW_GROUP_H
+#define _BREW_GROUP_H
 //------------------------------------------------------------------------------
 #ifdef __cplusplus
- extern "C" {
-#endif 
+extern "C" {
+#endif
 //==============================================================================
-#define BREW_GROUP_DEVICE_KEY 0x75632563
+#include "BrewGroup_Types.h"
+#include "BrewGroup_Motor.h"
+#include "BrewGroup_Sensors.h"
+#include "Termostat/Controls/Thermostat.h"
+#include "FlowMeter/Controls/FlowMeter.h"
+#include "WaterPump/Controls/WaterPump.h"
 //==============================================================================
-#include "Adapters/BrewGroup_Config.h"
-#include "Adapters/BrewGroup_Adapter.h"
-#include "Communications/BrewGroup_Requests.h"
-#include "Communications/BrewGroup_Transactions.h"
-//==============================================================================
+xResult BrewGroupInit(BrewGroupT* BrewGroup, void* parent, BrewGroupTerminalT* terminal);
+void BrewGroupHandler(BrewGroupT* BrewGroup);
+void BrewGroupTimeSynchronization(BrewGroupT* device);
 
+xResult BrewGroupSetMotorOptions(BrewGroupT* device, BrewGroupMotorOptionsT* request);
+
+void BrewGroupStop(BrewGroupT* device);
+xResult BrewGroupOpen(BrewGroupT* device);
+xResult BrewGroupClose(BrewGroupT* device);
 //==============================================================================
 #ifdef __cplusplus
 }
 #endif
 //------------------------------------------------------------------------------
-#endif /* BREW_GROUP_CONTROL_H */
+#endif

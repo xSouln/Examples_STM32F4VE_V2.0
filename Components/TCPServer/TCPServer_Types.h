@@ -7,20 +7,15 @@
 #endif 
 //==============================================================================
 #include "main.h"
+#include "Common/xTypes.h"
 #include "Common/xTx.h"
 #include "Common/xRx.h"
 #include "TCPServer_Config.h"
 #include "TCPServer_Info.h"
 #include "w5500.h"
 #include "socket.h"
+#include "Adapters/TCPServer_AdapterBase.h"
 //==============================================================================
-typedef enum
-{
-	TCPServerResultAccept,
-	TCPServerResultError
-	
-} TCPServerResult;
-//------------------------------------------------------------------------------
 typedef enum
 {
 	TCPServerEventUpdateState = 1U,
@@ -67,47 +62,48 @@ typedef struct
 {
   uint8_t Ip[4];
   uint8_t Gateway[4];
-  uint8_t Subnet [4];
+  uint8_t NetMask [4];
   uint8_t Mac[6];
 	
 } TCPServerInfoT;
 //------------------------------------------------------------------------------
-typedef void (*TCPServerActionHandler)(void* server);
-
-typedef void (*TCPServerEventListener)(void* server, TCPServerEventSelector event, uint32_t args, uint32_t count);
-typedef xResult (*TCPServerRequestListener)(void* server, TCPServerRequestSelector selector, uint32_t args, uint32_t count);
-
-typedef int (*TCPServerActionGetValue)(void* server, TCPServerValueSelector selector);
-typedef xResult (*TCPServerActionSetValue)(void* server, TCPServerValueSelector selector, uint32_t value);
+typedef void (*TCPServerEventListenerT)(void* server, TCPServerEventSelector event, uint32_t args, uint32_t count);
+typedef xResult (*TCPServerRequestListenerT)(void* server, TCPServerRequestSelector event, uint32_t args, uint32_t count);
 //------------------------------------------------------------------------------
 typedef struct
 {
-	TCPServerActionHandler Handler;
-	
-	TCPServerRequestListener RequestListener;
-	
-	TCPServerActionGetValue GetValue;
-	TCPServerActionSetValue SetValue;
-	
-} TCPServerAdapterInterfaceT;
-//------------------------------------------------------------------------------
-typedef struct
-{
-	TCPServerEventListener EventListener;
+	TCPServerEventListenerT EventListener;
+	TCPServerRequestListenerT RequestListener;
 	
 } TCPServerInterfaceT;
+//------------------------------------------------------------------------------
+typedef union
+{
+	struct
+	{
+		xResult InitResult : 4;
+		xResult AdapterInitResult : 4;
+		xResult RxInitResult : 4;
+		xResult TxInitResult : 4;
+	};
+	
+	uint32_t Value;
+	
+} TCPServerStatusT;
 //------------------------------------------------------------------------------
 typedef struct
 {
 	OBJECT_HEADER;
 	
-	void* Adapter;
+	TCPServerAdapterBaseT Adapter;
 	
-	TCPServerAdapterInterfaceT AdapterInterface;
 	TCPServerInterfaceT* Interface;
 	
 	TCPServerSockT Sock;
-  TCPServerInfoT Info;
+  TCPServerInfoT Options;
+	TCPServerInfoT Info;
+	
+	TCPServerStatusT Status;
   
   xTxT Tx;
   xRxT Rx;

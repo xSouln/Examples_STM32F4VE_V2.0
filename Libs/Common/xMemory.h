@@ -8,7 +8,10 @@
 //==============================================================================
 #include "xTypes.h"
 //==============================================================================
-uint32_t xMemoryCopy(void* destiny, void* data, uint32_t size);
+int xMemoryCopy(void* destiny, void* data, uint32_t size);
+int xMemoryCompare(void* data1, void* data2, uint32_t size);
+int xMemoryCheckLincs(void* links, uint32_t size);
+int xMemorySet(void* destiny, uint8_t value, uint32_t size);
 //==============================================================================
 #ifdef __cplusplus
 }

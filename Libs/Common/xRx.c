@@ -31,6 +31,16 @@ inline int xRxReceive(xRxT* rx, uint8_t* data, uint32_t size)
 	return rx->Interface->RequestListener(rx, xRxRequestReceive, (uint32_t)data, size);
 }
 //==============================================================================
+xResult xRxPutInResponseBuffer(xRxT* rx, void* data, uint32_t size)
+{
+	return rx->Interface->RequestListener(rx, xRxRequestPutInResponseBuffer, (uint32_t)data, size);
+}
+//------------------------------------------------------------------------------
+xResult xRxClearResponseBuffer(xRxT* rx)
+{
+	return rx->Interface->RequestListener(rx, xRxRequestClearBuffer, 0, 0);
+}
+//==============================================================================
 xResult xRxInit(xRxT* rx,
 								void* parent,
 								xTxAdapterT* adapter,

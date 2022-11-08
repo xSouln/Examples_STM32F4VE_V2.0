@@ -6,12 +6,12 @@
  extern "C" {
 #endif 
 //==============================================================================
-#include "SerialPort/Adapters/SerialPort_Adapters.h"
+//#include "SerialPort/Adapters/SerialPort_Adapters.h"
 #include "SerialPort/SerialPort_Types.h"
 //==============================================================================
-void SerialPort_Handler(SerialPortT* serial_port);
+void SerialPortHandler(SerialPortT* serial_port);
 
-SerialPortResult SerialPort_Init(SerialPortT* serial_port, void* parent, SerialPortInterfaceT* interface);
+xResult SerialPortInit(SerialPortT* serial_port, void* parent, SerialPortInterfaceT* interface);
 //==============================================================================
 #ifdef __cplusplus
 }
