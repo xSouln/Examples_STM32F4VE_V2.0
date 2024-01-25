@@ -1,0 +1,4 @@
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xDevice/xService.c:50:9:xServiceSubscribeById	48	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xDevice/xService.c:67:7:xServiceGetPort	40	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xDevice/xService.c:77:7:xServiceGetTransferLayer	40	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xDevice/xService.c:113:9:xServiceInit	16	static

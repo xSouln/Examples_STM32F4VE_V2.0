@@ -1,0 +1,4 @@
+C:/Users/Afhib/Desktop/Projects/xLibs/Peripherals/xTimer/xTimer.c:25:6:xTimerHandler	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Peripherals/xTimer/xTimer.c:30:6:xTimerCoreBind	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Peripherals/xTimer/xTimer.c:48:6:xTimerDeInit	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Peripherals/xTimer/xTimer.c:53:9:xTimerInit	16	static

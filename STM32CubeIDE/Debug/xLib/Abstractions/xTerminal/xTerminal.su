@@ -1,0 +1,7 @@
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xTerminal/xTerminal.c:38:6:xTerminalTimeSynchronization	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xTerminal/xTerminal.c:46:9:xTerminalAddObject	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xTerminal/xTerminal.c:52:6:xTerminalRemoveObject	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xTerminal/xTerminal.c:58:9:xTerminalAddGroup	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xTerminal/xTerminal.c:64:6:xTerminalRemoveGroup	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xTerminal/xTerminal.c:69:6:xTerminalTrace	40	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xTerminal/xTerminal.c:96:9:xTerminalInit	16	static

@@ -1,0 +1,11 @@
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xList.c:13:13:xListLock	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xList.c:19:13:xListUnLock	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xList.c:24:14:xListStartEnumeration	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xList.c:31:13:xListStopEnumeration	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xList.c:36:9:xListAdd	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xList.c:69:9:xListRemove	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xList.c:126:9:xListRemoveElement	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xList.c:182:16:xListContains	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xList.c:201:16:xListGetElementByIndex	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xList.c:221:7:xListGetObjectByIndex	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xList.c:242:7:xListEnumeration	32	static

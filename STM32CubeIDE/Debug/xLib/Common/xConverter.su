@@ -1,0 +1,4 @@
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xConverter.c:8:10:xConverterStrToUInt64	72	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xConverter.c:31:5:xConverterUInt64ToStr	40	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xConverter.c:68:10:xConverterSwapUInt64	72	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xConverter.c:76:10:xConverterStrHexToUInt64	56	static

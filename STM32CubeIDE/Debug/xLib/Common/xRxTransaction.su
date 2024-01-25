@@ -1,0 +1,5 @@
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xRxTransaction.c:5:18:xRxTransactionIdentify	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xRxTransaction.c:19:9:xRxTransactionTransmitEvent	64	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xRxTransaction.c:101:9:xRxTransactionError	48	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xRxTransaction.c:157:9:xRxTransactionAsyncResponse	40	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xRxTransaction.c:199:9:xRxTransactionRequestReceiver	64	static

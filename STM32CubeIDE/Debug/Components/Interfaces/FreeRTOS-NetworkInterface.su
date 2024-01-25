@@ -1,0 +1,5 @@
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Interfaces/FreeRTOS-NetworkInterface.c:16:10:ulApplicationGetNextSequenceNumber	32	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Interfaces/FreeRTOS-NetworkInterface.c:28:6:vApplicationIPNetworkEventHook	16	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Interfaces/FreeRTOS-NetworkInterface.c:47:13:pcApplicationHostnameHook	4	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Interfaces/FreeRTOS-NetworkInterface.c:53:12:xApplicationGetRandomNumber	24	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Interfaces/FreeRTOS-NetworkInterface.c:62:6:vApplicationPingReplyHook	16	static

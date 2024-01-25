@@ -1,0 +1,7 @@
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xWiFi/xWiFi.c:21:6:xWiFiHandler	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xWiFi/xWiFi.c:33:9:xWiFiSetConfig	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xWiFi/xWiFi.c:46:9:xWiFiGetConfig	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xWiFi/xWiFi.c:53:9:xWiFiGetAddress	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xWiFi/xWiFi.c:60:9:xWiFiEnable	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xWiFi/xWiFi.c:72:9:xWiFiDisable	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xWiFi/xWiFi.c:102:9:xWiFiInit	24	static

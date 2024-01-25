@@ -1,0 +1,7 @@
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Interfaces/xSystem-Interface.c:20:14:xSystemGetTime	8	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Interfaces/xSystem-Interface.c:25:6:xSystemDelay	16	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Interfaces/xSystem-Interface.c:30:6:xSystemEnableIRQ	16	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Interfaces/xSystem-Interface.c:35:6:xSystemDisableIRQ	16	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Interfaces/xSystem-Interface.c:40:6:xSystemReset	16	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Interfaces/xSystem-Interface.c:45:10:xSystemGetRandom	16	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Interfaces/xSystem-Interface.c:58:9:xSystemInterfaceInit	8	static

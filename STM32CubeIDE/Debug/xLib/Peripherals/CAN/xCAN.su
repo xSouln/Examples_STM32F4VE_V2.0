@@ -1,0 +1,7 @@
+C:/Users/Afhib/Desktop/Projects/xLibs/Peripherals/CAN/xCAN.c:25:6:xCAN_Handler	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Peripherals/CAN/xCAN.c:30:9:xCAN_RegisterIRQ	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Peripherals/CAN/xCAN.c:38:9:xCAN_RegisterRxIRQ	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Peripherals/CAN/xCAN.c:46:9:xCAN_RegisterTxIRQ	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Peripherals/CAN/xCAN.c:54:9:xCAN_CoreBind	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Peripherals/CAN/xCAN.c:69:6:xCAN_DeInit	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Peripherals/CAN/xCAN.c:74:9:xCAN_Init	16	static

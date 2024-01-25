@@ -1,0 +1,16 @@
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:20:13:xSystemEventTimeStep	4	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:27:13:xSystemTrace	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:32:13:xSystemTimeSynchronization	8	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:39:13:xSystemDelay	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:49:13:xSystemOSDelay	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:54:21:xSystemGetTime	4	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:59:13:xSystemInterfaceHandler	4	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:64:17:xSystemGetRandom	4	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:69:16:xSystemInterfaceInit	4	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:74:13:xSystemEnableIRQ	4	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:79:13:xSystemDisableIRQ	4	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:84:13:xSystemReset	4	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:89:13:xSystemError	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:101:6:xSystemHandler	4	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:110:6:xSystemInit	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xSystem/xSystem.c:116:6:xSystemLayersInit	8	static

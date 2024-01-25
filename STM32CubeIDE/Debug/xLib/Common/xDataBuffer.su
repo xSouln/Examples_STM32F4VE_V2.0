@@ -1,0 +1,4 @@
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xDataBuffer.c:13:9:xDataBufferAdd	32	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xDataBuffer.c:37:9:xDataBufferClear	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xDataBuffer.c:45:5:xDataBufferGetFreeSize	16	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Common/xDataBuffer.c:52:9:xDataBufferInit	24	static

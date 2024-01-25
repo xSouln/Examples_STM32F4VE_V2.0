@@ -1,0 +1,6 @@
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Components.c:37:9:ComponentsRequestListener	24	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Components.c:42:6:ComponentsEventListener	24	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Components.c:50:6:ComponentsHandler	16	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Components.c:88:13:ComponentsTimeSynchronization	8	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Components.c:100:6:Timer4_IRQ_Handler	16	static
+C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Components/Components.c:114:9:ComponentsInit	16	static

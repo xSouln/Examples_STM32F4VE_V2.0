@@ -1,0 +1,9 @@
+C:/Users/Afhib/Desktop/Projects/xLibs/Components/CAN-Ports/Adapters/STM32F4xx/CAN_Port-Adapter.c:21:13:PrivateHandler	32	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Components/CAN-Ports/Adapters/STM32F4xx/CAN_Port-Adapter.c:92:13:PrivateIRQ	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Components/CAN-Ports/Adapters/STM32F4xx/CAN_Port-Adapter.c:97:13:PrivateRxIRQ	48	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Components/CAN-Ports/Adapters/STM32F4xx/CAN_Port-Adapter.c:128:13:PrivateTxIRQ	32	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Components/CAN-Ports/Adapters/STM32F4xx/CAN_Port-Adapter.c:157:16:PrivateRequestListener	40	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Components/CAN-Ports/Adapters/STM32F4xx/CAN_Port-Adapter.c:207:13:PrivateEventListener	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Components/CAN-Ports/Adapters/STM32F4xx/CAN_Port-Adapter.c:217:12:PrivateTransmit	40	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Components/CAN-Ports/Adapters/STM32F4xx/CAN_Port-Adapter.c:245:12:PrivateReceive	24	static
+C:/Users/Afhib/Desktop/Projects/xLibs/Components/CAN-Ports/Adapters/STM32F4xx/CAN_Port-Adapter.c:263:9:CAN_PortAdapterInit	64	static
