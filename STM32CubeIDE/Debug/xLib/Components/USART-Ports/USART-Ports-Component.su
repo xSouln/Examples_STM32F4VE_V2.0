@@ -1,5 +1,0 @@
-C:/Users/Afhib/Desktop/Projects/xLibs/Components/USART-Ports/USART-Ports-Component.c:110:13:EventListener	48	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Components/USART-Ports/USART-Ports-Component.c:127:6:UsartPortsComponentIRQ	4	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Components/USART-Ports/USART-Ports-Component.c:136:6:UsartPortsComponentHandler	16	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Components/USART-Ports/USART-Ports-Component.c:147:6:UsartPortsComponentTimeSynchronization	4	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Components/USART-Ports/USART-Ports-Component.c:159:9:UsartPortsComponentInit	40	static

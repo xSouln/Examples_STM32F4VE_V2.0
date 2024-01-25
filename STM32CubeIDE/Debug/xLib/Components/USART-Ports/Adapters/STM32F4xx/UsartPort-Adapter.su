@@ -1,8 +1,0 @@
-C:/Users/Afhib/Desktop/Projects/xLibs/Components/USART-Ports/Adapters/STM32F4xx/UsartPort-Adapter.c:8:13:PrivateHandler	24	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Components/USART-Ports/Adapters/STM32F4xx/UsartPort-Adapter.c:29:13:PrivateIRQ	32	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Components/USART-Ports/Adapters/STM32F4xx/UsartPort-Adapter.c:57:16:PrivateRequestListener	32	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Components/USART-Ports/Adapters/STM32F4xx/UsartPort-Adapter.c:130:13:PrivateEventListener	24	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Components/USART-Ports/Adapters/STM32F4xx/UsartPort-Adapter.c:140:12:PrivateTransmit	48	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Components/USART-Ports/Adapters/STM32F4xx/UsartPort-Adapter.c:169:12:PrivateReceive	24	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Components/USART-Ports/Adapters/STM32F4xx/UsartPort-Adapter.c:174:13:PrivateRxReceiverEventListener	32	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Components/USART-Ports/Adapters/STM32F4xx/UsartPort-Adapter.c:205:9:UsartPortAdapterInit	40	static

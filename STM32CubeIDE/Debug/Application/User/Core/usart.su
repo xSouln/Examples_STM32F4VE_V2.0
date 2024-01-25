@@ -1,3 +1,0 @@
-C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Core/Src/usart.c:32:6:MX_USART1_UART_Init	8	static
-C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Core/Src/usart.c:60:6:HAL_UART_MspInit	48	static
-C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Core/Src/usart.c:112:6:HAL_UART_MspDeInit	16	static

@@ -1,7 +1,0 @@
-C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xWiFi/Communications/xWiFi-RxTransactions.c:30:16:GetCoreInfo	16	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xWiFi/Communications/xWiFi-RxTransactions.c:37:16:GetConfig	32	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xWiFi/Communications/xWiFi-RxTransactions.c:71:16:GetStatus	32	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xWiFi/Communications/xWiFi-RxTransactions.c:105:16:GetAddress	40	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xWiFi/Communications/xWiFi-RxTransactions.c:141:16:SetConfig	32	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xWiFi/Communications/xWiFi-RxTransactions.c:157:16:TryEnable	24	static
-C:/Users/Afhib/Desktop/Projects/xLibs/Abstractions/xWiFi/Communications/xWiFi-RxTransactions.c:179:16:TryDisable	24	static

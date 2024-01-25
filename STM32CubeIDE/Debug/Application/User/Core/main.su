@@ -1,4 +1,0 @@
-C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Core/Src/main.c:75:5:main	8	static
-C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Core/Src/main.c:138:6:SystemClock_Config	88	static
-C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Core/Src/main.c:191:6:HAL_TIM_PeriodElapsedCallback	16	static
-C:/Users/Afhib/Desktop/Projects/Board_STM32F4VE_V2.0/Core/Src/main.c:208:6:Error_Handler	4	static
