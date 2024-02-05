@@ -92,7 +92,8 @@
 					<sourceEntries>
 						<entry excluding="Components|xLib" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry excluding="FreeRTOS-Plus-TCP|FreeRTOS-Plus-MQTT|WaterPump|Thermocouple|Termostat|Terminal|TCPServer|Slider|SerialPort|FlowMeter|FlowDirector|CupsController|Carousel|Camera|BrewGroup" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Components"/>
-						<entry excluding="Components/CAN-Ports/Adapters/STM32F1xx|Components/CAN-Ports/Adapters/STM32F0xx|Components/USART-Ports/Adapters/STM32H7xx|Components/USART-Ports/Adapters/STM32F1xx|Components/USART-Ports/Adapters/STM32F0xx|Drivers|Registers/registers_stm32h7xx|Registers/registers_stm32f1xx|Registers/registers_stm32f0xx|Templates/WiFi|Templates/TransferLayer|Templates/Template|Templates/TCPServer|Templates/sfc_spi|Templates/SerialPort|Templates/Documents|Templates/Camera|Templates/ADC" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xLib"/>
+						<entry excluding="Drivers|Components/CAN-Ports/Adapters/STM32F1xx|Components/CAN-Ports/Adapters/STM32F0xx|Components/USART-Ports/Adapters/STM32H7xx|Components/USART-Ports/Adapters/STM32F1xx|Components/USART-Ports/Adapters/STM32F0xx|Registers/registers_stm32h7xx|Registers/registers_stm32f1xx|Registers/registers_stm32f0xx|Templates/WiFi|Templates/TransferLayer|Templates/Template|Templates/TCPServer|Templates/sfc_spi|Templates/SerialPort|Templates/Documents|Templates/Camera|Templates/ADC" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xLib"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xLib/Drivers/AHT10"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -171,7 +172,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="Components/FreeRTOS-Plus-TCP|Components/FreeRTOS-Plus-MQTT|xLib/Components/CAN-Ports/Adapters/STM32F1xx|xLib/Components/CAN-Ports/Adapters/STM32F0xx|xLib/Components/USART-Ports/Adapters/STM32H7xx|xLib/Components/USART-Ports/Adapters/STM32F1xx|xLib/Components/USART-Ports/Adapters/STM32F0xx|xLib/Drivers|xLib/Registers/registers_stm32h7xx|xLib/Registers/registers_stm32f1xx|xLib/Registers/registers_stm32f0xx|xLib/Templates/WiFi|xLib/Templates/TransferLayer|xLib/Templates/Template|xLib/Templates/TCPServer|xLib/Templates/sfc_spi|xLib/Templates/SerialPort|xLib/Templates/Documents|xLib/Templates/Camera|xLib/Templates/ADC|Components/WaterPump|Components/Thermocouple|Components/Termostat|Components/Terminal|Components/TCPServer|Components/Slider|Components/SerialPort|Components/FlowMeter|Components/FlowDirector|Components/CupsController|Components/Carousel|Components/Camera|Components/BrewGroup" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="Components/TEST|Components/FreeRTOS-Plus-TCP|Components/FreeRTOS-Plus-MQTT|xLib/Components/CAN-Ports/Adapters/STM32F1xx|xLib/Components/CAN-Ports/Adapters/STM32F0xx|xLib/Components/USART-Ports/Adapters/STM32H7xx|xLib/Components/USART-Ports/Adapters/STM32F1xx|xLib/Components/USART-Ports/Adapters/STM32F0xx|xLib/Drivers|xLib/Registers/registers_stm32h7xx|xLib/Registers/registers_stm32f1xx|xLib/Registers/registers_stm32f0xx|xLib/Templates/WiFi|xLib/Templates/TransferLayer|xLib/Templates/Template|xLib/Templates/TCPServer|xLib/Templates/sfc_spi|xLib/Templates/SerialPort|xLib/Templates/Documents|xLib/Templates/Camera|xLib/Templates/ADC|Components/WaterPump|Components/Thermocouple|Components/Termostat|Components/Terminal|Components/TCPServer|Components/Slider|Components/SerialPort|Components/FlowMeter|Components/FlowDirector|Components/CupsController|Components/Carousel|Components/Camera|Components/BrewGroup" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -193,4 +194,5 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="refreshScope"/>
 </cproject>

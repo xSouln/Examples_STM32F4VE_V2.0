@@ -16,12 +16,12 @@ extern "C" {
 //==============================================================================
 //defines:
 
-#define SERIAL1_ENABLE 0
+#define SERIAL1_ENABLE 1
 #define SERIAL2_ENABLE 0
-#define SERIAL3_ENABLE 1
+#define SERIAL3_ENABLE 0
 #define SERIAL4_ENABLE 0
 #define SERIAL5_ENABLE 0
-#define SERIAL6_ENABLE 1
+#define SERIAL6_ENABLE 0
 //------------------------------------------------------------------------------
 
 enum

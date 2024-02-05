@@ -32,6 +32,8 @@ extern "C" {
 //#include "Components/Devices/Host/HostDevice-Component.h"
 #include "Components/Devices/Device-1/Device1-Component.h"
 
+#include "TEST/AHT10/AHT10-Component.h"
+
 /// @}
 //==============================================================================
 //defines:
