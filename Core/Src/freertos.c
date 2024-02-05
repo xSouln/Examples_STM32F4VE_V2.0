@@ -25,7 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "Components.h""
+#include "Components.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -113,10 +113,12 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
-  /* USER CODE BEGIN StartDefaultTask */
-  /* Infinite loop */
+ /* USER CODE BEGIN StartDefaultTask */
+	ComponentsInit(argument);
+	/* Infinite loop */
   for(;;)
   {
+	  ComponentsHandler();
     osDelay(1);
   }
   /* USER CODE END StartDefaultTask */
