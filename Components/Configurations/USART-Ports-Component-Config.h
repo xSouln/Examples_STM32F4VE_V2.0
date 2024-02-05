@@ -54,7 +54,7 @@ enum
 };
 //------------------------------------------------------------------------------
 
-#define USART_PORTS_MEM_SECTION __attribute__((section("._user_heap_stack")))
+#define USART_PORTS_MEM_SECTION //__attribute__((section("._user_heap_stack")))
 //------------------------------------------------------------------------------
 
 #if SERIAL1_ENABLE == 1
@@ -67,9 +67,9 @@ extern DMA_HandleTypeDef hdma_usart1_rx;
 #define SERIAL1_PORT_NUMBER xUSART1
 #define SERIAL1_RX_DMA hdma_usart1_rx
 
-#define SERIAL1_TX_CIRCLE_BUF_MEM_SECTION __attribute__((section("._user_heap_stack")))
+#define SERIAL1_TX_CIRCLE_BUF_MEM_SECTION //__attribute__((section("._user_heap_stack")))
 #define SERIAL1_RX_CIRCLE_BUF_MEM_SECTION //__attribute__((section("._user_heap_stack")))
-#define SERIAL1_RX_BUFFER_MEM_SECTION __attribute__((section("._user_heap_stack")))
+#define SERIAL1_RX_BUFFER_MEM_SECTION //__attribute__((section("._user_heap_stack")))
 
 #endif
 //------------------------------------------------------------------------------

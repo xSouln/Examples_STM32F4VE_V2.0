@@ -17,7 +17,7 @@ extern "C" {
 //defines:
 
 #define CAN_PORT1_ENABLE 1
-#define CAN_PORT2_ENABLE 1
+#define CAN_PORT2_ENABLE 0
 #define CAN_PORT3_ENABLE 0
 #define CAN_PORT4_ENABLE 0
 #define CAN_PORT5_ENABLE 0

@@ -14,25 +14,25 @@ extern "C" {
 //defines:
 
 #define CAN1_ENABLE 1
-#define CAN2_ENABLE 1
-#define CAN3_ENABLE 1
+#define CAN2_ENABLE 0
+#define CAN3_ENABLE 0
 //------------------------------------------------------------------------------
 
 typedef enum PACKED_PREFIX
 {
-#if rCAN1_IsDefined && CAN1_ENABLE
+#if rCAN1_IsDefined && CAN1_ENABLE == 1
 	xCAN1,
 #endif
 
-#if rCAN2_IsDefined && CAN2_ENABLE
+#if rCAN2_IsDefined && CAN2_ENABLE == 1
 	xCAN2,
 #endif
 
-#if rCAN3 && CAN3_ENABLE
+#if rCAN3 && CAN3_ENABLE == 1
 	xCAN3,
 #endif
 
-#if rCAN4 && CAN4_ENABLE
+#if rCAN4 && CAN4_ENABLE == 1
 	xCAN4,
 #endif
 
