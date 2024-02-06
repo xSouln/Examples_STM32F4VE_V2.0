@@ -51,7 +51,6 @@ void ComponentsHandler()
 {
 	UsartPortsComponentHandler();
 	TerminalComponentHandler();
-
 	AHT10_ComponentHandler();
 
 #if NET_ENABLE == 1
