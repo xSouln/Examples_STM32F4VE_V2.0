@@ -24,7 +24,6 @@ AHT10_T AHT10;
 void AHT10_ComponentHandler()
 {
 	AHT10_Handler(&AHT10);
-
 }
 //------------------------------------------------------------------------------
 void AHT10_ComponentTimeSynchronization()
@@ -42,7 +41,6 @@ static AHT10_HAL_AdapterT  privateAdapter;
 
 xResult AHT10_ComponentInit(void* parent)
 {
-
 	AHT10_HAL_AdapterInitT adapterInit;
 	adapterInit.LED_Port =  LED_1_GPIO_Port;
 	adapterInit.LED_Pin = 6;

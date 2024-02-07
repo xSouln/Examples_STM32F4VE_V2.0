@@ -22,6 +22,8 @@ extern "C" {
 typedef struct
 {
 	uint32_t TimeStamp;
+	float AHT10_Temperature;
+	float AHT10_Humidity;
 
 } AHT10_HAL_AdapterContentT;
 //------------------------------------------------------------------------------
