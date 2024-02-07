@@ -91,7 +91,7 @@ inline void ComponentsTimeSynchronization()
 	TerminalComponentTimeSynchronization();
 	UsartPortsComponentTimeSynchronization();
 
-	AHT10_ComponentHandler();
+	AHT10_ComponentTimeSynchronization();
 
 #if DEVICE_CONTROL_ENABLE == 1
 

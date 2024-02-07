@@ -25,6 +25,16 @@ typedef struct
 	float AHT10_Temperature;
 	float AHT10_Humidity;
 
+	struct
+	{
+		//включение логики опроса
+		uint8_t ConversationIsEnable : 1;
+
+		uint8_t ConversationStarted : 1;
+		uint8_t ConversationComplited : 1;
+		uint8_t ConversationError : 1;
+	};
+
 } AHT10_HAL_AdapterContentT;
 //------------------------------------------------------------------------------
 typedef struct

@@ -33,7 +33,7 @@ void AHT10_ComponentTimeSynchronization()
 //==============================================================================
 //initializations:
 
-static AHT10_HAL_AdapterT  privateAdapter;
+static AHT10_HAL_AdapterT privateAdapter;
 
 
 //==============================================================================
