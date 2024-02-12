@@ -22,6 +22,7 @@ extern "C" {
 typedef struct
 {
 	uint32_t TimeStamp;
+
 	float AHT10_Temperature;
 	float AHT10_Humidity;
 
@@ -29,11 +30,14 @@ typedef struct
 	{
 		//включение логики опроса
 		uint8_t ConversationIsEnable : 1;
-
+		uint8_t ConversationRequestUpdate : 1;
 		uint8_t ConversationStarted : 1;
 		uint8_t ConversationComplited : 1;
 		uint8_t ConversationError : 1;
 	};
+
+	uint8_t State;
+	uint16_t OpereationTimeout;
 
 } AHT10_HAL_AdapterContentT;
 //------------------------------------------------------------------------------

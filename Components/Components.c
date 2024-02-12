@@ -105,6 +105,7 @@ void Timer4_IRQ_Handler(xTimerT* timer, xTimerHandleT* handle)
 	handle->Status.UpdateInterrupt = false;
 
 	ComponentsTimeSynchronization();
+
 }
 //==============================================================================
 //initialization:
