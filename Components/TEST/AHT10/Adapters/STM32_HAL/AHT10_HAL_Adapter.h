@@ -29,11 +29,11 @@ typedef struct
 	struct
 	{
 		//включение логики опроса
-		uint8_t ConversationIsEnable : 1;
-		uint8_t ConversationRequestUpdate : 1;
-		uint8_t ConversationStarted : 1;
-		uint8_t ConversationComplited : 1;
-		uint8_t ConversationError : 1;
+		uint8_t ConvertationIsEnable : 1;
+		uint8_t ConvertationRequestUpdate : 1;
+		uint8_t ConvertationStarted : 1;
+		uint8_t ConvertationComplited : 1;
+		uint8_t ConvertationError : 1;
 	};
 
 	uint8_t State;

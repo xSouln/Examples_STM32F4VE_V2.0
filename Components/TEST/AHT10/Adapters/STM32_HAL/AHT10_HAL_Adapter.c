@@ -16,7 +16,7 @@ static enum
 {
 	AHT10_HandleStateIdle,
 	AHT10_HandleStateRequestStartMeasurment,
-	AHT10_HandleStateRequestStartConversation,
+	AHT10_HandleStateRequestStartConvertation,
 	AHT10_HandleStateRequestReadResponse
 };
 //==============================================================================
@@ -62,7 +62,7 @@ static void privateHandler(AHT10_T* driver)
 	{
 		if (adapter->Content.State == AHT10_HandleStateIdle)
 		{
-			adapter->Content.ConversationRequestUpdate = true;
+			adapter->Content.ConvertationRequestUpdate = true;
 		}
 	}
 
@@ -75,25 +75,25 @@ static void privateHandler(AHT10_T* driver)
 	{
 		case AHT10_HandleStateIdle:
 		{
-			if (adapter->Content.ConversationRequestUpdate)
+			if (adapter->Content.ConvertationRequestUpdate)
 			{
-				adapter->Content.ConversationError = false;
-				adapter->Content.ConversationComplited = false;
-				adapter->Content.ConversationRequestUpdate = false;
+				adapter->Content.ConvertationError = false;
+				adapter->Content.ConvertationComplited = false;
+				adapter->Content.ConvertationRequestUpdate = false;
 
-				adapter->Content.State = AHT10_HandleStateRequestStartConversation;
+				adapter->Content.State = AHT10_HandleStateRequestStartConvertation;
 			}
 			break;
 		}
 
-		case AHT10_HandleStateRequestStartConversation:
+		case AHT10_HandleStateRequestStartConvertation:
 		{
 			uint8_t AHT10_TmpHum_Cmd[3] = { 0xAC, 0x33, 0x00 };
 			int8_t result =  HAL_I2C_Master_Transmit(&hi2c2, AHT10_ADDRESS, AHT10_TmpHum_Cmd, 3, 150);
 
 			if(result != HAL_OK)
 			{
-				adapter->Content.ConversationError = true;
+				adapter->Content.ConvertationError = true;
 				adapter->Content.State = AHT10_HandleStateIdle;
 
 				driver->EventListener(driver, AHT10_EventMeasurementError, 0, NULL);
@@ -117,8 +117,7 @@ static void privateHandler(AHT10_T* driver)
 
 			if(result != HAL_OK)
 			{
-				adapter->Content.ConversationError = true;
-
+				adapter->Content.ConvertationError = true;
 				driver->EventListener(driver, AHT10_EventMeasurementError, 0, NULL);
 				return;
 			}
@@ -131,7 +130,7 @@ static void privateHandler(AHT10_T* driver)
 			AHT10_ADC_Raw = (((uint32_t)AHT10_RX_Data[3] & 0x0f) << 16 ) | ((uint16_t)AHT10_RX_Data[4] << 8) | AHT10_RX_Data[5];
 			adapter->Content.AHT10_Temperature = (float)AHT10_ADC_Raw * 200 / 1048576 - 50;
 
-			adapter->Content.ConversationComplited = true;
+			adapter->Content.ConvertationComplited = true;
 
 			AHT10_EventMeasurementComplitedArgT arg = { 0 };
 			arg.Humidity = adapter->Content.AHT10_Humidity;
