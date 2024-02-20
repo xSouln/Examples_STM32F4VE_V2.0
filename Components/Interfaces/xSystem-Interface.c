@@ -46,11 +46,19 @@ uint32_t xSystemGetRandom()
 {
 	uint32_t result;
 
+#if OS_TYPE == OS_TYPE_FREERTOS
 	xSemaphoreTake(privateRNGMutex, portMAX_DELAY);
+#endif
 
+#ifdef __RNG_H__
 	result = HAL_RNG_GetRandomNumber(&hrng);
+#else
+	result = random();
+#endif
 
+#if OS_TYPE == OS_TYPE_FREERTOS
 	xSemaphoreGive(privateRNGMutex);
+#endif
 
 	return result;
 }

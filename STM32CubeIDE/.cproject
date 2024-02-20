@@ -43,6 +43,8 @@
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
 									<listOptionValue builtIn="false" value="STM32F407xx"/>
 									<listOptionValue builtIn="false" value="configAPPLICATION_ALLOCATED_HEAP=1"/>
+									<listOptionValue builtIn="false" value="TERMINAL_COMPONENT_ENABLE=1"/>
+									<listOptionValue builtIn="false" value="DEVICE1_COMPONENT_ENABLE=1"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.1338986411" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="../../Core/Inc"/>
@@ -66,7 +68,7 @@
 									<listOptionValue builtIn="false" value="&quot;${COMPONENTS_PATH}/FreeRTOS-Plus-MQTT/interface&quot;"/>
 								</option>
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.cyclomaticcomplexity.851959200" name="Cyclomatic Complexity (-fcyclomatic-complexity)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.cyclomaticcomplexity" useByScannerDiscovery="false" value="false" valueType="boolean"/>
-								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard.943875149" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard.value.gnu18" valueType="enumerated"/>
+								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard.943875149" name="Language standard" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard.value.gnu18" valueType="enumerated"/>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1535742109" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.2094919614" name="MCU G++ Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler">
@@ -92,9 +94,10 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="Components|xLib" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="SintezElectro|Components|xLib" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry excluding="FreeRTOS-Plus-TCP|FreeRTOS-Plus-MQTT|WaterPump|Thermocouple|Termostat|Terminal|TCPServer|Slider|SerialPort|FlowMeter|FlowDirector|CupsController|Carousel|Camera|BrewGroup" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Components"/>
-						<entry excluding="Drivers|Components/CAN-Ports/Adapters/STM32F1xx|Components/CAN-Ports/Adapters/STM32F0xx|Components/USART-Ports/Adapters/STM32H7xx|Components/USART-Ports/Adapters/STM32F1xx|Components/USART-Ports/Adapters/STM32F0xx|Registers/registers_stm32h7xx|Registers/registers_stm32f1xx|Registers/registers_stm32f0xx|Templates/WiFi|Templates/TransferLayer|Templates/Template|Templates/TCPServer|Templates/sfc_spi|Templates/SerialPort|Templates/Documents|Templates/Camera|Templates/ADC" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xLib"/>
+						<entry excluding="Components/Devices/Device-3|Components/Devices/Device-2" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SintezElectro"/>
+						<entry excluding="Drivers|Components/CAN-Ports/Adapters/STM32F1xx|Components/CAN-Ports/Adapters/STM32F0xx|Registers/registers_stm32h7xx|Registers/registers_stm32f1xx|Registers/registers_stm32f0xx|Templates/WiFi|Templates/TransferLayer|Templates/Template|Templates/TCPServer|Templates/sfc_spi|Templates/SerialPort|Templates/Documents|Templates/Camera|Templates/ADC" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xLib"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xLib/Drivers/AHT10"/>
 					</sourceEntries>
 				</configuration>
@@ -174,7 +177,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="Components/TEST|Components/FreeRTOS-Plus-TCP|Components/FreeRTOS-Plus-MQTT|xLib/Components/CAN-Ports/Adapters/STM32F1xx|xLib/Components/CAN-Ports/Adapters/STM32F0xx|xLib/Components/USART-Ports/Adapters/STM32H7xx|xLib/Components/USART-Ports/Adapters/STM32F1xx|xLib/Components/USART-Ports/Adapters/STM32F0xx|xLib/Drivers|xLib/Registers/registers_stm32h7xx|xLib/Registers/registers_stm32f1xx|xLib/Registers/registers_stm32f0xx|xLib/Templates/WiFi|xLib/Templates/TransferLayer|xLib/Templates/Template|xLib/Templates/TCPServer|xLib/Templates/sfc_spi|xLib/Templates/SerialPort|xLib/Templates/Documents|xLib/Templates/Camera|xLib/Templates/ADC|Components/WaterPump|Components/Thermocouple|Components/Termostat|Components/Terminal|Components/TCPServer|Components/Slider|Components/SerialPort|Components/FlowMeter|Components/FlowDirector|Components/CupsController|Components/Carousel|Components/Camera|Components/BrewGroup" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="SintezElectro/Components/Devices/Device-3|SintezElectro/Components/Devices/Device-2|Components/TEST|Components/FreeRTOS-Plus-TCP|Components/FreeRTOS-Plus-MQTT|xLib/Components/CAN-Ports/Adapters/STM32F1xx|xLib/Components/CAN-Ports/Adapters/STM32F0xx|xLib/Drivers|xLib/Registers/registers_stm32h7xx|xLib/Registers/registers_stm32f1xx|xLib/Registers/registers_stm32f0xx|xLib/Templates/WiFi|xLib/Templates/TransferLayer|xLib/Templates/Template|xLib/Templates/TCPServer|xLib/Templates/sfc_spi|xLib/Templates/SerialPort|xLib/Templates/Documents|xLib/Templates/Camera|xLib/Templates/ADC|Components/WaterPump|Components/Thermocouple|Components/Termostat|Components/Terminal|Components/TCPServer|Components/Slider|Components/SerialPort|Components/FlowMeter|Components/FlowDirector|Components/CupsController|Components/Carousel|Components/Camera|Components/BrewGroup" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -186,15 +189,12 @@
 		<project id="Board_STM32F4VE_V2.0.null.142282980" name="Board_STM32F4VE_V2.0"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="refreshScope"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.845562232;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.845562232.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.1387775378;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1535742109">
-			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.963296115;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.963296115.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.1383873542;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.112681454">
-			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
-	<storageModule moduleId="refreshScope"/>
 </cproject>
