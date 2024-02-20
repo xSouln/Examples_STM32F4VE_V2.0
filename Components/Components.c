@@ -49,7 +49,7 @@ void ComponentsEventListener(ObjectBaseT* object, int selector, uint32_t descrip
  */
 void ComponentsHandler()
 {
-	UsartPortsComponentHandler();
+	//UsartPortsComponentHandler();
 	TerminalComponentHandler();
 	AHT10_ComponentHandler();
 
@@ -89,7 +89,7 @@ void ComponentsHandler()
 inline void ComponentsTimeSynchronization()
 {
 	TerminalComponentTimeSynchronization();
-	UsartPortsComponentTimeSynchronization();
+	//UsartPortsComponentTimeSynchronization();
 
 	AHT10_ComponentTimeSynchronization();
 
@@ -121,7 +121,7 @@ xResult ComponentsInit(void* parent)
 
 	TerminalComponentInit(parent);
 
-	UsartPortsComponentInit(parent);
+	//UsartPortsComponentInit(parent);
 
 	AHT10_ComponentInit(parent);
 

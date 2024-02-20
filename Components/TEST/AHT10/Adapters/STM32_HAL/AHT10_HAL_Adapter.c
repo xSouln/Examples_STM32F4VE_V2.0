@@ -16,15 +16,73 @@ static enum
 {
 	AHT10_HandleStateIdle,
 	AHT10_HandleStateRequestStartMeasurment,
+	AHT10_HandleStateRequestReadResponse,
 	AHT10_HandleStateRequestStartConvertation,
-	AHT10_HandleStateRequestReadResponse
+	AHT10_HandleStateRequestWaitTransmit,
+	AHT10_HandleStateRequestWaitReceive
+
+};
+
+static enum
+{
+	StatusTransmitErorr,
+	StatusTransmitDone,
+	StatusReceiveErorr,
+	StatusReceiveDone
+
 };
 //==============================================================================
 //variables:
+uint32_t AHT10_ADC_Raw;
+uint8_t AHT10_RX_Data[6] = { 0 };
+uint8_t StatusTransmit;
+uint8_t StatusReceive;
+AHT10_HAL_AdapterContentT adapterContent;
+float AHT10_Temperature;
+float AHT10_Humidity;
 
 
 //==============================================================================
 //functions:
+
+void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+	if(hi2c == &hi2c2)
+	{
+		uint8_t result = HAL_I2C_Master_Receive_IT(&hi2c2, AHT10_ADDRESS | 0x01, (uint8_t*) AHT10_RX_Data, 6);
+
+		if(result != HAL_OK)
+		{
+			StatusTransmit = StatusTransmitErorr;
+		}
+		StatusTransmit = StatusTransmitDone;
+
+	}
+
+}
+
+void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+	if(hi2c == &hi2c2)
+	{
+
+		/* Convert to Humidity in °C */
+		AHT10_ADC_Raw = (((uint32_t)AHT10_RX_Data[1]  << 16\
+						| ((uint16_t)AHT10_RX_Data[2] << 8)\
+						| (AHT10_RX_Data[3]))) >> 4;
+		adapterContent.AHT10_Humidity = ((float)AHT10_ADC_Raw / 1048576) * 100;
+
+		/* Convert to Temperature in °C */
+		AHT10_ADC_Raw = (((uint32_t)AHT10_RX_Data[3] & 0x0f) << 16 )
+						| ((uint16_t)AHT10_RX_Data[4] << 8)
+						| AHT10_RX_Data[5];
+		adapterContent.AHT10_Temperature = (float)AHT10_ADC_Raw * 200 / 1048576 - 50;
+		StatusReceive = StatusReceiveDone;
+	}
+
+
+}
+//------------------------------------------------------------------------------
 
 static xResult privateRequestListener(AHT10_T* driver,
 		int selector,
@@ -81,16 +139,15 @@ static void privateHandler(AHT10_T* driver)
 				adapter->Content.ConvertationComplited = false;
 				adapter->Content.ConvertationRequestUpdate = false;
 
-				adapter->Content.State = AHT10_HandleStateRequestStartConvertation;
+				adapter->Content.State = AHT10_HandleStateRequestStartMeasurment;
 			}
 			break;
 		}
 
-		case AHT10_HandleStateRequestStartConvertation:
+		case AHT10_HandleStateRequestStartMeasurment:
 		{
-			uint8_t AHT10_TmpHum_Cmd[3] = { 0xAC, 0x33, 0x00 };
-			int8_t result =  HAL_I2C_Master_Transmit(&hi2c2, AHT10_ADDRESS, AHT10_TmpHum_Cmd, 3, 150);
-
+			uint8_t AHT10_TmpHum_Cmd[3] = {0xAC, 0x33, 0x00};
+			int8_t result = HAL_I2C_Master_Transmit_IT(&hi2c2, AHT10_ADDRESS, AHT10_TmpHum_Cmd, 3);
 			if(result != HAL_OK)
 			{
 				adapter->Content.ConvertationError = true;
@@ -100,47 +157,49 @@ static void privateHandler(AHT10_T* driver)
 				break;
 			}
 
-			adapter->Content.OpereationTimeout = 150;
-			adapter->Content.State = AHT10_HandleStateRequestReadResponse;
+			adapter->Content.State = AHT10_HandleStateRequestWaitTransmit;
 
 			break;
 		}
 
-		case AHT10_HandleStateRequestReadResponse:
+		case AHT10_HandleStateRequestWaitTransmit:
 		{
-			uint32_t AHT10_ADC_Raw;
-			uint8_t AHT10_RX_Data[6] = { 0 };
 
-			int8_t result = HAL_I2C_Master_Receive(&hi2c2, AHT10_ADDRESS | 0x01, (uint8_t*)AHT10_RX_Data, 6, 150);
-
-			adapter->Content.State = AHT10_HandleStateIdle;
-
-			if(result != HAL_OK)
+			if(StatusTransmit == StatusTransmitDone)
 			{
-				adapter->Content.ConvertationError = true;
-				driver->EventListener(driver, AHT10_EventMeasurementError, 0, NULL);
-				return;
+				adapter->Content.State = AHT10_HandleStateRequestStartConvertation;
+
+			}else{
+
+				adapter->Content.State = AHT10_HandleStateIdle;
+
 			}
 
-			/* Convert to Humidity in °C */
-			AHT10_ADC_Raw = (((uint32_t)AHT10_RX_Data[1]  << 16 | ((uint16_t)AHT10_RX_Data[2] << 8) | (AHT10_RX_Data[3]))) >> 4;
-			adapter->Content.AHT10_Humidity = ((float)AHT10_ADC_Raw / 1048576) * 100;
+			break;
 
-			/* Convert to Temperature in °C */
-			AHT10_ADC_Raw = (((uint32_t)AHT10_RX_Data[3] & 0x0f) << 16 ) | ((uint16_t)AHT10_RX_Data[4] << 8) | AHT10_RX_Data[5];
-			adapter->Content.AHT10_Temperature = (float)AHT10_ADC_Raw * 200 / 1048576 - 50;
+		}
+		case AHT10_HandleStateRequestStartConvertation:
+		{
 
-			adapter->Content.ConvertationComplited = true;
+			if((StatusReceive = StatusReceiveDone))
+			{
+				adapter->Content.ConvertationComplited = true;
+				AHT10_EventMeasurementComplitedArgT arg = { 0 };
+				arg.Humidity = adapterContent.AHT10_Humidity;
+				arg.Temperature = adapterContent.AHT10_Temperature;
+				driver->EventListener(driver, AHT10_EventMeasurementComplited, 0, &arg);
+				adapter->Content.State = AHT10_HandleStateIdle;
+			}else{
+				adapter->Content.State = AHT10_HandleStateIdle;
+			}
 
-			AHT10_EventMeasurementComplitedArgT arg = { 0 };
-			arg.Humidity = adapter->Content.AHT10_Humidity;
-			arg.Temperature = adapter->Content.AHT10_Temperature;
 
-			driver->EventListener(driver, AHT10_EventMeasurementComplited, 0, &arg);
+
 			break;
 		}
 	}
 }
+
 //==============================================================================
 //initializations:
 
