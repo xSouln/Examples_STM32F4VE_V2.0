@@ -34,10 +34,13 @@ typedef struct
 		uint8_t ConvertationStarted : 1;
 		uint8_t ConvertationComplited : 1;
 		uint8_t ConvertationError : 1;
+		uint8_t TransmitionIsComplited : 1;
 	};
 
 	uint8_t State;
 	uint16_t OpereationTimeout;
+
+	uint8_t TranseiverBuffer[6];
 
 } AHT10_HAL_AdapterContentT;
 //------------------------------------------------------------------------------

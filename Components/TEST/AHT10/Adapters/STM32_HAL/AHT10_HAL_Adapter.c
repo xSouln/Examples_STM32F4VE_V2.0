@@ -19,7 +19,8 @@ static enum
 	AHT10_HandleStateRequestReadResponse,
 	AHT10_HandleStateRequestStartConvertation,
 	AHT10_HandleStateRequestWaitTransmit,
-	AHT10_HandleStateRequestWaitReceive
+	AHT10_HandleStateRequestWaitReceive,
+	AHT10_HandleStateRequestWaitConvertation,
 
 };
 
@@ -33,54 +34,44 @@ static enum
 };
 //==============================================================================
 //variables:
-uint32_t AHT10_ADC_Raw;
-uint8_t AHT10_RX_Data[6] = { 0 };
-uint8_t StatusTransmit;
-uint8_t StatusReceive;
-AHT10_HAL_AdapterContentT adapterContent;
-float AHT10_Temperature;
-float AHT10_Humidity;
 
-
+static AHT10_T* privateDriver;
 //==============================================================================
 //functions:
 
 void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c)
 {
-	if(hi2c == &hi2c2)
+	AHT10_HAL_AdapterT* adapter = privateDriver->Adapter.Content;
+
+	if(hi2c == adapter->Handle)
 	{
-		uint8_t result = HAL_I2C_Master_Receive_IT(&hi2c2, AHT10_ADDRESS | 0x01, (uint8_t*) AHT10_RX_Data, 6);
-
-		if(result != HAL_OK)
-		{
-			StatusTransmit = StatusTransmitErorr;
-		}
-		StatusTransmit = StatusTransmitDone;
-
+		adapter->Content.TransmitionIsComplited = true;
 	}
 
 }
+//------------------------------------------------------------------------------
 
 void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c)
 {
-	if(hi2c == &hi2c2)
-	{
+	AHT10_HAL_AdapterT* adapter = privateDriver->Adapter.Content;
 
-		/* Convert to Humidity in °C */
-		AHT10_ADC_Raw = (((uint32_t)AHT10_RX_Data[1]  << 16\
+	if(hi2c == adapter->Handle)
+	{
+		adapter->Content.TransmitionIsComplited = true;
+		/*
+		// Convert to Humidity in °C
+		uint32_t AHT10_ADC_Raw = (((uint32_t)AHT10_RX_Data[1]  << 16\
 						| ((uint16_t)AHT10_RX_Data[2] << 8)\
 						| (AHT10_RX_Data[3]))) >> 4;
 		adapterContent.AHT10_Humidity = ((float)AHT10_ADC_Raw / 1048576) * 100;
 
-		/* Convert to Temperature in °C */
+		// Convert to Temperature in °C
 		AHT10_ADC_Raw = (((uint32_t)AHT10_RX_Data[3] & 0x0f) << 16 )
 						| ((uint16_t)AHT10_RX_Data[4] << 8)
 						| AHT10_RX_Data[5];
 		adapterContent.AHT10_Temperature = (float)AHT10_ADC_Raw * 200 / 1048576 - 50;
-		StatusReceive = StatusReceiveDone;
+		StatusReceive = StatusReceiveDone;*/
 	}
-
-
 }
 //------------------------------------------------------------------------------
 
@@ -124,7 +115,7 @@ static void privateHandler(AHT10_T* driver)
 		}
 	}
 
-	if (adapter->Content.OpereationTimeout)
+	if (adapter->Content.OpereationTimeout && !adapter->Content.TransmitionIsComplited)
 	{
 		return;
 	}
@@ -141,13 +132,17 @@ static void privateHandler(AHT10_T* driver)
 
 				adapter->Content.State = AHT10_HandleStateRequestStartMeasurment;
 			}
-			break;
+			else
+			{
+				break;
+			}
 		}
 
 		case AHT10_HandleStateRequestStartMeasurment:
 		{
-			uint8_t AHT10_TmpHum_Cmd[3] = {0xAC, 0x33, 0x00};
-			int8_t result = HAL_I2C_Master_Transmit_IT(&hi2c2, AHT10_ADDRESS, AHT10_TmpHum_Cmd, 3);
+			memcpy(adapter->Content.TranseiverBuffer, (uint8_t[]){ 0xAC, 0x33, 0x00 }, 3);
+
+			int8_t result = HAL_I2C_Master_Transmit_IT(adapter->Handle, AHT10_ADDRESS, adapter->Content.TranseiverBuffer, 3);
 			if(result != HAL_OK)
 			{
 				adapter->Content.ConvertationError = true;
@@ -157,6 +152,7 @@ static void privateHandler(AHT10_T* driver)
 				break;
 			}
 
+			adapter->Content.OpereationTimeout = 300;
 			adapter->Content.State = AHT10_HandleStateRequestWaitTransmit;
 
 			break;
@@ -164,20 +160,77 @@ static void privateHandler(AHT10_T* driver)
 
 		case AHT10_HandleStateRequestWaitTransmit:
 		{
-
-			if(StatusTransmit == StatusTransmitDone)
+			if (adapter->Content.TransmitionIsComplited)
 			{
-				adapter->Content.State = AHT10_HandleStateRequestStartConvertation;
-
-			}else{
-
+				adapter->Content.State = AHT10_HandleStateRequestWaitConvertation;
+				adapter->Content.OpereationTimeout = 100;
+			}
+			else
+			{
+				adapter->Content.ConvertationError = true;
 				adapter->Content.State = AHT10_HandleStateIdle;
 
+				driver->EventListener(driver, AHT10_EventMeasurementError, 0, NULL);
 			}
 
 			break;
-
 		}
+
+		case AHT10_HandleStateRequestWaitConvertation:
+		{
+			memset(adapter->Content.TranseiverBuffer, 0, sizeof(adapter->Content.TranseiverBuffer));
+
+			int8_t result = HAL_I2C_Master_Receive_IT(adapter->Handle, AHT10_ADDRESS | 0x01, adapter->Content.TranseiverBuffer, 6);
+			if(result != HAL_OK)
+			{
+				adapter->Content.ConvertationError = true;
+				adapter->Content.State = AHT10_HandleStateIdle;
+
+				driver->EventListener(driver, AHT10_EventMeasurementError, 0, NULL);
+				break;
+			}
+
+			adapter->Content.State = AHT10_HandleStateRequestWaitReceive;
+			adapter->Content.OpereationTimeout = 100;
+
+			break;
+		}
+
+		case AHT10_HandleStateRequestWaitReceive:
+		{
+			if (adapter->Content.TransmitionIsComplited)
+			{
+				adapter->Content.State = AHT10_HandleStateIdle;
+
+				uint32_t AHT10_ADC_Raw = (((uint32_t)adapter->Content.TranseiverBuffer[1]  << 16\
+										| ((uint16_t)adapter->Content.TranseiverBuffer[2] << 8)\
+										| (adapter->Content.TranseiverBuffer[3]))) >> 4;
+
+				adapter->Content.AHT10_Humidity = ((float)AHT10_ADC_Raw / 1048576) * 100;
+
+				// Convert to Temperature in °C
+				AHT10_ADC_Raw = (((uint32_t)adapter->Content.TranseiverBuffer[3] & 0x0f) << 16 )
+								| ((uint16_t)adapter->Content.TranseiverBuffer[4] << 8)
+								| adapter->Content.TranseiverBuffer[5];
+				adapter->Content.AHT10_Temperature = (float)AHT10_ADC_Raw * 200 / 1048576 - 50;
+
+				adapter->Content.ConvertationComplited = true;
+
+				AHT10_EventMeasurementComplitedArgT arg = { 0 };
+				arg.Humidity = adapter->Content.AHT10_Humidity;
+				arg.Temperature = adapter->Content.AHT10_Temperature;
+				driver->EventListener(driver, AHT10_EventMeasurementComplited, 0, &arg);
+			}
+			else
+			{
+				adapter->Content.ConvertationError = true;
+				adapter->Content.State = AHT10_HandleStateIdle;
+
+				driver->EventListener(driver, AHT10_EventMeasurementError, 0, NULL);
+				break;
+			}
+		}
+		/*
 		case AHT10_HandleStateRequestStartConvertation:
 		{
 
@@ -189,15 +242,19 @@ static void privateHandler(AHT10_T* driver)
 				arg.Temperature = adapterContent.AHT10_Temperature;
 				driver->EventListener(driver, AHT10_EventMeasurementComplited, 0, &arg);
 				adapter->Content.State = AHT10_HandleStateIdle;
-			}else{
+			}
+			else
+			{
 				adapter->Content.State = AHT10_HandleStateIdle;
 			}
 
 
 
 			break;
-		}
+		}		*/
 	}
+
+	adapter->Content.TransmitionIsComplited = false;
 }
 
 //==============================================================================
@@ -219,13 +276,12 @@ xResult AHT10_HAL_AdapterInit(AHT10_T* driver, AHT10_HAL_AdapterT* adapter, AHT1
 
 	if(init != NULL)
 	{
-
 		adapter->LED_Pin  = init->LED_Pin;
 		adapter->LED_Port = init->LED_Port;
 		adapter->Handle = init->Handle;
-
 	}
 
+	privateDriver = driver;
 	adapter->Content.State = AHT10_HandleStateIdle;
 
 	return 0;

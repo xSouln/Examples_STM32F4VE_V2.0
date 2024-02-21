@@ -62,6 +62,7 @@ xResult AHT10_ComponentInit(void* parent)
 	AHT10_HAL_AdapterInitT adapterInit;
 	adapterInit.LED_Port =  LED_1_GPIO_Port;
 	adapterInit.LED_Pin = 6;
+	adapterInit.Handle = &hi2c2;
 	AHT10_HAL_AdapterInit(&AHT10, &privateAdapter, &adapterInit);
 
 	AHT10InitT init;
