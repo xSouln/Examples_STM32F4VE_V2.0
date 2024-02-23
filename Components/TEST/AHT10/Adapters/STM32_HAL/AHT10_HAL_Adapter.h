@@ -40,7 +40,7 @@ typedef struct
 	uint8_t State;
 	uint16_t OpereationTimeout;
 
-	uint8_t TranseiverBuffer[6];
+	uint8_t TransceiverBuffer[6];
 
 } AHT10_HAL_AdapterContentT;
 //------------------------------------------------------------------------------
