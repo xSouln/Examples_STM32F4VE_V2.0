@@ -41,6 +41,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define CCMRAM_SECTION_START_ADDRESS 0x10000000
+#define CCMRAM_SECTION_SIZE 0x10000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -75,7 +77,7 @@ void MX_FREERTOS_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	//ComponentsPresystemInit(main);
+	memset((void*)CCMRAM_SECTION_START_ADDRESS, 0, CCMRAM_SECTION_SIZE);
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/

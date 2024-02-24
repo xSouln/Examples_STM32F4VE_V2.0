@@ -1,7 +1,7 @@
 //==============================================================================
 //header:
 
-#ifndef _AHT10_COMPONENT_H_
+#if !defined(_AHT10_COMPONENT_H_) && AHT10_COMPONENT_ENABLE == 1
 #define _AHT10_COMPONENT_H_
 //------------------------------------------------------------------------------
 #ifdef __cplusplus

@@ -57,7 +57,7 @@ enum
 
 #ifdef FREERTOS_USED
 
-#define CAN_PORTS_MAIN_TASK_STACK_SECTION __attribute__((section("._user_heap_stack")))
+#define CAN_PORTS_MAIN_TASK_STACK_SECTION// __attribute__((section("._user_heap_stack")))
 
 #endif
 //------------------------------------------------------------------------------
@@ -79,8 +79,8 @@ extern CAN_HandleTypeDef hcan1;
 #define CAN_PORT1_FILTER_MASK_ID_LOW 0
 #define CAN_PORT1_FILTER_RX_FIFO CAN_RX_FIFO0
 
-#define CAN_PORT1_TX_CIRCLE_BUF_MEM_SECTION __attribute__((section("._user_heap_stack")))
-#define CAN_PORT1_RX_CIRCLE_BUF_MEM_SECTION __attribute__((section("._user_heap_stack")))
+#define CAN_PORT1_TX_CIRCLE_BUF_MEM_SECTION// __attribute__((section("._user_heap_stack")))
+#define CAN_PORT1_RX_CIRCLE_BUF_MEM_SECTION// __attribute__((section("._user_heap_stack")))
 
 #endif
 //------------------------------------------------------------------------------

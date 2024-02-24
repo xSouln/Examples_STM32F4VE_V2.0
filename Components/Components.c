@@ -6,12 +6,13 @@
 #include "Peripherals/xTimer/xTimer.h"
 #include "Common/xList.h"
 #include "CAN_Local-Types.h"
+
+#include "Abstractions/xDevice/Communication/xDevice-RxTransactions.h"
+#include "Abstractions/xDevice/Communication/xService-RxTransactions.h"
 //==============================================================================
 //defines:
 
-#if FREERTOS_ENABLE == 1
-#define COMPONENTS_MAIN_TASK_STACK_SIZE 0x200
-#endif
+
 //==============================================================================
 //variables:
 
@@ -51,30 +52,45 @@ void ComponentsHandler()
 {
 	UsartPortsComponentHandler();
 	TerminalComponentHandler();
-	AHT10_ComponentHandler();
+
+  AHT10_ComponentHandler();
 
 #if NET_ENABLE == 1
 	NetComponentHandler();
 #endif
 
-#if DEVICE_CONTROL_ENABLE == 1
+#if DEVICE1_COMPONENT_ENABLE == 1 || HOST_DEVICE_COMPONENT_ENABLE == 1
+	CAN_PortsComponentHandler();
+#endif
 
+#if DEVICE1_COMPONENT_ENABLE == 1
 	LocalTransferLayerComponentHandler();
-	HostTransferLayerComponentHandler();
-
 	RequestControlComponentHandler();
 
 	Device1ComponentHandler();
-
 #endif
+
+#if HOST_DEVICE_COMPONENT_ENABLE == 1
+	HostTransferLayerComponentHandler();
+#endif
+
 	uint32_t time = xSystemGetTime();
 	if (time - ledToggleTimeStamp > 999)
 	{
 		ledToggleTimeStamp = time;
 
-		PortE->Output.LED1 ^= 1;
-		PortE->Output.LED2 ^= PortE->Output.LED1;
-		//PortE->Output.LED3 ^= PortE->Output.LED1 && PortE->Output.LED2;
+#ifdef LED1_Port
+		LED1_Port->Output.LED1 ^= 1;
+
+#ifdef LED2_Port
+		LED2_Port->Output.LED2 ^= LED1_Port->Output.LED1;
+#endif
+#endif
+
+#if defined(LED2_Port) && !defined(LED1_Port)
+		LED1_Port->Output.LED2 ^= 1;
+#endif
+
 	}
 
 #if FREERTOS_ENABLE == 1
@@ -93,14 +109,13 @@ inline void ComponentsTimeSynchronization()
 
 	AHT10_ComponentTimeSynchronization();
 
-#if DEVICE_CONTROL_ENABLE == 1
-
+#if DEVICE1_COMPONENT_ENABLE == 1
 	Device1ComponentTimeSynchronization();
 
 #endif
 }
 //------------------------------------------------------------------------------
-void Timer4_IRQ_Handler(xTimerT* timer, xTimerHandleT* handle)
+void SynchronizationTimer_IRQ_Handler(xTimerT* timer, xTimerHandleT* handle)
 {
 	handle->Status.UpdateInterrupt = false;
 
@@ -109,6 +124,21 @@ void Timer4_IRQ_Handler(xTimerT* timer, xTimerHandleT* handle)
 }
 //==============================================================================
 //initialization:
+
+#if TERMINAL_COMPONENT_ENABLE == 1 && DEVICE1_COMPONENT_ENABLE == 1
+static const xTerminalObjectT privateDeviceTerminalObject =
+{
+	.Requests = xDeviceRxRequests,
+	.Object = (void*)&Device1
+};
+
+//------------------------------------------------------------------------------
+static const xTerminalObjectT privateServiceControlTerminalObject =
+{
+	.Requests = xServiceRxRequests,
+	.Object = (void*)&Device1
+};
+#endif
 
 /**
  * @brief initializing the component
@@ -120,10 +150,7 @@ xResult ComponentsInit(void* parent)
 	xSystemInit(parent);
 
 	TerminalComponentInit(parent);
-
 	UsartPortsComponentInit(parent);
-
-	AHT10_ComponentInit(parent);
 
 #if NET_ENABLE == 1
 	NetComponentInit(parent);
@@ -134,30 +161,46 @@ xResult ComponentsInit(void* parent)
 
 #endif
 
-#if DEVICE_CONTROL_ENABLE == 1
-
+#if DEVICE1_COMPONENT_ENABLE == 1 || HOST_DEVICE_COMPONENT_ENABLE == 1
 	CAN_PortsComponentInit(parent);
+#endif
 
+#if DEVICE1_COMPONENT_ENABLE == 1
 	LocalTransferLayerComponentInit(parent);
-	HostTransferLayerComponentInit(parent);
-
-	HostDeviceComponentInit(parent);
-
 	RequestControlComponentInit(parent);
 	Device1ComponentInit(parent);
 
 #endif
 
-	xTimerCoreBind(xTimer4, Timer4_IRQ_Handler, rTimer4, 0);
-	rTimer4->DMAOrInterrupts.UpdateInterruptEnable = true;
-	rTimer4->Control1.CounterEnable = true;
+#if HOST_DEVICE_COMPONENT_ENABLE == 1
+	HostTransferLayerComponentInit(parent);
+	HostDeviceComponentInit(parent);
+#endif
 
-	/*xTaskCreate(privateTask, // Function that implements the task.
+#ifdef SynchronizationTimer
+	xTimerCoreBind(SynchronizationTimerNumber, SynchronizationTimer_IRQ_Handler, SynchronizationTimer, 0);
+	SynchronizationTimer->DMAOrInterrupts.UpdateInterruptEnable = true;
+	SynchronizationTimer->Control1.CounterEnable = true;
+#endif
+
+#if TERMINAL_COMPONENT_ENABLE == 1 && DEVICE1_COMPONENT_ENABLE == 1
+	TerminalAddObject((void*)&privateDeviceTerminalObject);
+	TerminalAddObject((void*)&privateServiceControlTerminalObject);
+#endif
+
+#if COMPONENTS_OWN_TASK_IS_ENABLED == 1
+	xTaskCreate(privateTask, // Function that implements the task.
 				"CAN local task", // Text name for the task.
 				TASK_STACK_SIZE, // Number of indexes in the xStack array.
 				NULL, // Parameter passed into the task.
 				osPriorityHigh, // Priority at which the task is created.
-				&taskHandle);*/
+				&taskHandle);
+#endif
+
+#if FREERTOS_ENABLE == 1
+	RTOS_FreeHeapSize = xPortGetFreeHeapSize();
+	RTOS_ComponentsTaskStackWaterMark = uxTaskGetStackHighWaterMark(NULL);
+#endif
 
 	return xResultAccept;
 }

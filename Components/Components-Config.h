@@ -19,7 +19,12 @@ extern "C" {
 #define MQTT_ENABLE 0
 
 #define FREERTOS_ENABLE 1
-#define DEVICE_CONTROL_ENABLE 0
+
+#define SynchronizationTimer rTimer4
+#define SynchronizationTimerNumber xTimer4
+
+#define LED1_Port PortA
+//#define LED2_Port PortA
 //==============================================================================
 //macros:
 
