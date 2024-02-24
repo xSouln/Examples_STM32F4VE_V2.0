@@ -53,6 +53,8 @@ void ComponentsHandler()
 	UsartPortsComponentHandler();
 	TerminalComponentHandler();
 
+  AHT10_ComponentHandler();
+
 #if NET_ENABLE == 1
 	NetComponentHandler();
 #endif
@@ -105,8 +107,9 @@ inline void ComponentsTimeSynchronization()
 	TerminalComponentTimeSynchronization();
 	UsartPortsComponentTimeSynchronization();
 
-#if DEVICE1_COMPONENT_ENABLE == 1
+	AHT10_ComponentTimeSynchronization();
 
+#if DEVICE1_COMPONENT_ENABLE == 1
 	Device1ComponentTimeSynchronization();
 
 #endif
@@ -117,6 +120,7 @@ void SynchronizationTimer_IRQ_Handler(xTimerT* timer, xTimerHandleT* handle)
 	handle->Status.UpdateInterrupt = false;
 
 	ComponentsTimeSynchronization();
+
 }
 //==============================================================================
 //initialization:

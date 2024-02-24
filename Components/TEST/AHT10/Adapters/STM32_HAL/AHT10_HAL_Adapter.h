@@ -22,6 +22,25 @@ typedef struct
 {
 	uint32_t TimeStamp;
 
+	float AHT10_Temperature;
+	float AHT10_Humidity;
+
+	struct
+	{
+		//включение логики опроса
+		uint8_t ConvertationIsEnable : 1;
+		uint8_t ConvertationRequestUpdate : 1;
+		uint8_t ConvertationStarted : 1;
+		uint8_t ConvertationComplited : 1;
+		uint8_t ConvertationError : 1;
+		uint8_t TransmitionIsComplited : 1;
+	};
+
+	uint8_t State;
+	uint16_t OpereationTimeout;
+
+	uint8_t TransceiverBuffer[6];
+
 } AHT10_HAL_AdapterContentT;
 //------------------------------------------------------------------------------
 typedef struct
