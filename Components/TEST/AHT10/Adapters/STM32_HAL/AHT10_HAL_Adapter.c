@@ -1,16 +1,14 @@
 //==============================================================================
 //header:
 
-#ifdef _AHT10_HAL_ADAPTER_H_
+#if AHT10_COMPONENT_ENABLE == 1
 //==============================================================================
 //includes:
 
 #include "AHT10_HAL_Adapter.h"
 #include "Abstractions/xSystem/xSystem.h"
-
 //==============================================================================
 //defines:
-
 
 
 //==============================================================================
@@ -247,4 +245,4 @@ xResult AHT10_HAL_AdapterInit(AHT10_T* driver, AHT10_HAL_AdapterT* adapter, AHT1
 	return 0;
 }
 //==============================================================================
-#endif //_AHT10_HAL_ADAPTER_H_
+#endif //AHT10_COMPONENT_ENABLE

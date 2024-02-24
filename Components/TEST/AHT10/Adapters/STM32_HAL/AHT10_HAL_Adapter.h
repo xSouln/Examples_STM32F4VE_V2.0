@@ -12,11 +12,8 @@ extern "C" {
 
 #include "Drivers/AHT10/AHT10.h"
 #include "i2c.h"
-
-
 //==============================================================================
 //types:
-
 
 typedef struct
 {
@@ -57,7 +54,6 @@ typedef struct
 	I2C_HandleTypeDef* Handle;
 	GPIO_TypeDef* LED_Port;
 	uint8_t LED_Pin;
-
 
 } AHT10_HAL_AdapterInitT;
 //==============================================================================

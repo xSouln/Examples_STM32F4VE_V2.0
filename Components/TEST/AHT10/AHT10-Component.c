@@ -7,7 +7,6 @@
 
 #include "AHT10-Component.h"
 #include "Adapters/STM32_HAL/AHT10_HAL_Adapter.h"
-
 //==============================================================================
 //defines:
 
@@ -21,7 +20,7 @@
 //variables:
 
 AHT10_T AHT10;
-AHT10_EventMeasurementComplitedArgT  AHT10_MeasurementResult;
+AHT10_EventMeasurementComplitedArgT AHT10_MeasurementResult;
 //==============================================================================
 //functions:
 
@@ -64,19 +63,18 @@ static AHT10_HAL_AdapterT privateAdapter;
 xResult AHT10_ComponentInit(void* parent)
 {
 	AHT10_HAL_AdapterInitT adapterInit;
-	adapterInit.LED_Port =  LED_1_GPIO_Port;
+	adapterInit.LED_Port = LED_1_GPIO_Port;
 	adapterInit.LED_Pin = 6;
 	adapterInit.Handle = &hi2c2;
 	AHT10_HAL_AdapterInit(&AHT10, &privateAdapter, &adapterInit);
 
 	AHT10InitT init;
 	init.Address = 0x38;
-	init.Parent = "Parent";
+	init.Parent = parent;
 	init.EventListener = (void*)privateEventListener;
 	AHT10_Init(&AHT10, &init);
-
 
 	return xResultAccept;
 }
 //==============================================================================
-#endif
+#endif //AHT10_COMPONENT_ENABLE

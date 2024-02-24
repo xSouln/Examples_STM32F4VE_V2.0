@@ -9,6 +9,8 @@
 
 #include "Abstractions/xDevice/Communication/xDevice-RxTransactions.h"
 #include "Abstractions/xDevice/Communication/xService-RxTransactions.h"
+
+#include "../Components/Test/AHT10/AHT10-Component.h"
 //==============================================================================
 //defines:
 
@@ -27,7 +29,6 @@ int RTOS_ComponentsTaskStackWaterMark;
 
 //static TaskHandle_t taskHandle;
 #endif
-
 //==============================================================================
 //functions:
 
@@ -50,10 +51,17 @@ void ComponentsEventListener(ObjectBaseT* object, int selector, uint32_t descrip
  */
 void ComponentsHandler()
 {
+#if USART_PORTS_COMPONENT_ENABLE == 1
 	UsartPortsComponentHandler();
-	TerminalComponentHandler();
+#endif
 
-  AHT10_ComponentHandler();
+#if TERMINAL_COMPONENT_ENABLE == 1
+	TerminalComponentHandler();
+#endif
+
+#if AHT10_COMPONENT_ENABLE == 1
+	AHT10_ComponentHandler();
+#endif
 
 #if NET_ENABLE == 1
 	NetComponentHandler();
@@ -104,24 +112,31 @@ void ComponentsHandler()
  */
 inline void ComponentsTimeSynchronization()
 {
+#if TERMINAL_COMPONENT_ENABLE == 1
 	TerminalComponentTimeSynchronization();
-	UsartPortsComponentTimeSynchronization();
+#endif
 
+#if USART_PORTS_COMPONENT_ENABLE == 1
+	UsartPortsComponentTimeSynchronization();
+#endif
+
+#if AHT10_COMPONENT_ENABLE == 1
 	AHT10_ComponentTimeSynchronization();
+#endif
 
 #if DEVICE1_COMPONENT_ENABLE == 1
 	Device1ComponentTimeSynchronization();
-
 #endif
 }
 //------------------------------------------------------------------------------
-void SynchronizationTimer_IRQ_Handler(xTimerT* timer, xTimerHandleT* handle)
+#ifdef SynchronizationTimer
+static void privateSynchronizationTimer_IRQ_Handler(xTimerT* timer, xTimerHandleT* handle)
 {
 	handle->Status.UpdateInterrupt = false;
 
 	ComponentsTimeSynchronization();
-
 }
+#endif
 //==============================================================================
 //initialization:
 
@@ -139,7 +154,7 @@ static const xTerminalObjectT privateServiceControlTerminalObject =
 	.Object = (void*)&Device1
 };
 #endif
-
+//------------------------------------------------------------------------------
 /**
  * @brief initializing the component
  * @param parent binding to the parent object
@@ -149,8 +164,17 @@ xResult ComponentsInit(void* parent)
 {
 	xSystemInit(parent);
 
+#if TERMINAL_COMPONENT_ENABLE == 1
 	TerminalComponentInit(parent);
+#endif
+
+#if USART_PORTS_COMPONENT_ENABLE == 1
 	UsartPortsComponentInit(parent);
+#endif
+
+#if AHT10_COMPONENT_ENABLE == 1
+	AHT10_ComponentInit(parent);
+#endif
 
 #if NET_ENABLE == 1
 	NetComponentInit(parent);
@@ -178,7 +202,7 @@ xResult ComponentsInit(void* parent)
 #endif
 
 #ifdef SynchronizationTimer
-	xTimerCoreBind(SynchronizationTimerNumber, SynchronizationTimer_IRQ_Handler, SynchronizationTimer, 0);
+	xTimerCoreBind(SynchronizationTimerNumber, privateSynchronizationTimer_IRQ_Handler, SynchronizationTimer, 0);
 	SynchronizationTimer->DMAOrInterrupts.UpdateInterruptEnable = true;
 	SynchronizationTimer->Control1.CounterEnable = true;
 #endif

@@ -10,9 +10,8 @@ extern "C" {
 //==============================================================================
 //includes:
 
-#include "Components-Types.h"
+//#include "Components-Config.h"
 #include "Drivers/AHT10/AHT10.h"
-
 //==============================================================================
 //defines:
 
