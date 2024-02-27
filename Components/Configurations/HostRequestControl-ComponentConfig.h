@@ -22,7 +22,7 @@ extern "C" {
 //==============================================================================
 //defines:
 
-#define HOST_REQUEST_CONTROL_BUFFER_MEM_SECTION __attribute__((section("._user_heap_stack")))
+#define HOST_REQUEST_CONTROL_BUFFER_MEM_SECTION //__attribute__((section("._user_heap_stack")))
 
 #define HOST_REQUEST_CONTROL_BUFFER_SIZE 20
 #define HOST_REQUEST_CONTROL_PORT CAN_Port

@@ -21,7 +21,7 @@ extern "C" {
 #endif
 
 #define HOST_DEVICE_LOCAL_SERVICES_MEM_SECTION __attribute__((section("._user_heap_stack")))
-#define HOST_DEVICE_MEM_SECTION __attribute__((section("._user_heap_stack"))) = { 0 }
+#define HOST_DEVICE_MEM_SECTION __attribute__((section("._user_heap_stack")))
 //==============================================================================
 //import:
 

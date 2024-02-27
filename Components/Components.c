@@ -98,7 +98,6 @@ void ComponentsHandler()
 #if defined(LED2_Port) && !defined(LED1_Port)
 		LED1_Port->Output.LED2 ^= 1;
 #endif
-
 	}
 
 #if FREERTOS_ENABLE == 1

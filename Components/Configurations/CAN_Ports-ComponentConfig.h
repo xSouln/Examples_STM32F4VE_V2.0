@@ -17,7 +17,7 @@ extern "C" {
 //defines:
 
 #define CAN_PORT1_ENABLE 1
-#define CAN_PORT2_ENABLE 0
+#define CAN_PORT2_ENABLE 1
 #define CAN_PORT3_ENABLE 0
 #define CAN_PORT4_ENABLE 0
 #define CAN_PORT5_ENABLE 0
@@ -103,8 +103,8 @@ extern CAN_HandleTypeDef hcan2;
 #define CAN_PORT2_FILTER_MASK_ID_LOW 0
 #define CAN_PORT2_FILTER_RX_FIFO CAN_RX_FIFO0
 
-#define CAN_PORT2_TX_CIRCLE_BUF_MEM_SECTION __attribute__((section("._user_heap_stack")))
-#define CAN_PORT2_RX_CIRCLE_BUF_MEM_SECTION __attribute__((section("._user_heap_stack")))
+#define CAN_PORT2_TX_CIRCLE_BUF_MEM_SECTION// __attribute__((section("._user_heap_stack")))
+#define CAN_PORT2_RX_CIRCLE_BUF_MEM_SECTION// __attribute__((section("._user_heap_stack")))
 
 #endif
 
