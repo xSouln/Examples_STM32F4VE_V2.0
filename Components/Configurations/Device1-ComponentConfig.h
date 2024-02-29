@@ -21,8 +21,8 @@ extern "C" {
 #define DEVICE1_LOCAL_SERVICES_MEM_SECTION// __attribute__((section("._user_heap_stack")))
 #define DEVICE1_MEM_SECTION// __attribute__((section("._user_heap_stack")))
 
-#define DEVICE1_PIN1_PORT PortE
-#define DEVICE1_PIN1_HARDWARE_OTPUT 15
+#define DEVICE1_PIN1_PORT PortA
+#define DEVICE1_PIN1_HARDWARE_OTPUT 7
 #define DEVICE1_PIN1_LOGIC_OTPUT 0
 
 #define DEVICE_1_TRANSFER_LAYER &LocalTransferLayer

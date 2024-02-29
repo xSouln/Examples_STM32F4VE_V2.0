@@ -150,7 +150,7 @@ extern DMA_HandleTypeDef hdma_usart6_rx;
 #endif
 //------------------------------------------------------------------------------
 
-#define DEBUG_SERIAL_PORT_DEFAULT_NUMBER SERIAL3
+#define DEBUG_SERIAL_PORT_DEFAULT_NUMBER SERIAL1
 //==============================================================================
 #ifdef __cplusplus
 }

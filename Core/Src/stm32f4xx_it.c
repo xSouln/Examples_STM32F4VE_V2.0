@@ -206,7 +206,7 @@ void DMA2_Stream2_IRQHandler(void)
 void CAN2_TX_IRQHandler(void)
 {
   /* USER CODE BEGIN CAN2_TX_IRQn 0 */
-
+	xCAN_TxIRQ_Handler(xCAN2);
   /* USER CODE END CAN2_TX_IRQn 0 */
   /* USER CODE BEGIN CAN2_TX_IRQn 1 */
 
@@ -219,7 +219,7 @@ void CAN2_TX_IRQHandler(void)
 void CAN2_RX0_IRQHandler(void)
 {
   /* USER CODE BEGIN CAN2_RX0_IRQn 0 */
-
+	xCAN_RxIRQ_Handler(xCAN2);
   /* USER CODE END CAN2_RX0_IRQn 0 */
   /* USER CODE BEGIN CAN2_RX0_IRQn 1 */
 

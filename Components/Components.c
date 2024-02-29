@@ -139,18 +139,26 @@ static void privateSynchronizationTimer_IRQ_Handler(xTimerT* timer, xTimerHandle
 //==============================================================================
 //initialization:
 
-#if TERMINAL_COMPONENT_ENABLE == 1 && DEVICE1_COMPONENT_ENABLE == 1
+#if TERMINAL_COMPONENT_ENABLE == 1 && (DEVICE1_COMPONENT_ENABLE == 1 || HOST_DEVICE_COMPONENT_ENABLE)
 static const xTerminalObjectT privateDeviceTerminalObject =
 {
 	.Requests = xDeviceRxRequests,
+#if HOST_DEVICE_COMPONENT_ENABLE == 1
+	.Object = (void*)&HostDevice
+#else
 	.Object = (void*)&Device1
+#endif
 };
 
 //------------------------------------------------------------------------------
 static const xTerminalObjectT privateServiceControlTerminalObject =
 {
 	.Requests = xServiceRxRequests,
+#if HOST_DEVICE_COMPONENT_ENABLE == 1
+	.Object = (void*)&HostDevice
+#else
 	.Object = (void*)&Device1
+#endif
 };
 #endif
 //------------------------------------------------------------------------------
@@ -206,7 +214,7 @@ xResult ComponentsInit(void* parent)
 	SynchronizationTimer->Control1.CounterEnable = true;
 #endif
 
-#if TERMINAL_COMPONENT_ENABLE == 1 && DEVICE1_COMPONENT_ENABLE == 1
+#if TERMINAL_COMPONENT_ENABLE == 1 && (DEVICE1_COMPONENT_ENABLE == 1 || HOST_DEVICE_COMPONENT_ENABLE == 1)
 	TerminalAddObject((void*)&privateDeviceTerminalObject);
 	TerminalAddObject((void*)&privateServiceControlTerminalObject);
 #endif

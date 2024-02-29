@@ -31,13 +31,16 @@ extern "C" {
 
 #include "CAN-Ports/CAN_Ports-Component.h"
 
-//#include "Components/TransferLayer/Host/HostTransferLayer-Component.h"
-#include "Components/TransferLayer/Local/LocalTransferLayer-Component.h"
-//#include "Components/RequestControl/Host/HostRequestControl-Component.h"
-//#include "Components/RequestControl/Local/RequestControl-Component.h"
+#if HOST_DEVICE_COMPONENT_ENABLE == 1
+#include "Components/TransferLayer/Host/HostTransferLayer-Component.h"
+#include "Components/RequestControl/Host/HostRequestControl-Component.h"
+#include "Components/Devices/Host/HostDevice-Component.h"
+#endif
 
-//#include "Components/Devices/Host/HostDevice-Component.h"
+#if DEVICE1_COMPONENT_ENABLE == 1
+#include "Components/TransferLayer/Local/LocalTransferLayer-Component.h"
 #include "Components/Devices/Device-1/Device1-Component.h"
+#endif
 
 #if AHT10_COMPONENT_ENABLE == 1
 #include "AHT10/AHT10-Component.h"

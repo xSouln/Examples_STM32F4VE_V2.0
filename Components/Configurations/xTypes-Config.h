@@ -15,6 +15,7 @@ extern "C" {
 
 #include "stm32f4xx_hal.h"
 #include "Registers/registers.h"
+#include "Common/xDevice-CommonTypes.h"
 //==============================================================================
 //defines:
 
@@ -134,6 +135,7 @@ REG_GPIO_PORT_TYPEDEF(E,
 #define PortD ((REG_GPIO_PORT_D_T*)GPIOD)
 #define PortE ((REG_GPIO_PORT_E_T*)GPIOE)
 //------------------------------------------------------------------------------
+
 typedef struct PACKED_PREFIX
 {
 	uint16_t Id_1;
@@ -153,6 +155,10 @@ typedef struct PACKED_PREFIX
 } UniqueDeviceID_T;
 //==============================================================================
 //values:
+
+
+//==============================================================================
+//export:
 
 extern UniqueDeviceID_T* UniqueDeviceID;
 //==============================================================================
