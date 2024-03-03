@@ -1,64 +1,12 @@
 //==============================================================================
-#ifndef _COMPONENTS_SELECTOR_H_
-#define _COMPONENTS_SELECTOR_H_
+//header"
 
-//------------------------------------------------------------------------------
-#ifdef __cplusplus
-extern "C" {
-#endif 
+#ifndef _COMPONENTS_ASSEMBLE_EXECUTION1_SELECTOR_H_
+#define _COMPONENTS_ASSEMBLE_EXECUTION1_SELECTOR_H_
 //==============================================================================
-//includes:
+//override:
 
-#include "Components-Config.h"
+#include "Components/Assemblies/Execution-1/Components-Selector.h"
 
-#include "Peripherals/xTimer/xTimer.h"
-#include "Peripherals/xUSART/xUSART.h"
-#include "Peripherals/CAN/xCAN.h"
+#endif //_COMPONENTS_ASSEMBLE_EXECUTION1_SELECTOR_H_
 //==============================================================================
-/// @defgroup SelectedComponents SelectedComponents
-/// @brief подключенные компоненты
-/// @{
-
-#if TERMINAL_COMPONENT_ENABLE == 1
-#include "Components/Terminal/Terminal-Component.h"
-#endif
-
-#if USART_PORTS_COMPONENT_ENABLE == 1
-#include "Components/USART-Ports/USART-Ports-Component.h"
-#endif
-//#include "Net/Net-Component.h"
-//#include "MqttClient/MqttClient-Component.h"
-
-#include "CAN-Ports/CAN_Ports-Component.h"
-
-#if HOST_DEVICE_COMPONENT_ENABLE == 1
-#include "Components/TransferLayer/Host/HostTransferLayer-Component.h"
-#include "Components/RequestControl/Host/HostRequestControl-Component.h"
-#include "Components/Devices/Host/HostDevice-Component.h"
-#endif
-
-#if DEVICE1_COMPONENT_ENABLE == 1
-#include "Components/TransferLayer/Local/LocalTransferLayer-Component.h"
-#include "Components/Devices/Device-1/Device1-Component.h"
-#endif
-
-#if AHT10_COMPONENT_ENABLE == 1
-#include "AHT10/AHT10-Component.h"
-#endif
-
-/// @}
-//==============================================================================
-//defines:
-
-
-//==============================================================================
-//macros:
-
-
-//==============================================================================
-#ifdef __cplusplus
-}
-#endif
-//------------------------------------------------------------------------------
-#endif //_COMPONENTS_SELECTOR_H_
-

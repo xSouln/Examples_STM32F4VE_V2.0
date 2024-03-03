@@ -8,6 +8,8 @@ extern "C" {
 //==============================================================================
 //includes:
 
+#include "Components-PrivateConfig.h"
+
 #include "FreeRTOS.h"
 #include "cmsis_os2.h"
 #include "task.h"
@@ -18,10 +20,6 @@ extern "C" {
 #include "Common/xDevice-CommonTypes.h"
 //==============================================================================
 //defines:
-
-#define xUSART_USER_CONFIG 1
-#define xTIMER_USER_CONFIG 1
-#define xCAN_USER_CONFIG 1
 
 #define OS_TYPE_NON 0
 #define OS_TYPE_FREERTOS 1
