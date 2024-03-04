@@ -108,7 +108,7 @@ int main(void)
   MX_CAN1_Init();
   MX_CAN2_Init();
   /* USER CODE BEGIN 2 */
-#if FREERTOS_ENABLE == 0
+#if FREERTOS_USED == 0
 	ComponentsInit(main);
 #endif
   /* USER CODE END 2 */
@@ -127,7 +127,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-#if FREERTOS_ENABLE == 0
+#if FREERTOS_USED == 0
 		ComponentsHandler();
 #endif
   }
