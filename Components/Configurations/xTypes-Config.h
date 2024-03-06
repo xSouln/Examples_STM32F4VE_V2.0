@@ -158,7 +158,7 @@ typedef struct PACKED_PREFIX
 //==============================================================================
 //export:
 
-extern UniqueDeviceID_T* UniqueDeviceID;
+extern const UniqueDeviceID_T* UniqueDeviceID;
 //==============================================================================
 #ifdef __cplusplus
 }
