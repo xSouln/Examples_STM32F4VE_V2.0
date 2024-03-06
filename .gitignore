@@ -2,9 +2,9 @@ build/
 Debug/
 STM32CubeIDE/.settings
 Backup
-.launch
 Configurations-Private/
 
 .pio
 .vscode
 .git
+*.launch
