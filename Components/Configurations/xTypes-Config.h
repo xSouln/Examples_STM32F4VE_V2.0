@@ -21,19 +21,7 @@ extern "C" {
 //==============================================================================
 //defines:
 
-#define OS_TYPE_NON 0
-#define OS_TYPE_FREERTOS 1
 
-#ifdef FREERTOS_CONFIG_H
-#define FREERTOS_USED 1
-#define OS_TYPE OS_TYPE_FREERTOS
-#endif
-
-#ifndef OS_TYPE
-#define OS_TYPE OS_TYPE_NON
-#endif
-
-#define PACKED_PREFIX __packed
 //==============================================================================
 //types:
 
