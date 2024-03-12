@@ -47,6 +47,11 @@
 			<locationURI>SintezElectro</locationURI>
 		</link>
 		<link>
+			<name>Testing</name>
+			<type>2</type>
+			<locationURI>Testing</locationURI>
+		</link>
+		<link>
 			<name>xLib</name>
 			<type>2</type>
 			<locationURI>xLib</locationURI>

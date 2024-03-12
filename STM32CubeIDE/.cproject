@@ -66,6 +66,7 @@
 									<listOptionValue builtIn="false" value="&quot;${COMPONENTS_PATH}/FreeRTOS-Plus-TCP/NetworkInterface&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${COMPONENTS_PATH}/FreeRTOS-Plus-MQTT/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${COMPONENTS_PATH}/FreeRTOS-Plus-MQTT/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${TESTING_COMPONENTS_PATH}/&quot;"/>
 								</option>
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.cyclomaticcomplexity.851959200" name="Cyclomatic Complexity (-fcyclomatic-complexity)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.cyclomaticcomplexity" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard.943875149" name="Language standard" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard.value.gnu18" valueType="enumerated"/>
@@ -94,9 +95,10 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="Components|SintezElectro|xLib" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="Testing|Components|SintezElectro|xLib" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry excluding="FlowDirector|FlowMeter|Thermocouple|WaterPump|CupsController|Camera|BrewGroup|Terminal|FreeRTOS-Plus-MQTT|Slider|TCPServer|SerialPort|Carousel|Termostat|FreeRTOS-Plus-TCP" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Components"/>
 						<entry excluding="Components/Devices/Device-3|Components/Devices/Device-2" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SintezElectro"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Testing"/>
 						<entry excluding="Components/WaterPump|Components/Thermocouple|Components/Termostat|Components/TCPServer|Components/Slider|Components/FreeRTOS-Plus-TCP|Components/FreeRTOS-Plus-MQTT|Components/FlowMeter|Components/FlowDirector|Components/CupsController|Components/Carousel|Components/Camera|Components/BrewGroup|Templates/ADC|Templates/Template|Components/CAN-Ports/Adapters/STM32F1xx|Templates/Documents|Templates/Camera|Registers/registers_stm32f1xx|Drivers|Templates/sfc_spi|Templates/WiFi|Components/CAN-Ports/Adapters/STM32F0xx|Templates/TransferLayer|Registers/registers_stm32f0xx|Registers/registers_stm32h7xx|Templates/TCPServer|Templates/SerialPort" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xLib"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="xLib/Drivers/AHT10"/>
 					</sourceEntries>
